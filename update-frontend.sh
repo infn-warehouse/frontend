@@ -4,4 +4,4 @@ npm install
 npm run build
 cd $HOME/frontend/dist
 pm2 start http-server
-pm2 delete update
+pm2 delete update-frontend
