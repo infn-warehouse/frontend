@@ -1,0 +1,97 @@
+{
+  "misc": {
+    "search": "Search",
+    "filters": "Filters",
+    "createResource": "Creating new {resourceType}",
+    "updateResource": "Modifying {resourceType} {resourceName}",
+    "detailResource": "Details {resourceType} {resourceName}"
+  },
+  "date_picker": {
+    "clear": "Clear",
+    "cancel": "Cancel",
+    "ok": "OK"
+  },
+  "login": {
+    "message": "Welcome in infn-fe",
+    "email": "Email",
+    "password": "Password",
+    "customer": "Customer code"
+  },
+  "baseGrid": {
+    "noResults": "No results.",
+    "rowsPerPage": "Rows per page",
+    "of": "of",
+    "actions": "Actions",
+    "found": "element found",
+    "founds": "elements found"
+  },
+  "navigation": {
+    "movements": "Movements",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "confirm": {
+    "deleteMessage": "Do you really want to delete selected object?",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "toasts": {
+    "login_ok": "Login successful.",
+    "logout_ok": "Logout successful.",
+    "created": "Created",
+    "updated": "Updated",
+    "deleted": "Deleted"
+  },
+  "headers": {
+    "movements": {
+      "idMovimento": "ID",
+      "nMovimento": "Numero",
+      "dataMovimento": "Data",
+      "tipoMovimento": "Tipo",
+      "rifMov": "Riferimento",
+      "idOrdine": "ID ordine",
+      "datadocumento": "Data doc",
+      "tipoDocAcc": "Tipo doc",
+      "nDocAcc": "Numero doc",
+      "dataConsegna": "Data consegna",
+      "consegnatario": "Consegnatario",
+      "nColli": "Numero colli",
+      "dataInvioCollaudo": "Data invio collaudo",
+      "collaudoEseg": "Collaudo eseg",
+      "dataCollaudo": "Data collaudo",
+      "note": "Note",
+      "reparto": "Reparto"
+    }
+  },
+  "resource_types": {
+    "movement": "movement",
+    "movements": "Movements"
+  },
+  "buttons": {
+    "login": "Login",
+    "filter": "Filter",
+    "create": "Create",
+    "edit": "Edit",
+    "invoicing": "Invoicing",
+    "next": "Next",
+    "back": "Back",
+    "save": "Save",
+    "add": "Add",
+    "cancel": "Cancel",
+    "clear": "Clear"
+  },
+  "details": {
+    "movements": {
+      "tab1": "Tab1",
+      "tab2": "Tab2",
+      "tab3": "Tab3"
+    }
+  },
+  "filters": {
+    "users": {
+      "id": "ID",
+      "name": "Name",
+      "services": "Service"
+    }
+  }
+}
