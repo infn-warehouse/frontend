@@ -2,9 +2,16 @@
   "misc": {
     "search": "Ricerca",
     "filters": "Filtri",
+    "from": "Da",
+    "to": "A",
     "createResource": "Creazione nuovo {resourceType}",
     "updateResource": "Modifica {resourceType} {resourceName}",
     "detailResource": "Dettagli {resourceType} {resourceName}"
+  },
+  "custom": {
+    "profile": "Profilo",
+    "role": "Ruolo",
+    "email": "Email"
   },
   "date_picker": {
     "clear": "Pulisci",
@@ -14,8 +21,7 @@
   "login": {
     "message": "Benvenuto in infn-fe",
     "email": "Email",
-    "password": "Password",
-    "customer": "Codice customer"
+    "password": "Password"
   },
   "baseGrid": {
     "noResults": "Nessun risultato.",
@@ -27,6 +33,7 @@
   },
   "navigation": {
     "movements": "Movimenti",
+    "items": "Articoli",
     "profile": "Profilo",
     "logout": "Logout"
   },
@@ -61,11 +68,25 @@
       "dataCollaudo": "Data collaudo",
       "note": "Note",
       "reparto": "Reparto"
+    },
+    "items": {
+      "codiceArticolo": "Codice",
+      "descrizione": "Descrizione",
+      "specifica": "Specifica",
+      "misura": "Misura",
+      "coefficiente": "Coefficiente",
+      "carico": "Carico",
+      "scarico": "Scarico",
+      "giacenza": "Giacenza",
+      "scorta": "Scorta",
+      "ubicazione": "Ubicazione"
     }
   },
   "resource_types": {
     "movement": "movimento",
-    "movements": "Movimenti"
+    "movements": "Movimenti",
+    "item": "articolo",
+    "items": "Articoli"
   },
   "buttons": {
     "login": "Login",
@@ -82,16 +103,10 @@
   },
   "details": {
     "movements": {
-      "tab1": "Tab1",
-      "tab2": "Tab2",
-      "tab3": "Tab3"
+      "tab1": "Consegna",
+      "tab2": "Collaudo"
     }
   },
   "filters": {
-    "users": {
-      "id": "ID",
-      "name": "Nome",
-      "services": "Servizi"
-    }
   }
 }

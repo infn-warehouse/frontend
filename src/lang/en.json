@@ -2,9 +2,16 @@
   "misc": {
     "search": "Search",
     "filters": "Filters",
+    "from": "From",
+    "to": "To",
     "createResource": "Creating new {resourceType}",
     "updateResource": "Modifying {resourceType} {resourceName}",
     "detailResource": "Details {resourceType} {resourceName}"
+  },
+  "custom": {
+    "profile": "Profile",
+    "role": "Role",
+    "email": "Email"
   },
   "date_picker": {
     "clear": "Clear",
@@ -14,8 +21,7 @@
   "login": {
     "message": "Welcome in infn-fe",
     "email": "Email",
-    "password": "Password",
-    "customer": "Customer code"
+    "password": "Password"
   },
   "baseGrid": {
     "noResults": "No results.",
@@ -27,6 +33,7 @@
   },
   "navigation": {
     "movements": "Movements",
+    "items": "Items",
     "profile": "Profile",
     "logout": "Logout"
   },
@@ -61,11 +68,25 @@
       "dataCollaudo": "Data collaudo",
       "note": "Note",
       "reparto": "Reparto"
+    },
+    "items": {
+      "codiceArticolo": "Codice",
+      "descrizione": "Descrizione",
+      "specifica": "Specifica",
+      "misura": "Misura",
+      "coefficiente": "Coefficiente",
+      "carico": "Carico",
+      "scarico": "Scarico",
+      "giacenza": "Giacenza",
+      "scorta": "Scorta",
+      "ubicazione": "Ubicazione"
     }
   },
   "resource_types": {
     "movement": "movement",
-    "movements": "Movements"
+    "movements": "Movements",
+    "item": "item",
+    "items": "Items"
   },
   "buttons": {
     "login": "Login",
@@ -82,16 +103,10 @@
   },
   "details": {
     "movements": {
-      "tab1": "Tab1",
-      "tab2": "Tab2",
-      "tab3": "Tab3"
+      "tab1": "Consegna",
+      "tab2": "Collaudo"
     }
   },
   "filters": {
-    "users": {
-      "id": "ID",
-      "name": "Name",
-      "services": "Service"
-    }
   }
 }

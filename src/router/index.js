@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import MovementsList from '../views/MovementsList.vue'
 import MovementDetails from '../views/MovementDetails.vue'
+import ItemsList from '../views/ItemsList.vue'
 import Profile from '../views/Profile.vue'
 import Restricted from '../views/Restricted.vue'
 import defineAbilitiesFor from '@/abilities'
@@ -33,6 +34,11 @@ const routes = [
     name: 'MovementDetails',
     component: MovementDetails,
     props: true
+  },
+  {
+    path: '/items',
+    name: 'Items',
+    component: ItemsList
   },
   {
     path: '/profile',

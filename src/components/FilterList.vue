@@ -96,7 +96,7 @@ export default {
         sortBy: [this.fetchSort],
         sortDesc: [false],
         page: 1,
-        itemsPerPage: 25,
+        itemsPerPage: 10,
         multiSort: false,
         mustSort: true
       },      
@@ -141,7 +141,7 @@ export default {
       });
     },
     async _fetch() {
-      this.valueCopy=_.cloneDeep(this.value);
+      let tempCopy=_.cloneDeep(this.value);
       if (this.fetch) {
         let res=this.operationWithCheck(await this.fetch(this.paginationOpts,this.search,null));
         if (res) {
@@ -151,10 +151,11 @@ export default {
             valueCopyNew.push({
               name: val[this.fetchName],
               value: val[this.fetchValue],
+              sort: val[this.fetchSort],
               checked: false,
             });
           }
-          for (let val of this.valueCopy) {
+          for (let val of tempCopy) {
             if (val.checked) {
               let found=false;
               for (let val2 of valueCopyNew) {
@@ -169,9 +170,12 @@ export default {
               }
             }
           }
+          valueCopyNew=_.orderBy(valueCopyNew, 'sort', 'asc');
           this.valueCopy=valueCopyNew;
         }
       }
+    },
+    update() {
       switch (this.type) {
         case 1:
           this.loadSelectedItems();
@@ -181,17 +185,23 @@ export default {
           this.showAll = this.alwaysShowAllComputed;
           break;
       }
-    }
+    },
   },
-  created() {
-    this._fetch();
+  async created() {
+      await this._fetch();
+      this.update();
   },
   watch: {
-    search: _.debounce(async function() {
+    search: _.debounce(async function(newVal,oldVal) {
+      let oldCheck=oldVal==null || oldVal=="";
+      let newCheck=newVal==null || newVal=="";
+      if (oldCheck && newCheck) return;
+
       await this._fetch();
     }, process.env.VUE_APP_DEBOUNCE_TIME),
-    value() {
-      this._fetch();
+    value: function() {
+      this.valueCopy=_.cloneDeep(this.value);
+      this.update();
     }
   }
 };

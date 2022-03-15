@@ -23,12 +23,13 @@
       scrollable
       color="primary"
       header-color="primary"
+      @change="handleChange"
     >
       <v-spacer></v-spacer>
-      <v-btn text color="primary" @click="(date = null), (menu = false)">
+      <v-btn text color="primary" @click="(date = null), (handleChange()), (menu = false)">
         {{ $t('date_picker.clear') }}
       </v-btn>
-      <v-btn text color="primary" @click="(date = oldDate), (menu = false)">
+      <v-btn text color="primary" @click="(date = oldDate), (handleChange()), (menu = false)">
         {{ $t('date_picker.cancel') }}
       </v-btn>
       <v-btn text color="primary" @click="menu = false">
@@ -65,24 +66,28 @@ export default {
           this.dateFormatted="";
       }
     },
-    date() {
-      if (this.date != null) {
-        this.dateFormatted = this.formatDate(this.date);
-        this.$emit("input", moment.utc(this.date).format());
-      } else {
-        this.dateFormatted = "";
-        this.$emit("input", null);
-      }
-    },
     value() {
       this.date = this.parseDate(this.$props.value);
+      this.formatDate();
     }
   },
   methods: {
-    formatDate(date) {
-      if (!date) return null;
-
-      return moment(String(date)).format("DD/MM/YYYY");
+    handleChange() {
+      this.formatDate();
+      this.emit();
+    },
+    emit() {
+      if (this.date != null)
+        this.$emit("input", moment.utc(this.date).format());
+      else
+        this.$emit("input", null);
+      this.$emit("change");
+    },
+    formatDate() {
+      if (this.date != null)
+        this.dateFormatted=moment(String(this.date)).format("DD/MM/YYYY");
+      else
+        this.dateFormatted = "";
     },
     parseDate(date) {
       if (!date) return null;
@@ -92,6 +97,7 @@ export default {
   },
   created() {
     this.date = this.parseDate(this.$props.value);
+    this.formatDate();
   }
 };
 </script>

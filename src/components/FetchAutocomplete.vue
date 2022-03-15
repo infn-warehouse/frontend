@@ -46,13 +46,13 @@ export default {
         sortBy: [this.itemText],
         sortDesc: [false],
         page: 1,
-        itemsPerPage: 25,
+        itemsPerPage: 10,
         multiSort: false,
         mustSort: true
       },
       search: "",
       searchComputed: "",
-      filter: null,
+      filter: {},
       items: [],
       total: null
     };
@@ -63,11 +63,14 @@ export default {
     }
   },
   watch: {
-    search: _.debounce(async function querySearch() {
-      if (this.search) {
-        this.searchComputed=this.search;
-        await this._fetch();
-      }      
+    search: _.debounce(async function querySearch(newVal,oldVal) {
+      let oldCheck=oldVal==null || oldVal=="";
+      let newCheck=newVal==null || newVal=="";
+      if (oldCheck && newCheck) return;
+
+      this.searchComputed=this.search;
+      this.filter=null;
+      await this._fetch();
     }, process.env.VUE_APP_DEBOUNCE_TIME),
   },
   methods: {
@@ -83,12 +86,14 @@ export default {
   },
   async created() {
     if (this.withModelId)
-      this.filter={ id: this.withModelId };
-    else if (this.value && (!this.returnObject || this.itemValue in this.value)) {
-      if (this.returnObject)
-        this.filter={ id: this.value[this.itemValue] };
-      else this.filter={ id: this.value };
+      this.filter[this.itemValue]={value: this.withModelId};
+    else if (this.value) {
+      if (!this.returnObject)
+        this.filter[this.itemValue]={value: this.value};
+      else if (this.itemValue in this.value)
+        this.filter[this.itemValue]={value: this.value[this.itemValue]};
     }
+
     await this._fetch();
 
     if (this.withModelId && this.mode==enums.FORM_MODE.CREATE)

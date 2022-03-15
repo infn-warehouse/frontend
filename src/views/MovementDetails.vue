@@ -19,22 +19,20 @@
       >
         <v-tab key="tab1">{{ $t("details.movements.tab1") }}</v-tab>
         <v-tab key="tab2">{{ $t("details.movements.tab2") }}</v-tab>
-        <v-tab key="tab3">{{ $t("details.movements.tab3") }}</v-tab>
       </v-tabs>
       <v-tabs-items v-model="activeTab">
         <v-tab-item key="tab1">
           <div class="my-container">
-            {{this.selectedItem.nMovimento}}
+            <div><b>{{ $t("headers.movements.dataConsegna") }}</b>: {{this.selectedItem.dataConsegna}}</div>
+            <div><b>{{ $t("headers.movements.consegnatario") }}</b>: {{this.selectedItem.consegnatario}}</div>
+            <div><b>{{ $t("headers.movements.nColli") }}</b>: {{this.selectedItem.nColli}}</div>
           </div>
         </v-tab-item>
         <v-tab-item key="tab2">
           <div class="my-container">
-            {{this.selectedItem.idOrdine}}
-          </div>
-        </v-tab-item>
-        <v-tab-item key="tab3">
-          <div class="my-container">
-            {{this.selectedItem.nDocAcc}}
+            <div><b>{{ $t("headers.movements.dataInvioCollaudo") }}</b>: {{this.selectedItem.dataInvioCollaudo}}</div>
+            <div><b>{{ $t("headers.movements.collaudoEseg") }}</b>: {{this.selectedItem.collaudoEseg}}</div>
+            <div><b>{{ $t("headers.movements.dataCollaudo") }}</b>: {{this.selectedItem.dataCollaudo}}</div>
           </div>
         </v-tab-item>
       </v-tabs-items>
@@ -75,7 +73,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations("filters", ["setUsersFlag"]),
+    ...mapMutations("filters", ["setMovementsFlag"]),
     
     fetch(id) {
       return GraphileService.fetchOne("MovimentiTemp",["documento"],id);
@@ -88,14 +86,16 @@ export default {
     delete(item) {
       return this.deleteConfirm(
         this.resourceType,
-        "service",
+        "MovimentiTemp",
+        "Movimenti",
+        "idMovimento",
         item,
         payload => payload.p.id
       );
     },
   },
   created() {
-    this.setUsersFlag(true);
+    this.setMovementsFlag(true);
   },
   components: {
     MovementForm,

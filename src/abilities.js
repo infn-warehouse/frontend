@@ -12,11 +12,13 @@ export default function defineAbilitiesFor() {
       case 'Administrator':
         can('route', 'Movements');
         can('route', 'MovementDetails');
+        can('route', 'Items');
         can('route', 'Profile');
         break;
       case 'Manager':
         can('route', 'Movements');
         can('route', 'MovementDetails');
+        can('route', 'Items');
         can('route', 'Profile');
         break;
       case 'User':

@@ -1,6 +1,6 @@
 import { mapMutations } from "vuex";
 import enums from "@/enums";
-import { DevourService } from "@/services/devour.service";
+import GraphileService from "@/services/graphile.service";
 import _ from "lodash";
 
 export default {
@@ -54,18 +54,24 @@ export default {
       mode,
       resName,
       resType,
+      idName,
       payload,
       createdName,
       updatedName,
       extra = null
     ) {
       let pcopy = _.cloneDeep(payload);
+      for (let key in pcopy) {
+        if (pcopy[key]==null || pcopy[key]=="")
+          delete pcopy[key];
+      }
+
       try {
-        const res = await DevourService.createOrUpdate(resType,payload);
+        const res = await GraphileService.createOrUpdate(resType,pcopy,idName);
         if (res && res.error) {
           this.showMessage({
             context: enums.TOAST_TYPE.ERROR,
-            text: "Error: " + JSON.stringify(res.error)
+            text: "Error: " + res.error
           });
           return false;
         }
@@ -74,7 +80,7 @@ export default {
           if (extra_res) {
             this.showMessage({
               context: enums.TOAST_TYPE.ERROR,
-              text: "Error: " + JSON.stringify(extra_res)
+              text: "Error: " + extra_res
             });
             return false;
           }
@@ -110,7 +116,7 @@ export default {
         return false;
       }
     },
-    async deleteConfirm(resName, resType, payload, deletedName) {
+    async deleteConfirm(resName, resType, resOrig, idName, payload, deletedName) {
       return new Promise((resolve) => {
         this.$confirm({
           message:
@@ -121,20 +127,20 @@ export default {
           },
           callback: async confirm => {
             if (confirm)
-              resolve(await this.deleteHelper(resName, resType, payload, deletedName));
+              resolve(await this.deleteHelper(resName, resType, resOrig, idName, payload, deletedName));
             else resolve(false);
           }
         });
       });
     },
-    async deleteHelper(resName, resType, payload, deletedName) {
+    async deleteHelper(resName, resType, resOrig, idName, payload, deletedName) {
       let pcopy = _.cloneDeep(payload);
       try {
-        const res = await DevourService.delete(resType,payload.id);
+        const res = await GraphileService.delete(resType,resOrig,payload[idName],idName);
         if (res && res.error) {
           this.showMessage({
             context: enums.TOAST_TYPE.ERROR,
-            text: "Error: " + JSON.stringify(res.error)
+            text: "Error: " + res.error
           });
           return false;
         }

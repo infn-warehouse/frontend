@@ -1,33 +1,33 @@
 const state = {
-  users: {},
-  customers: {},
+  movements: {},
+  items: {},
   orders: {},
   tickets: {},
 
-  usersFlag: false,
-  customersFlag: false,
+  movementsFlag: false,
+  itemsFlag: false,
   ordersFlag: false,
   ticketsFlag: false
 };
 
 const getters = {
-  usersFilter: state => state.users,
-  customersFilter: state => state.customers,
+  movementsFilter: state => state.movements,
+  itemsFilter: state => state.items,
   ordersFilter: state => state.orders,
   ticketsFilter: state => state.tickets,
 
-  usersFlag: state => state.usersFlag,
-  customersFlag: state => state.customersFlag,
+  movementsFlag: state => state.movementsFlag,
+  itemsFlag: state => state.itemsFlag,
   ordersFlag: state => state.ordersFlag,
   ticketsFlag: state => state.ticketsFlag
 };
 
 const mutations = {
-  setUsersFilter(state, sel) {
-    state.users = sel;
+  setMovementsFilter(state, sel) {
+    state.movements = sel;
   },
-  setCustomersFilter(state, sel) {
-    state.customers = sel;
+  setItemsFilter(state, sel) {
+    state.items = sel;
   },
   setOrdersFilter(state, sel) {
     state.orders = sel;
@@ -36,11 +36,11 @@ const mutations = {
     state.tickets = sel;
   },
   
-  setUsersFlag(state, sel) {
-    state.usersFlag = sel;
+  setMovementsFlag(state, sel) {
+    state.movementsFlag = sel;
   },
-  setCustomersFlag(state, sel) {
-    state.customersFlag = sel;
+  setItemsFlag(state, sel) {
+    state.itemsFlag = sel;
   },
   setOrdersFlag(state, sel) {
     state.ordersFlag = sel;

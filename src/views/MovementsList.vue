@@ -1,10 +1,10 @@
 <template>
   <div>
-    <UsersFilter
+    <MovementsFilter
       ref="drawer"
       @drawerChanged="handleDrawer"
       @onChange="handleChange"
-    ></UsersFilter>
+    ></MovementsFilter>
     <div class="my-container">
       <v-card :class="{ 'center-panel': drawer_flag }">
         <Toolbar
@@ -40,7 +40,7 @@
               v-if="formDialog"
               :mode="mode"
               :selectedItem="editItem"
-              @formSucceed="fetch()"
+              @formSucceed="_fetch()"
               @formClose="close()"
             />
           </v-card>
@@ -58,7 +58,7 @@ import helper from "@/mixins/helper";
 import formDialog from "@/mixins/formDialog";
 import listShared from "@/mixins/listShared";
 import MovementForm from "@/components/forms/MovementForm";
-import UsersFilter from "@/components/filters/UsersFilter";
+import MovementsFilter from "@/components/filters/MovementsFilter";
 import GraphileService from "@/services/graphile.service";
 import enums from "@/enums";
 
@@ -69,7 +69,7 @@ export default {
     BaseGrid,
     MovementForm,
     Toolbar,
-    UsersFilter
+    MovementsFilter
   },
 
   mixins: [helper,formDialog,listShared],
@@ -83,11 +83,11 @@ export default {
   methods: {
     mapHeaders() {
       let tableHeaders=[];
-      tableHeaders.push({
-        value: "idMovimento",
-        align: "start",
-        sortable: true
-      });
+      // tableHeaders.push({
+      //   value: "idMovimento",
+      //   align: "start",
+      //   sortable: true
+      // });
       tableHeaders.push({
         value: "nMovimento",
         sortable: true,
@@ -103,11 +103,11 @@ export default {
         sortable: true,
         align: "start"
       });
-      tableHeaders.push({
-        value: "rifMov",
-        sortable: true,
-        align: "start"
-      });
+      // tableHeaders.push({
+      //   value: "rifMov",
+      //   sortable: true,
+      //   align: "start"
+      // });
       tableHeaders.push({
         value: "idOrdine",
         sortable: true,
@@ -143,31 +143,31 @@ export default {
         sortable: true,
         align: "start"
       });
-      tableHeaders.push({
-        value: "dataInvioCollaudo",
-        sortable: true,
-        align: "start"
-      });
-      tableHeaders.push({
-        value: "collaudoEseg",
-        sortable: true,
-        align: "start"
-      });
+      // tableHeaders.push({
+      //   value: "dataInvioCollaudo",
+      //   sortable: true,
+      //   align: "start"
+      // });
+      // tableHeaders.push({
+      //   value: "collaudoEseg",
+      //   sortable: true,
+      //   align: "start"
+      // });
       tableHeaders.push({
         value: "dataCollaudo",
         sortable: true,
         align: "start"
       });
-      tableHeaders.push({
-        value: "note",
-        sortable: true,
-        align: "start"
-      });
-      tableHeaders.push({
-        value: "reparto",
-        sortable: true,
-        align: "start"
-      });
+      // tableHeaders.push({
+      //   value: "note",
+      //   sortable: true,
+      //   align: "start"
+      // });
+      // tableHeaders.push({
+      //   value: "reparto",
+      //   sortable: true,
+      //   align: "start"
+      // });
       return tableHeaders;
     },
     mapItems() {
@@ -175,11 +175,11 @@ export default {
         let tableItem={};
         tableItem.baseItem=item;
         tableItem.fields = {
-          idMovimento: { data: item.idMovimento, dataType: "text" },
+          // idMovimento: { data: item.idMovimento, dataType: "text" },
           nMovimento: { data: item.nMovimento, dataType: "text" },
           dataMovimento: { data: item.dataMovimento, dataType: "date" },
           tipoMovimento: { data: item.tipoMovimento, dataType: "text" },
-          rifMov: { data: item.rifMov, dataType: "text" },
+          // rifMov: { data: item.rifMov, dataType: "text" },
           idOrdine: { data: item.idOrdine, dataType: "text" },
           datadocumento: { data: item.datadocumento, dataType: "date" },
           tipoDocAcc: { data: item.documentoByTipoDocAcc ? item.documentoByTipoDocAcc.dicitura : "", dataType: "text" },
@@ -187,11 +187,11 @@ export default {
           dataConsegna: { data: item.dataConsegna, dataType: "date" },
           consegnatario: { data: item.consegnatario, dataType: "text" },
           nColli: { data: item.nColli, dataType: "text" },
-          dataInvioCollaudo: { data: item.dataInvioCollaudo, dataType: "date" },
-          collaudoEseg: { data: item.collaudoEseg, dataType: "text" },
+          // dataInvioCollaudo: { data: item.dataInvioCollaudo, dataType: "date" },
+          // collaudoEseg: { data: item.collaudoEseg, dataType: "text" },
           dataCollaudo: { data: item.dataCollaudo, dataType: "date" },
-          note: { data: item.note, dataType: "text" },
-          reparto: { data: item.reparto, dataType: "text" },
+          // note: { data: item.note, dataType: "text" },
+          // reparto: { data: item.reparto, dataType: "text" },
         };
         /*{
           actionType: "custom",
@@ -212,13 +212,15 @@ export default {
     delete(item) {
       return this.deleteConfirm(
         this.resourceType,
-        "service",
+        "MovimentiTemp",
+        "Movimenti",
+        "idMovimento",
         item,
-        payload => payload.p.id
+        payload => payload.p.idMovimento
       );
     },
     fetch(paginationOpts=null,search,filter) {
-      return GraphileService.fetchAll("MovimentiTemp",["documento"],paginationOpts,search,filter);
+      return GraphileService.fetchAll("MovimentiTemp",["documento"],paginationOpts,{search, on: ["nMovimento","idOrdine","nDocAcc"]},filter);
     },
   },
 

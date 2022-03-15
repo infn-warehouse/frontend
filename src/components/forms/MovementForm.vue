@@ -5,19 +5,16 @@
     }}</v-card-title>
     <ValidationObserver v-slot="{ invalid }">
       <v-card-text>
-        <ValidationProvider name="Prova 1" immediate rules="required" v-slot="{ errors }">
-          <v-text-field
-            class="required"
-            :label="$t('headers.movements.idOrdine')"
-            v-model="form.idOrdine"
-          ></v-text-field>
-          <span class="form-error">{{ errors[0] }}</span>
-        </ValidationProvider>
+        <v-text-field
+          class="required"
+          :label="$t('headers.movements.idOrdine')"
+          v-model="form.idOrdine"
+        ></v-text-field>
         <ValidationProvider name="Prova 2" immediate rules="required" v-slot="{ errors }">
           <FetchAutocomplete
             class="required"
             :label="$t('headers.movements.tipoDocAcc')"
-            v-model="form.documento"
+            v-model="form.tipoDocAcc"
             :fetch="documentFetch"
             itemText="dicitura"
             itemValue="idocumento"
@@ -70,8 +67,9 @@ export default {
       resourceType: this.$t("resource_types.movement"),
       formTitle: "",
       form: {
+        idMovimento: "",
         idOrdine: "",
-        documento: -1,
+        tipoDocAcc: null,
         nDocAcc: "",
         dataConsegna: ""
       },
@@ -85,28 +83,31 @@ export default {
       await this.createOrUpdateHelper(
         this.mode,
         this.resourceType,
-        "service",
+        "MovimentiTemp",
+        "idMovimento",
         this.form,
-        payload => payload.v.id,
-        payload => payload.p.id
+        payload => payload.v.idMovimento,
+        payload => payload.p.idMovimento
       );
     },
     setForm() {
       if (this.mode == enums.FORM_MODE.UPDATE) {
+        this.form.idMovimento = this.selectedItem.idMovimento;
         this.form.idOrdine = this.selectedItem.idOrdine;
-        this.form.documento = this.selectedItem.documentoByTipoDocAcc.idocumento;
+        this.form.tipoDocAcc = this.selectedItem.documentoByTipoDocAcc.idocumento;
         this.form.nDocAcc = this.selectedItem.nDocAcc;
         this.form.dataConsegna = this.selectedItem.dataConsegna;
       } else {
+        this.form.idMovimento = "";
         this.form.idOrdine = "";
-        this.form.documento = -1;
+        this.form.tipoDocAcc = null;
         this.form.nDocAcc = "";
         this.form.dataConsegna = "";
       }
-      this.formTitle=this.makeTitle(this.resourceType,this.mode,this.form.idOrdine);
+      this.formTitle=this.makeTitle(this.resourceType,this.mode,this.form.idMovimento);
     },
-    documentFetch(paginationOpts=null,search) {
-      return GraphileService.fetchAll("Documento",[],paginationOpts,search,null);
+    documentFetch(paginationOpts=null,search,filter) {
+      return GraphileService.fetchAll("Documento",[],paginationOpts,{search, on: ["dicitura"]},filter);
     },
   },
   

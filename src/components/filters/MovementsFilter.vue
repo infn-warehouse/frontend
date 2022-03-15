@@ -14,7 +14,56 @@
         <template v-slot:activator>
           <v-list-item-content>
             <v-list-item-title>
-              {{ $t("filters.users.id") }}
+              {{ $t("headers.movements.dataMovimento") }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </template>
+          <DatePicker
+            class="required"
+            :label="$t('misc.from')"
+            v-model="filterData.dataMovimento.from"
+            @change="handleChange"
+          ></DatePicker>
+          <DatePicker
+            class="required"
+            :label="$t('misc.to')"
+            v-model="filterData.dataMovimento.to"
+            @change="handleChange"
+          ></DatePicker>
+      </v-list-group>
+    </v-list>
+    <v-divider></v-divider>
+    <v-list dense>
+      <v-list-group>
+        <template v-slot:activator>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ $t("headers.movements.tipoDocAcc") }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </template>
+        <FilterList
+          :type="1"
+          matchAttribute="value"
+          v-model="filterData.tipoDocAcc"
+          @change="handleChange"
+          :fetch="documentFetch"
+          fetchSort="dicitura"
+          fetchName="dicitura"
+          fetchValue="idocumento"
+        >
+        </FilterList>
+      </v-list-group>
+    </v-list>
+    <!-- <v-toolbar color="primary" dark>
+      <v-toolbar-title>{{ $t("misc.filters") }}</v-toolbar-title>
+    </v-toolbar>
+    <v-list dense>
+      <v-list-group>
+        <template v-slot:activator>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ $t("filters.movements.tipoDocAcc") }}
             </v-list-item-title>
           </v-list-item-content>
         </template>
@@ -62,14 +111,14 @@
           matchAttribute="value"
           v-model="filterData.services"
           @change="handleChange"
-          :_fetch="tenantFetch"
+          :fetch="documentFetch"
           fetchSort="name"
           fetchName="name"
           fetchValue="id"
         >
         </FilterList>
       </v-list-group>
-    </v-list>
+    </v-list> -->
     <v-divider></v-divider>
     <div class="my-container align-right">
       <v-btn color="primary" @click="clearFilters">
@@ -85,15 +134,19 @@ import FilterList from "@/components/FilterList";
 import helper from "@/mixins/helper";
 import filterShared from "@/mixins/filterShared";
 import { mapGetters, mapMutations } from "vuex";
-import { DevourService } from "@/services/devour.service";
+import GraphileService from "@/services/graphile.service";
+import DatePicker from "@/components/DatePicker";
 
 export default {
   components: {
-    FilterList
+    FilterList,
+    DatePicker
   },
 
   computed: {
-    ...mapGetters("filters", ["usersFilter", "usersFlag"])
+    ...mapGetters("filters", ["movementsFilter", "movementsFlag"]),
+      filter: function() { return this.movementsFilter },
+      flag: function() { return this.movementsFlag },
   },
 
   mixins: [helper,filterShared],
@@ -106,30 +159,24 @@ export default {
           { name: "SI", value: "SI", checked: false },
           { name: "NO", value: "NO", checked: false }
         ],
-        services: []
+        tipoDocAcc: [],
+        dataMovimento: {}
       },
       filterInfo: {
         agreementTypes: { multiple: true },
-        services: { multiple: true }
-      }
+        tipoDocAcc: { multiple: true },
+        dataMovimento: { type: "range" }
+      },
+      setFilter: this.setMovementsFilter,
+      setFlag: this.setMovementsFlag,
     };
   },
 
   methods: {
-    ...mapMutations("filters", ["setUsersFilter", "setUsersFlag"]),
+    ...mapMutations("filters", ["setMovementsFilter", "setMovementsFlag"]),
 
-    save() {
-      this.setUsersFilter(this.filterData);
-    },
-    load() {
-      if (!this.usersFlag) return false;
-      this.setUsersFlag(false);
-      if (_.isEmpty(this.usersFilter)) return false;
-      this.filterData=this.usersFilter;
-      return true;
-    },
-    tenantFetch(paginationOpts=null,search) {
-      return DevourService.fetchAll("services","tenant,links",paginationOpts,search,null);
+    documentFetch(paginationOpts=null,search) {
+      return GraphileService.fetchAll("Documento",[],paginationOpts,{search, on: ["dicitura"]},null);
     },
   },
 };

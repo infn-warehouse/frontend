@@ -42,6 +42,7 @@ export default {
       mapping: {
         Movements: "Movements",
         MovementDetails: "Movements",
+        Items: "Items",
         Login: "Login",
         Profile: "Profile",
       },
@@ -49,6 +50,10 @@ export default {
         {
           name: "Movements",
           text: this.$t('navigation.movements')
+        },
+        {
+          name: "Items",
+          text: this.$t('navigation.items')
         },
         {
           name: "Profile",

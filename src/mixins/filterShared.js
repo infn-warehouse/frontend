@@ -32,6 +32,17 @@ export default {
   },
 
   methods: {
+    save() {
+      this.setFilter(this.filterData);
+    },
+    load() {
+      if (!this.flag) return false;
+      this.setFlag(false);
+      if (_.isEmpty(this.filter)) return false;
+      this.filterData=this.filter;
+      return true;
+    },
+
     open() {
       this.drawer = true;
     },
@@ -44,39 +55,57 @@ export default {
     },
 
     clearFilters() {
-      this.resetFilter(this.filterData);
+      this.resetFilter(this.filterData,this.filterInfo);
       this.save();
       this.$emit("onChange",true,{});
     },
 
     computeFilters(filterData, filterInfo, matchAttribute = "value") {
       let filters={};
-      for (var key in filterData) {
-        let array=filterData[key];
+      for (let key in filterData) {
+        let data=filterData[key];
         let info=filterInfo[key];
-        var filter;
-        if (info.multiple) {
-          filter = [];
-          array.forEach(function(item) {
-            if (item.checked) {
-              filter.push(item[matchAttribute]);
-            }
-          });
+
+        let filter;
+        if (info.type=="range") {
+          if (data.from && data.to) {
+            filter={
+              from: data.from,
+              to: data.to
+            };
+          }
+        }
+        else if (Array.isArray(data)) {
+          if (info.multiple) {
+            filter = [];
+            data.forEach(function(item) {
+              if (item.checked) {
+                filter.push(item[matchAttribute]);
+              }
+            });
+          }
+          else {
+            filter = "";
+            data.forEach(function(item) {
+              if (item.checked) {
+                if (typeof item.all === "undefined" || !item.all) {
+                  filter = item[matchAttribute];
+                } else {
+                  filter = "";
+                }
+              }
+            });
+          }
         }
         else {
-          filter = "";
-          array.forEach(function(item) {
-            if (item.checked) {
-              if (typeof item.all === "undefined" || !item.all) {
-                filter = item[matchAttribute];
-              } else {
-                filter = "";
-              }
-            }
-          });
+          filter=data;
         }
+
         if (filter!=null && filter!="")
-          filters[key]=filter;
+          filters[key]={
+            type: info.type,
+            value: filter
+          };
       }
       return filters;
     },
@@ -91,15 +120,25 @@ export default {
       }
       return clear;
     },
-    resetFilter(filterData) {
+    resetFilter(filterData,filterInfo) {
       for (var key in filterData) {
-         let array=filterData[key];
-         let new_array = _.cloneDeep(array);
-         new_array.forEach(function(element) {
-           element.checked = false;
-         });
-         filterData[key]=new_array;
-       }
+        let data=filterData[key];
+        let info=filterInfo[key];
+        
+        if (info.type=="range") {
+          filterData[key]={};
+        }
+        else if (Array.isArray(data)) {
+          let new_array = _.cloneDeep(data);
+          new_array.forEach(function(element) {
+            element.checked = false;
+          });
+          filterData[key]=new_array;
+        }
+        else {
+          filterData[key]=null;
+        }
+      }
     },
   }
 }

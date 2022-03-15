@@ -59,10 +59,8 @@ export default {
       this._fetch();
     },
     handleChange(clear,filters) {
-      //this.filter=filters;
+      this.filter=filters;
       this.allClear=clear;
-      console.log(clear);
-      console.log(filters);
       this._fetch();
     },
     async handleDelete(item) {
