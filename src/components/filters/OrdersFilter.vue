@@ -14,21 +14,22 @@
         <template v-slot:activator>
           <v-list-item-content>
             <v-list-item-title>
-              {{ $t("headers.items.ubicazione") }}
+              {{ $t("headers.orders.dataordine") }}
             </v-list-item-title>
           </v-list-item-content>
         </template>
-        <FilterList
-          :type="1"
-          matchAttribute="value"
-          v-model="filterData.ubicazione"
-          @change="handleChange"
-          :fetch="locationFetch"
-          fetchSort="descrizione"
-          fetchName="descrizione"
-          fetchValue="idUbicazione"
-        >
-        </FilterList>
+          <DatePicker
+            class="required"
+            :label="$t('misc.from')"
+            v-model="filterData.dataordine.from"
+            @change="handleChange"
+          ></DatePicker>
+          <DatePicker
+            class="required"
+            :label="$t('misc.to')"
+            v-model="filterData.dataordine.to"
+            @change="handleChange"
+          ></DatePicker>
       </v-list-group>
     </v-list>
     <v-divider></v-divider>
@@ -42,21 +43,20 @@
 
 <script>
 import _ from "lodash";
-import FilterList from "@/components/FilterList";
 import helper from "@/mixins/helper";
 import filterShared from "@/mixins/filterShared";
 import { mapGetters, mapMutations } from "vuex";
-import GraphileService from "@/services/graphile.service";
+import DatePicker from "@/components/DatePicker";
 
 export default {
   components: {
-    FilterList
+    DatePicker
   },
 
   computed: {
-    ...mapGetters("filters", ["itemsFilter", "itemsFlag"]),
-      filter: function() { return this.itemsFilter },
-      flag: function() { return this.itemsFlag },
+    ...mapGetters("filters", ["ordersFilter", "ordersFlag"]),
+      filter: function() { return this.ordersFilter },
+      flag: function() { return this.ordersFlag },
   },
 
   mixins: [helper,filterShared],
@@ -64,22 +64,18 @@ export default {
   data() {
     return {
       filterData: {
-        ubicazione: []
+        dataordine: {}
       },
       filterInfo: {
-        ubicazione: { multiple: true },
+        dataordine: { type: "range" }
       },
-      setFilter: this.setItemsFilter,
-      setFlag: this.setItemsFlag,
+      setFilter: this.setOrdersFilter,
+      setFlag: this.setOrdersFlag,
     };
   },
 
   methods: {
-    ...mapMutations("filters", ["setItemsFilter", "setItemsFlag"]),
-
-    locationFetch(paginationOpts=null,search) {
-      return GraphileService.fetchAll("Ubicazioni",[],[],null,{search, on: ["descrizione"]},paginationOpts);
-    },
+    ...mapMutations("filters", ["setOrdersFilter", "setOrdersFlag"]),
   },
 };
 </script>

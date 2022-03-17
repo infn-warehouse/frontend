@@ -11,7 +11,7 @@ export default {
   data() {
     return {
       activeTab: null,
-      selectedItem: {},
+      selectedItem: null,
       detailsTitle: ""
     }
   },

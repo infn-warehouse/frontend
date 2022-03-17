@@ -1,9 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
+import OrdersList from '../views/OrdersList.vue'
+import OrderDetails from '../views/OrderDetails.vue'
 import MovementsList from '../views/MovementsList.vue'
 import MovementDetails from '../views/MovementDetails.vue'
 import ItemsList from '../views/ItemsList.vue'
+import ItemDetails from '../views/ItemDetails.vue'
+import MonthlyCostsList from '../views/MonthlyCostsList.vue'
 import Profile from '../views/Profile.vue'
 import Restricted from '../views/Restricted.vue'
 import defineAbilitiesFor from '@/abilities'
@@ -25,6 +29,17 @@ const routes = [
     component: Restricted
   },
   {
+    path: '/orders',
+    name: 'Orders',
+    component: OrdersList
+  },
+  {
+    path: '/orders/:id',
+    name: 'OrderDetails',
+    component: OrderDetails,
+    props: true
+  },
+  {
     path: '/movements',
     name: 'Movements',
     component: MovementsList
@@ -39,6 +54,17 @@ const routes = [
     path: '/items',
     name: 'Items',
     component: ItemsList
+  },
+  {
+    path: '/items/:id',
+    name: 'ItemDetails',
+    component: ItemDetails,
+    props: true
+  },
+  {
+    path: '/stats',
+    name: 'Stats',
+    component: MonthlyCostsList
   },
   {
     path: '/profile',

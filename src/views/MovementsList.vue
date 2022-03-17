@@ -220,7 +220,7 @@ export default {
       );
     },
     fetch(paginationOpts=null,search,filter) {
-      return GraphileService.fetchAll("MovimentiTemp",["documento"],paginationOpts,{search, on: ["nMovimento","idOrdine","nDocAcc"]},filter);
+      return GraphileService.fetchAll("MovimentiTemp",["documento"],[],filter,{search, on: ["nMovimento","idOrdine","nDocAcc","consegnatario"]},paginationOpts);
     },
   },
 
@@ -229,9 +229,10 @@ export default {
       resourceType: this.$t("resource_types.movement"),
       resourceTypes: this.$t("resource_types.movements"),
       mergeOpts: {
-        sortBy: ["idMovimento"],
-        sortDesc: [false],
+        sortBy: ["dataMovimento"],
+        sortDesc: [true],
       },
+      immutableFilterField: "idOrdine"
     };
   }
 };

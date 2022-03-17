@@ -19,7 +19,17 @@ Vue.filter("fullDateTime", value => {
 });
 Vue.filter("date", value => {
   if (value) {
-    return moment(String(value)).format("YYYY/MM/DD");
+    return moment(String(value)).format("DD/MM/YYYY");
+  }
+});
+Vue.filter("month", value => {
+  if (value) {
+    return moment(String(value)).format("MM/YYYY");
+  }
+});
+Vue.filter("currency", value => {
+  if (value) {
+    return value.toFixed(2)+" €";
   }
 });
 Vue.filter("fullDate", value => {

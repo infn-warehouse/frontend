@@ -176,7 +176,7 @@ export default {
     ...mapMutations("filters", ["setMovementsFilter", "setMovementsFlag"]),
 
     documentFetch(paginationOpts=null,search) {
-      return GraphileService.fetchAll("Documento",[],paginationOpts,{search, on: ["dicitura"]},null);
+      return GraphileService.fetchAll("Documento",[],[],null,{search, on: ["dicitura"]},paginationOpts);
     },
   },
 };

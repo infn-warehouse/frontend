@@ -1,5 +1,6 @@
 import enums from "@/enums";
 import helper from "@/mixins/helper";
+import _ from "lodash";
 
 export default {
   mixins: [helper],
@@ -27,21 +28,25 @@ export default {
       drawer_flag: false,
     }
   },
-  created() {
+  props: {
+    immutableFilter: {
+      required: false
+    },
+  },
+  async created() {
     this.paginationOpts = {...this.paginationOpts, ...this.mergeOpts };
     this.tableData.headers=this.mapHeaders();
+    if (this.noFilter)
+      await this._fetch();
   },
   methods: {
     async _fetch() {
-      /*this.items=[
-        {
-          first_name: "Andrea",
-          last_name: "Santangelo",
-          email: "asantangelo90@gmail.com"
-        }
-      ];*/
+      let filter={...this.filter};
+      if (this.immutableFilter && this.immutableFilterField)
+        filter[this.immutableFilterField]={value: this.immutableFilter};
+
       this.loading++;
-      let res=this.operationWithCheck(await this.fetch(this.paginationOpts,this.search,this.filter));
+      let res=this.operationWithCheck(await this.fetch(this.paginationOpts,this.search,filter));
       this.loading--;
       if (res) {
         [this.items,this.total]=res;

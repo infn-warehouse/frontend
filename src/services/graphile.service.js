@@ -26,21 +26,6 @@ const GraphileService = {
     }
   },
 
-  // parse paginationOpts object
-  // return a simplified object containing pagination information
-  localToGraphileApiPagination(paginationOpts,search,filter) {
-    return {
-      page: {
-        page: paginationOpts.page,
-        pageSize: paginationOpts.itemsPerPage
-      },
-      sort: paginationOpts.sortBy[0],
-      sortDir: paginationOpts.sortDesc[0] ? "DESC" : "ASC",
-      search: search?search:"",
-      filter: filter?filter:""
-    };
-  },
-
   // do introspection query on GraphQL
   // retrieve informamtion about types and related fields
   async fetchInfo() {
@@ -101,6 +86,7 @@ const GraphileService = {
           this.assoc[el.name]=el.fields.filter(x => !x.description || x.description.includes("that is related to")).map(x => x.name);
         }
       });
+      console.log(this.types);
     } catch (error) {
       console.log("fetchTypes error: ", error);
     }
@@ -172,10 +158,20 @@ const GraphileService = {
     return null;
   },
 
-  // convert a field name to the enum that will be used in GraphQL to order query results
-  fieldToEnum(field,sortDir) {
-    let s=utils.firstToUpper(field).replace(/([a-z])([A-Z])/g, function (match,p1,p2){return p1+"_"+p2});
-    s+="_"+sortDir;
+  // convert a list of fields to a list of ordering enums that will be used in GraphQL to order query results
+  makeOrderList(list,sortDesc,accents) {
+    let tempList=[];
+    for (let i=0;i<list.length;i++) {
+      tempList.push(this.fieldToEnum(list[i],sortDesc[i],accents.includes(list[i])));
+    }
+    return "["+tempList.join(",")+"]";
+  },
+
+  // convert a field name to the ordering enum
+  fieldToEnum(field,sortDesc,accent) {
+    let s=accent?field.substring(0,field.length-1):field;
+    s=utils.firstToUpper(s).replace(/([a-z])([A-Z])/g, function (match,p1,p2){return p1+"_"+p2});
+    s+="_"+(sortDesc?"DESC":"ASC");
     return s.toUpperCase();
   },
 
@@ -275,13 +271,16 @@ const GraphileService = {
     return s;
   },
 
-  async fetchOne(type,include,id) {
+  async fetchOne(type,include,id,idName) {
     console.log("------- fetchOne");
+    type=utils.makeSingular(type);
+
     try {
       // make the GraphQL query
+      let name=`all${utils.makePlural(type)}`;
       let res=await this.sendQuery(`
       {
-        all${type}s(condition: {idMovimento: ${id}}) {
+        ${name} (condition: {${idName}: ${await this.formatSingle(type,idName,id)}}) {
             nodes {
               ${await this.joinFields(type)}
               ${await this.joinAssoc(type,include)}
@@ -293,28 +292,30 @@ const GraphileService = {
         console.log("fetchOne error from server: ", res.error);
         return {error: res.error};
       }
-      return res.data[`all${type}s`].nodes[0];
+      return res.data[name].nodes[0];
     } catch (error) {
       console.log("fetchOne error: ", error);
       return { error };
     }
   },
 
-  async fetchAll(type,include,paginationOpts,search,filter) {
+  async fetchAll(type,include,accents,filter,search,paginationOpts) {
     console.log("------- fetchAll");
-    let searchFilterPagination=this.localToGraphileApiPagination(paginationOpts,search,filter);
-    searchFilterPagination.include = include;
+    console.log(filter);
+    type=utils.makeSingular(type);
+
     try {
       // make the GraphQL query
       // first and offset properties are related to pagination
       // use the createFilter function for making the filter object
       // retrieve the total count of the records in the queried table
+      let name=`all${utils.makePlural(type)}`;
       let res=await this.sendQuery(`
       {
-        all${type}s(
-          first:${searchFilterPagination.page.pageSize}
-          offset:${(searchFilterPagination.page.page-1)*searchFilterPagination.page.pageSize}
-          orderBy:${this.fieldToEnum(searchFilterPagination.sort,searchFilterPagination.sortDir)}
+        ${name} (
+          first:${paginationOpts.itemsPerPage}
+          offset:${(paginationOpts.page-1)*paginationOpts.itemsPerPage}
+          orderBy:${this.makeOrderList(paginationOpts.sortBy,paginationOpts.sortDesc,accents)}
           ${await this.createFilter(type,filter,search)}
           ) {
             totalCount
@@ -329,8 +330,8 @@ const GraphileService = {
         console.log("fetchAll error from server: ", res.error);
         return {error: res.error};
       }
-      let nodes=res.data[`all${type}s`].nodes;
-      let count=res.data[`all${type}s`].totalCount;
+      let nodes=res.data[name].nodes;
+      let count=res.data[name].totalCount;
       return [nodes,count];
     } catch (error) {
       console.log("fetchAll error: ", error);

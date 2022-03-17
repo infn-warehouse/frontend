@@ -34,6 +34,8 @@
   "navigation": {
     "movements": "Movimenti",
     "items": "Articoli",
+    "orders": "Ordini",
+    "stats": "Statistiche",
     "profile": "Profilo",
     "logout": "Logout"
   },
@@ -69,6 +71,13 @@
       "note": "Note",
       "reparto": "Reparto"
     },
+    "unloading_movs": {
+      "articolo": "Codice articolo",
+      "numeroBuono": "Numero buono",
+      "dataBuono": "Data buono",
+      "quantita": "Quantità",
+      "prezzo": "Prezzo"
+    },
     "items": {
       "codiceArticolo": "Codice",
       "descrizione": "Descrizione",
@@ -80,13 +89,30 @@
       "giacenza": "Giacenza",
       "scorta": "Scorta",
       "ubicazione": "Ubicazione"
+    },
+    "orders": {
+      "idordine": "ID",
+      "dataordine": "Data",
+      "fornitore": "Fornitore",
+      "descrizione": "Descrizione",
+      "statOrdine": "Stato",
+      "movimentiCount": "# movimenti"
+    },
+    "monthly_costs": {
+      "mese": "Mese",
+      "spesa": "Spesa"
     }
   },
   "resource_types": {
     "movement": "movimento",
     "movements": "Movimenti",
     "item": "articolo",
-    "items": "Articoli"
+    "items": "Articoli",
+    "unloading_mov": "movimento di scarico",
+    "unloading_movs": "Movimenti di scarico",
+    "order": "ordine",
+    "orders": "Ordini",
+    "monthly_costs": "Costi per mese"
   },
   "buttons": {
     "login": "Login",
@@ -105,6 +131,13 @@
     "movements": {
       "tab1": "Consegna",
       "tab2": "Collaudo"
+    },
+    "items": {
+      "tab1": "Carico",
+      "tab2": "Scarico"
+    },
+    "orders": {
+      "tab1": "Movimenti"
     }
   },
   "filters": {

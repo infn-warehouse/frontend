@@ -1,24 +1,15 @@
 <template>
   <div>
-    <ItemsFilter
-      ref="drawer"
-      @drawerChanged="handleDrawer"
-      @onChange="handleChange"
-    ></ItemsFilter>
     <div class="my-container">
       <v-card :class="{ 'center-panel': drawer_flag }">
         <Toolbar
           :title="resourceTypes"
-          :withFilter="true"
-          :withSearch="true"
           :withAdd="true"
           :allClear="allClear"
-          @onFilter="$refs.drawer.open()"
-          @onSearch="handleSearch"
           @onAdd="openCreate"
         />
         <BaseGrid
-          tableName="items"
+          tableName="unloading_movs"
           :headers="tableData.headers"
           :items="tableData.items"
           :totalLength="total"
@@ -40,7 +31,7 @@
               v-if="formDialog"
               :mode="mode"
               :selectedItem="editItem"
-              @formSucceed="fetch()"
+              @formSucceed="_fetch()"
               @formClose="close()"
             />
           </v-card>
@@ -58,18 +49,16 @@ import helper from "@/mixins/helper";
 import formDialog from "@/mixins/formDialog";
 import listShared from "@/mixins/listShared";
 import MovementForm from "@/components/forms/MovementForm";
-import ItemsFilter from "@/components/filters/ItemsFilter";
 import GraphileService from "@/services/graphile.service";
 import enums from "@/enums";
 
 export default {
-  name: 'ItemsList',
+  name: 'UnloadingMovsList',
 
   components: {
     BaseGrid,
     MovementForm,
     Toolbar,
-    ItemsFilter
   },
 
   mixins: [helper,formDialog,listShared],
@@ -84,52 +73,27 @@ export default {
     mapHeaders() {
       let tableHeaders=[];
       tableHeaders.push({
-        value: "codiceArticolo",
+        value: "articolo",
         sortable: true,
         align: "start"
       });
       tableHeaders.push({
-        value: "descrizione",
+        value: "numeroBuono",
         sortable: true,
         align: "start"
       });
       tableHeaders.push({
-        value: "specifica",
+        value: "dataBuono",
         sortable: true,
         align: "start"
       });
       tableHeaders.push({
-        value: "misura",
+        value: "quantita",
         sortable: true,
         align: "start"
       });
       tableHeaders.push({
-        value: "coefficiente",
-        sortable: true,
-        align: "start"
-      });
-      tableHeaders.push({
-        value: "carico",
-        sortable: true,
-        align: "start"
-      });
-      tableHeaders.push({
-        value: "scarico",
-        sortable: true,
-        align: "start"
-      });
-      tableHeaders.push({
-        value: "giacenza",
-        sortable: true,
-        align: "start"
-      });
-      tableHeaders.push({
-        value: "scorta",
-        sortable: true,
-        align: "start"
-      });
-      tableHeaders.push({
-        value: "ubicazione",
+        value: "prezzo",
         sortable: true,
         align: "start"
       });
@@ -140,22 +104,11 @@ export default {
         let tableItem={};
         tableItem.baseItem=item;
         tableItem.fields = {
-          codiceArticolo: { data: item.codiceArticolo, dataType: "text" },
-          descrizione: { data: item.descrizione, dataType: "text" },
-          specifica: { data: item.specifica, dataType: "text" },
-          misura: { data: item.misura, dataType: "text" },
-          coefficiente: { data: item.coefficiente, dataType: "text" },
-          carico: { data: item.carico, dataType: "text" },
-          scarico: { data: item.scarico, dataType: "text" },
-          giacenza: { data: item.giacenza, dataType: "text" },
-          scorta: { data: item.scorta, dataType: "text" },
-          ubicazione: { data: item.ubicazioniByUbicazione ? item.ubicazioniByUbicazione.descrizione : "", dataType: "text" },
-        };
-        tableItem.click_action = {
-          actionType: "router-link",
-          namedRoot: "ItemDetails",
-          namedRootId: item.codiceArticolo,
-          icon: "gps_fixed"
+          articolo: { data: item.articolo, dataType: "text" },
+          numeroBuono: { data: item.numeroBuono, dataType: "text" },
+          dataBuono: { data: item.dataBuono, dataType: "date" },
+          quantita: { data: item.quantita, dataType: "text" },
+          prezzo: { data: item.prezzo, dataType: "text" },
         };
         return tableItem;
       });
@@ -164,24 +117,28 @@ export default {
     delete(item) {
       return this.deleteConfirm(
         this.resourceType,
-        "service",
+        "MovimentiScarico",
+        "MovimentiS",
+        "numeroBuono",
         item,
-        payload => payload.p.id
+        payload => payload.p.numeroBuono
       );
     },
     fetch(paginationOpts=null,search,filter) {
-      return GraphileService.fetchAll("Articoli",["ubicazioni"],[],filter,{search, on: ["codiceArticolo","descrizione","specifica"]},paginationOpts);
+      return GraphileService.fetchAll("MovimentiScarico",[],["quantita"],filter,null,paginationOpts);
     },
   },
 
   data() {
     return {
-      resourceType: this.$t("resource_types.item"),
-      resourceTypes: this.$t("resource_types.items"),
+      resourceType: this.$t("resource_types.unloading_mov"),
+      resourceTypes: this.$t("resource_types.unloading_movs"),
       mergeOpts: {
-        sortBy: ["codiceArticolo"],
-        sortDesc: [false],
+        sortBy: ["dataBuono","numeroBuono"],
+        sortDesc: [false,false],
       },
+      noFilter: true,
+      immutableFilterField: "articolo"
     };
   }
 };

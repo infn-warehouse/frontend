@@ -71,6 +71,12 @@
                 <span v-if="v.dataType == 'date'">
                   {{ v.data | date }}
                 </span>
+                <span v-if="v.dataType == 'month'">
+                  {{ v.data | month }}
+                </span>
+                <span v-if="v.dataType == 'currency'">
+                  {{ v.data | currency }}
+                </span>
                 <a v-if="v.dataType == 'link'" :href="v.data">
                   {{ v.data }}
                 </a>

@@ -40,13 +40,21 @@ export default {
   data() {
     return {
       mapping: {
+        Orders: "Orders",
+        OrderDetails: "Orders",
         Movements: "Movements",
         MovementDetails: "Movements",
         Items: "Items",
+        ItemDetails: "Items",
         Login: "Login",
+        Stats: "Stats",
         Profile: "Profile",
       },
       navigationItems: [
+        {
+          name: "Orders",
+          text: this.$t('navigation.orders')
+        },
         {
           name: "Movements",
           text: this.$t('navigation.movements')
@@ -54,6 +62,10 @@ export default {
         {
           name: "Items",
           text: this.$t('navigation.items')
+        },
+        {
+          name: "Stats",
+          text: this.$t('navigation.stats')
         },
         {
           name: "Profile",

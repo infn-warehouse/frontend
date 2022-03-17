@@ -107,7 +107,7 @@ export default {
       this.formTitle=this.makeTitle(this.resourceType,this.mode,this.form.idMovimento);
     },
     documentFetch(paginationOpts=null,search,filter) {
-      return GraphileService.fetchAll("Documento",[],paginationOpts,{search, on: ["dicitura"]},filter);
+      return GraphileService.fetchAll("Documento",[],[],filter,{search, on: ["dicitura"]},paginationOpts);
     },
   },
   

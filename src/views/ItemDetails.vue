@@ -18,22 +18,19 @@
           slider-color="accent"
           dark
         >
-          <v-tab key="tab1">{{ $t("details.movements.tab1") }}</v-tab>
-          <v-tab key="tab2">{{ $t("details.movements.tab2") }}</v-tab>
+          <v-tab key="tab1">{{ $t("details.items.tab1") }}</v-tab>
+          <v-tab key="tab2">{{ $t("details.items.tab2") }}</v-tab>
         </v-tabs>
         <v-tabs-items v-model="activeTab">
           <v-tab-item key="tab1">
             <div class="my-container">
-              <div><b>{{ $t("headers.movements.dataConsegna") }}</b>: {{this.selectedItem.dataConsegna}}</div>
-              <div><b>{{ $t("headers.movements.consegnatario") }}</b>: {{this.selectedItem.consegnatario}}</div>
-              <div><b>{{ $t("headers.movements.nColli") }}</b>: {{this.selectedItem.nColli}}</div>
             </div>
           </v-tab-item>
           <v-tab-item key="tab2">
             <div class="my-container">
-              <div><b>{{ $t("headers.movements.dataInvioCollaudo") }}</b>: {{this.selectedItem.dataInvioCollaudo}}</div>
-              <div><b>{{ $t("headers.movements.collaudoEseg") }}</b>: {{this.selectedItem.collaudoEseg}}</div>
-              <div><b>{{ $t("headers.movements.dataCollaudo") }}</b>: {{this.selectedItem.dataCollaudo}}</div>
+              <UnloadingMovsList
+                :immutableFilter="selectedItem.codiceArticolo"
+              />
             </div>
           </v-tab-item>
         </v-tabs-items>
@@ -60,6 +57,7 @@
 import enums from "@/enums";
 import helper from "@/mixins/helper";
 import MovementForm from "@/components/forms/MovementForm";
+import UnloadingMovsList from "@/views/UnloadingMovsList";
 import Toolbar from "@/components/Toolbar";
 import formDialog from "@/mixins/formDialog";
 import detailsShared from "@/mixins/detailsShared";
@@ -67,41 +65,42 @@ import GraphileService from "@/services/graphile.service";
 import { mapMutations } from "vuex";
 
 export default {
-  name: "MovementDetails",
+  name: "ItemDetails",
   data() {
     return {
-      home: "Movements",
-      resourceType: this.$t("resource_types.movement"),
+      home: "Items",
+      resourceType: this.$t("resource_types.item"),
     };
   },
   methods: {
-    ...mapMutations("filters", ["setMovementsFlag"]),
+    ...mapMutations("filters", ["setItemsFlag"]),
     
     fetch(id) {
-      return GraphileService.fetchOne("MovimentiTemp",["documento"],id,"idMovimento");
+      return GraphileService.fetchOne("Articoli",[],id,"codiceArticolo");
     },
     
     title(item) {
-      return this.makeTitleDetails(this.resourceType,item.idMovimento);
+      return this.makeTitleDetails(this.resourceType,item.codiceArticolo);
     },
 
     delete(item) {
       return this.deleteConfirm(
         this.resourceType,
-        "MovimentiTemp",
-        "Movimenti",
-        "idMovimento",
+        "Articoli",
+        "Articoli",
+        "codiceArticolo",
         item,
         payload => payload.p.id
       );
     },
   },
   created() {
-    this.setMovementsFlag(true);
+    this.setItemsFlag(true);
   },
   components: {
     MovementForm,
     Toolbar,
+    UnloadingMovsList,
   },
   mixins: [helper,formDialog,detailsShared],
   computed: {

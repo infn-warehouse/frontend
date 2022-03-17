@@ -41,7 +41,7 @@ export default {
 
   methods: {
     fetch(id) {
-      return GraphileService.fetchOne("MovimentiTemp",["documento"],id);
+      return GraphileService.fetchOne("MovimentiTemp",["documento"],id,"idMovimento");
     },
   },
 
