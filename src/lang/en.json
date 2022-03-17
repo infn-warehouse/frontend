@@ -6,9 +6,12 @@
     "to": "To",
     "createResource": "Creating new {resourceType}",
     "updateResource": "Modifying {resourceType} {resourceName}",
-    "detailResource": "Details {resourceType} {resourceName}"
+    "detailResource": "Details {resourceType} {resourceName}",
+    "yes": "Yes",
+    "no": "No"
   },
   "custom": {
+    "appname": "Warehouse Management",
     "profile": "Profile",
     "role": "Role",
     "email": "Email"
@@ -19,7 +22,8 @@
     "ok": "OK"
   },
   "login": {
-    "message": "Welcome in infn-fe",
+    "before": "Welcome in ",
+    "after": ".",
     "email": "Email",
     "password": "Password"
   },
@@ -66,7 +70,7 @@
       "consegnatario": "Consegnatario",
       "nColli": "Numero colli",
       "dataInvioCollaudo": "Data invio collaudo",
-      "collaudoEseg": "Collaudo eseg",
+      "collaudoEseg": "Collaudo eseguito",
       "dataCollaudo": "Data collaudo",
       "note": "Note",
       "reparto": "Reparto"

@@ -6,9 +6,12 @@
     "to": "A",
     "createResource": "Creazione nuovo {resourceType}",
     "updateResource": "Modifica {resourceType} {resourceName}",
-    "detailResource": "Dettagli {resourceType} {resourceName}"
+    "detailResource": "Dettagli {resourceType} {resourceName}",
+    "yes": "Sì",
+    "no": "No"
   },
   "custom": {
+    "appname": "Gestione Magazzino",
     "profile": "Profilo",
     "role": "Ruolo",
     "email": "Email"
@@ -19,7 +22,8 @@
     "ok": "OK"
   },
   "login": {
-    "message": "Benvenuto in infn-fe",
+    "before": "Benvenuto in ",
+    "after": ".",
     "email": "Email",
     "password": "Password"
   },
@@ -66,7 +70,7 @@
       "consegnatario": "Consegnatario",
       "nColli": "Numero colli",
       "dataInvioCollaudo": "Data invio collaudo",
-      "collaudoEseg": "Collaudo eseg",
+      "collaudoEseg": "Collaudo eseguito",
       "dataCollaudo": "Data collaudo",
       "note": "Note",
       "reparto": "Reparto"

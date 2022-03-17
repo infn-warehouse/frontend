@@ -6,12 +6,14 @@
       </v-col>
     </v-row>
     <v-row align="center" justify="center">
-      <font color="white" size="5">{{ $t('login.message') }}</font>
+      <v-col cols="12" align="center">
+        <font color="white" size="5">{{ $t('login.before') }}<b>{{ $t('custom.appname') }}</b>{{ $t('login.after') }}</font>
+      </v-col>
     </v-row>
 
     <v-row align="center" justify="center">
       <v-col cols="12" align="center">
-        <img :src="require('../assets/ns-logo.png')" width="80" />
+        <img style="background-color: white;" :src="require('../assets/infn-lns-logo.png')" width="320" />
       </v-col>
     </v-row>
     <v-row align="center" justify="center">

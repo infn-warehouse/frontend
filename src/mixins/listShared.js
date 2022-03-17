@@ -36,6 +36,8 @@ export default {
   async created() {
     this.paginationOpts = {...this.paginationOpts, ...this.mergeOpts };
     this.tableData.headers=this.mapHeaders();
+    if (this.immutableFilter && this.immutableFilterField)
+      this.tableData.headers.splice(this.getFieldIndex(this.immutableFilterField),1);
     if (this.noFilter)
       await this._fetch();
   },
@@ -51,7 +53,13 @@ export default {
       if (res) {
         [this.items,this.total]=res;
         this.tableData.items=this.mapItems();
+        if (this.immutableFilter && this.immutableFilterField)
+          for (let item of this.tableData.items)
+            delete item.fields[this.immutableFilterField];
       }
+    },
+    getFieldIndex(name) {
+      return _.findIndex(this.tableData.headers,{value:name});
     },
     inject(val) {
       this.paginationOpts = {...this.paginationOpts, ...val };

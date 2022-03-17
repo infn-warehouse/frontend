@@ -75,7 +75,7 @@ export default {
     },
     
     title(item) {
-      return this.makeTitleDetails(this.resourceType,item.idordine);
+      return this.makeTitleDetails(this.resourceType,item.idordine+" ("+item.fornitore+" | "+item.descrizione+")");
     },
 
     delete(item) {

@@ -8,7 +8,7 @@
       v-if="logged"
     >
       <div>
-        <h3 class="app-title">infn-fe</h3>
+        <h3 class="app-title">{{ $t('custom.appname') }}</h3>
       </div>
 
       <v-spacer></v-spacer>

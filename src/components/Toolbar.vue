@@ -5,7 +5,7 @@
         <v-btn class="mr-4 align-middle" v-if="withBack" fab small @click="goTo()">
           <v-icon>{{ enums.ICONS.BACK }}</v-icon>
         </v-btn>
-        <span class="align-middle text-h4" v-if="title">{{ title }}</span>
+        <span class="align-middle text-h5" v-if="title">{{ title }}</span>
       </v-col>
       <v-col cols="4" v-if="withSearch">
         <v-text-field

@@ -86,7 +86,6 @@ const GraphileService = {
           this.assoc[el.name]=el.fields.filter(x => !x.description || x.description.includes("that is related to")).map(x => x.name);
         }
       });
-      console.log(this.types);
     } catch (error) {
       console.log("fetchTypes error: ", error);
     }

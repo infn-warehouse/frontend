@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import voca from "voca";
 import moment from "moment";
+import i18n from "@/i18n";
 
 Vue.filter("capitalize", value => voca.capitalize(value));
 Vue.filter("trim", value => voca.trim(value));
@@ -36,5 +37,12 @@ Vue.filter("fullDate", value => {
   if (value) {
     moment.locale("it");
     return moment(String(value)).format("dddd, D MMMM YYYY");
+  }
+});
+Vue.filter("yesNo", value => {
+  if (value!=null) {
+    if (value)
+      return i18n.t("misc.yes");
+    return i18n.t("misc.no");
   }
 });
