@@ -82,7 +82,7 @@ export default {
     },
     
     title(item) {
-      return this.makeTitleDetails(this.resourceType,item.idMovimento);
+      return this.makeTitleDetails(this.resourceType,item.idMovimento+" ("+item.idOrdine+")");
     },
 
     delete(item) {
