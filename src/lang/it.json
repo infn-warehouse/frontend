@@ -13,6 +13,7 @@
   "custom": {
     "appname": "Gestione Magazzino",
     "profile": "Profilo",
+    "upload_test": "Test di upload",
     "role": "Ruolo",
     "email": "Email"
   },
@@ -20,6 +21,15 @@
     "clear": "Pulisci",
     "cancel": "Annulla",
     "ok": "OK"
+  },
+  "file_upload": {
+    "select": "Scegli un file",
+    "complete1": "Upload di \"",
+    "complete2": "\" completato.",
+    "error": "Errore di upload.",
+    "cancel": "Upload annullato.",
+    "uploadButton": "Upload",
+    "cancelButton": "Annulla"
   },
   "login": {
     "before": "Benvenuto in ",
@@ -41,6 +51,7 @@
     "orders": "Ordini",
     "stats": "Statistiche",
     "profile": "Profilo",
+    "upload_test": "Upload",
     "logout": "Logout"
   },
   "confirm": {

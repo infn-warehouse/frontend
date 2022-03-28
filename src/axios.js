@@ -8,3 +8,5 @@ export const AXIOS = axios.create({
     }
   }
 });
+
+export const CancelToken=axios.CancelToken;

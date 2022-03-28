@@ -1,4 +1,4 @@
-import { AXIOS } from "../axios";
+import { AXIOS, CancelToken } from "../axios";
 import { TokenService } from "./token.service";
 
 const ApiService = {
@@ -51,6 +51,44 @@ const ApiService = {
    **/
   customRequest(data) {
     return AXIOS(data);
+  },
+
+  upload(url, formData, progressCb, endCb) {
+    let cancel;
+    
+    let config = {
+      // Note that contentType is set to multipart/form-data
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      
+      cancelToken: new CancelToken(function executor(c) {
+        // An executor function receives a cancel function as a parameter
+        cancel = c;
+      }),
+      
+      // Listen for the onUploadProgress event
+      onUploadProgress: e => {
+        const {loaded, total} = e;
+        // Use the local progress event
+        if (e.lengthComputable) {
+            let progress = loaded / total * 100;
+            progressCb(progress);
+        }
+      }
+    };
+
+    (async() => {
+      try {
+        const { status } = await AXIOS.put(url, formData, config);
+        endCb(status);
+      }
+      catch (e) {
+        endCb(-1);
+      }
+    })();
+
+    return cancel;
   }
 };
 

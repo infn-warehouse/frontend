@@ -17,6 +17,7 @@ export default function defineAbilitiesFor() {
         can('route', 'Items');
         can('route', 'ItemDetails');
         can('route', 'Profile');
+        can('route', 'UploadTest');
         can('route', 'Stats');
         break;
       case 'Manager':
@@ -27,6 +28,7 @@ export default function defineAbilitiesFor() {
         can('route', 'Items');
         can('route', 'ItemDetails');
         can('route', 'Profile');
+        can('route', 'UploadTest');
         can('route', 'Stats');
         break;
       case 'User':

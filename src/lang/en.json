@@ -13,6 +13,7 @@
   "custom": {
     "appname": "Warehouse Management",
     "profile": "Profile",
+    "upload_test": "Upload test",
     "role": "Role",
     "email": "Email"
   },
@@ -20,6 +21,15 @@
     "clear": "Clear",
     "cancel": "Cancel",
     "ok": "OK"
+  },
+  "file_upload": {
+    "select": "Select a file",
+    "complete1": "Upload of \"",
+    "complete2": "\" complete.",
+    "error": "Upload error.",
+    "cancel": "Upload canceled.",
+    "uploadButton": "Upload",
+    "cancelButton": "Cancel"
   },
   "login": {
     "before": "Welcome in ",
@@ -41,6 +51,7 @@
     "orders": "Orders",
     "stats": "Statistics",
     "profile": "Profile",
+    "upload_test": "Upload",
     "logout": "Logout"
   },
   "confirm": {
