@@ -1,7 +1,9 @@
 <template>
   <div>
     <MovementsFilter
+      tableName="movements"
       ref="drawer"
+      :headers="tableData.headers"
       @drawerChanged="handleDrawer"
       @onChange="handleChange"
     ></MovementsFilter>
@@ -19,8 +21,8 @@
         />
         <BaseGrid
           tableName="movements"
-          :headers="tableData.headers"
-          :items="tableData.items"
+          :headers="tableData.headers2"
+          :items="tableData.items2"
           :totalLength="total"
           :injectOpts="paginationOpts"
           :loading="loading>0"

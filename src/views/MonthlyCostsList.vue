@@ -7,8 +7,8 @@
         />
         <BaseGrid
           tableName="monthly_costs"
-          :headers="tableData.headers"
-          :items="tableData.items"
+          :headers="tableData.headers2"
+          :items="tableData.items2"
           :totalLength="total"
           :injectOpts="paginationOpts"
           :loading="loading>0"

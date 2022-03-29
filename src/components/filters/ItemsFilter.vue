@@ -14,6 +14,25 @@
         <template v-slot:activator>
           <v-list-item-content>
             <v-list-item-title>
+              {{ $t("misc.fields") }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </template>
+        <FilterList
+          :type="2"
+          matchAttribute="value"
+          v-model="filterData.fields"
+          @change="handleChange"
+        >
+        </FilterList>
+      </v-list-group>
+    </v-list>
+    <v-divider></v-divider>
+    <v-list dense>
+      <v-list-group>
+        <template v-slot:activator>
+          <v-list-item-content>
+            <v-list-item-title>
               {{ $t("headers.items.ubicazione") }}
             </v-list-item-title>
           </v-list-item-content>

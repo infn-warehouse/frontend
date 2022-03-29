@@ -34,12 +34,11 @@
             <v-checkbox
               color="primary"
               v-model="item.checked"
-              dense
               @change="setFilter2(item)"
             ></v-checkbox>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-subtitle>{{ item.name }}</v-list-item-subtitle>
+            <v-list-item-title>{{ item.name }}</v-list-item-title>
           </v-list-item-content>
         </template>
       </v-list-item>
@@ -48,7 +47,7 @@
           color="primary"
           x-small
           @click="showAll = false"
-          >{{ $t("filters.hide") }}</v-btn
+          >{{ $t("buttons.hideAll") }}</v-btn
         >
       </v-col>
     </div>
@@ -72,7 +71,7 @@
           color="primary"
           x-small
           @click="(showAll = true), (showButton = true)"
-          >{{ $t("filters.showAll") }}</v-btn
+          >{{ $t("buttons.showAll") }}</v-btn
         >
       </v-col>
     </div>
@@ -141,38 +140,35 @@ export default {
       });
     },
     async _fetch() {
-      let tempCopy=_.cloneDeep(this.value);
-      if (this.fetch) {
-        let res=this.operationWithCheck(await this.fetch(this.paginationOpts,this.search,null));
-        if (res) {
-          let items=res[0];
-          let valueCopyNew=[];
-          for (let val of items) {
-            valueCopyNew.push({
-              name: val[this.fetchName],
-              value: val[this.fetchValue],
-              sort: val[this.fetchSort],
-              checked: false,
-            });
-          }
-          for (let val of tempCopy) {
-            if (val.checked) {
-              let found=false;
-              for (let val2 of valueCopyNew) {
-                if (val2.value==val.value) {
-                  found=true;
-                  val2.checked=true;
-                  break;
-                }
-              }
-              if (!found) {
-                valueCopyNew.push(val);
+      let res=this.operationWithCheck(await this.fetch(this.paginationOpts,this.search,null));
+      if (res) {
+        let items=res[0];
+        let valueCopyNew=[];
+        for (let val of items) {
+          valueCopyNew.push({
+            name: val[this.fetchName],
+            value: val[this.fetchValue],
+            sort: val[this.fetchSort],
+            checked: false,
+          });
+        }
+        for (let val of this.value) {
+          if (val.checked) {
+            let found=false;
+            for (let val2 of valueCopyNew) {
+              if (val2.value==val.value) {
+                found=true;
+                val2.checked=true;
+                break;
               }
             }
+            if (!found) {
+              valueCopyNew.push(val);
+            }
           }
-          valueCopyNew=_.orderBy(valueCopyNew, 'sort', 'asc');
-          this.valueCopy=valueCopyNew;
         }
+        valueCopyNew=_.orderBy(valueCopyNew, 'sort', 'asc');
+        this.valueCopy=valueCopyNew;
       }
     },
     update() {
@@ -188,7 +184,10 @@ export default {
     },
   },
   async created() {
-      await this._fetch();
+      if (this.fetch)
+        await this._fetch();
+      else
+        this.valueCopy=_.cloneDeep(this.value);
       this.update();
   },
   watch: {

@@ -8,7 +8,8 @@
     "updateResource": "Modifica {resourceType} {resourceName}",
     "detailResource": "Dettagli {resourceType} {resourceName}",
     "yes": "Sì",
-    "no": "No"
+    "no": "No",
+    "fields": "Campi"
   },
   "custom": {
     "appname": "Gestione Magazzino",
@@ -140,7 +141,9 @@
     "save": "Salva",
     "add": "Aggiungi",
     "cancel": "Annulla",
-    "clear": "Pulisci"
+    "clear": "Pulisci",
+    "showAll": "Mostra tutti",
+    "hideAll": "Nascondi"
   },
   "details": {
     "movements": {

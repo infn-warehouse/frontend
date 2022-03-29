@@ -8,7 +8,8 @@
     "updateResource": "Modifying {resourceType} {resourceName}",
     "detailResource": "Details {resourceType} {resourceName}",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "fields": "Fields"
   },
   "custom": {
     "appname": "Warehouse Management",
@@ -140,7 +141,9 @@
     "save": "Save",
     "add": "Add",
     "cancel": "Cancel",
-    "clear": "Clear"
+    "clear": "Clear",
+    "showAll": "Show all",
+    "hideAll": "Hide"
   },
   "details": {
     "movements": {

@@ -12,8 +12,17 @@ export default {
 
   data() {
     return {
-      drawer: false,
+      drawer: false
     };
+  },
+
+  props: {
+    headers: {
+      required: false
+    },
+    tableName: {
+      required: true
+    },
   },
 
   watch: {
@@ -25,6 +34,20 @@ export default {
   async created() {
     try {
       this.load();
+
+      if (!this.filterData.fields) {
+        this.filterData.fields=[];
+        for (let item of this.headers) {
+          this.filterData.fields.push({
+            name: this.$i18n.t(`headers.${this.tableName}.${item.value}`),
+            value: item.value,
+            checked: item.show!=1,
+            default: item.show!=1,
+          });
+        }
+        this.filterInfo.fields={multiple: true};
+      }
+
       this.handleChange();
     } catch (error) {
       console.log(error);
@@ -33,13 +56,17 @@ export default {
 
   methods: {
     save() {
-      this.setFilter(this.filterData);
+      this.setFilter({
+        filterData: this.filterData,
+        filterInfo: this.filterInfo
+      });
     },
     load() {
       if (!this.flag) return false;
       this.setFlag(false);
       if (_.isEmpty(this.filter)) return false;
-      this.filterData=this.filter;
+      this.filterData=this.filter.filterData;
+      this.filterInfo=this.filter.filterInfo;
       return true;
     },
 
@@ -48,20 +75,20 @@ export default {
     },
 
     handleChange() {
-      let filters = this.computeFilters(this.filterData,this.filterInfo);
-      let clear = this.computeClear(filters);
+      let { filters, clear } = this.computeFilters(this.filterData,this.filterInfo);
       this.save();
       this.$emit("onChange",clear,filters);
     },
 
     clearFilters() {
       this.resetFilter(this.filterData,this.filterInfo);
-      this.save();
-      this.$emit("onChange",true,{});
+      this.handleChange();
     },
 
     computeFilters(filterData, filterInfo, matchAttribute = "value") {
       let filters={};
+      let clear=true;
+
       for (let key in filterData) {
         let data=filterData[key];
         let info=filterInfo[key];
@@ -73,6 +100,7 @@ export default {
               from: data.from,
               to: data.to
             };
+            clear=false;
           }
         }
         else if (Array.isArray(data)) {
@@ -82,6 +110,8 @@ export default {
               if (item.checked) {
                 filter.push(item[matchAttribute]);
               }
+              if (item.checked != (item.default ?? false))
+                clear=false;
             });
           }
           else {
@@ -94,11 +124,14 @@ export default {
                   filter = "";
                 }
               }
+              if (item.checked != (item.default ?? false))
+                clear=false;
             });
           }
         }
-        else {
+        else if (data!=null && data!="") {
           filter=data;
+          clear=false;
         }
 
         if (filter!=null && filter!="")
@@ -107,18 +140,7 @@ export default {
             value: filter
           };
       }
-      return filters;
-    },
-    computeClear(filters) {
-      let clear = true;
-      for (var key in filters) {
-        let val=filters[key];
-        if (val!=null && val!="") {
-          clear = false;
-          break;
-        }
-      }
-      return clear;
+      return { filters, clear };
     },
     resetFilter(filterData,filterInfo) {
       for (var key in filterData) {
@@ -131,7 +153,7 @@ export default {
         else if (Array.isArray(data)) {
           let new_array = _.cloneDeep(data);
           new_array.forEach(function(element) {
-            element.checked = false;
+            element.checked = element.default?element.default:false;
           });
           filterData[key]=new_array;
         }

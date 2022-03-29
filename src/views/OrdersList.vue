@@ -1,7 +1,9 @@
 <template>
   <div>
     <OrdersFilter
+      tableName="orders"
       ref="drawer"
+      :headers="tableData.headers"
       @drawerChanged="handleDrawer"
       @onChange="handleChange"
     ></OrdersFilter>
@@ -19,8 +21,8 @@
         />
         <BaseGrid
           tableName="orders"
-          :headers="tableData.headers"
-          :items="tableData.items"
+          :headers="tableData.headers2"
+          :items="tableData.items2"
           :totalLength="total"
           :injectOpts="paginationOpts"
           :loading="loading>0"
@@ -96,12 +98,14 @@ export default {
       tableHeaders.push({
         value: "fornitore",
         sortable: true,
-        align: "start"
+        align: "start",
+        show: 1,
       });
       tableHeaders.push({
         value: "descrizione",
         sortable: true,
-        align: "start"
+        align: "start",
+        show: 1,
       });
       tableHeaders.push({
         value: "statOrdine",
