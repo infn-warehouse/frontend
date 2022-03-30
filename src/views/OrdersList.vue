@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="list-container-outer">
     <OrdersFilter
       tableName="orders"
       ref="drawer"
@@ -7,8 +7,8 @@
       @drawerChanged="handleDrawer"
       @onChange="handleChange"
     ></OrdersFilter>
-    <div class="my-container">
-      <v-card :class="{ 'center-panel': drawer_flag }">
+    <div :class="{ 'hide-shrink': drawer_flag, 'list-container': true }">
+      <v-card>
         <Toolbar
           :title="resourceTypes"
           :withFilter="true"
@@ -49,7 +49,6 @@
         </v-dialog>
       </v-card>
     </div>
-    <div class="clear"/>
   </div>
 </template>
 

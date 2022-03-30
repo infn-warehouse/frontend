@@ -8,7 +8,7 @@
       v-if="logged"
       class="app-bar"
     >
-      <div class="nowrap mr-2 hide-shink">
+      <div class="nowrap mr-2 hide-shrink">
         <h3 class="app-title">{{ $t('custom.appname') }}</h3>
       </div>
 

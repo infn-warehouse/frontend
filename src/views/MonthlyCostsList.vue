@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <div class="my-container">
-      <v-card :class="{ 'center-panel': drawer_flag }">
+  <div class="list-container-outer">
+    <div :class="{ 'hide-shrink': drawer_flag, 'list-container': true }">
+      <v-card>
         <Toolbar
           :title="resourceTypes"
         />
@@ -16,7 +16,6 @@
         ></BaseGrid>
       </v-card>
     </div>
-    <div class="clear"/>
   </div>
 </template>
 

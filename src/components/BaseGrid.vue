@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="custom-header">
-      <div class="total full-shink">
+      <div class="total full-shrink">
         {{totalLength}} 
         <span v-if="totalLength==1">{{$t('baseGrid.found')}}</span>
         <span v-if="totalLength!=1">{{$t('baseGrid.founds')}}</span>
       </div>
-      <div class="paginator full-shink center-shink">
+      <div class="paginator full-shrink center-shrink">
         <div class="inline-nowrap">
           <v-progress-circular
             v-if="loading"

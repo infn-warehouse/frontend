@@ -31,20 +31,25 @@ $threshold: 959px
 .my-container
   padding: 12px
 
+.list-container-outer
+  display: flex
+  position: relative
+
+.list-container
+  padding: 12px
+  flex: 1 1 auto
+  width: 0px
+
 .clear
   clear: both
-
-.center-panel
-  margin-left: 320px
-  @media screen and (max-width: $threshold)
-    display: none
 
 .filter-drawer
   width: 320px !important
   padding: 10px
   height: auto !important
+  min-height: 100%
   position: relative
-  float: left
+  flex: 0 0 auto
   @media screen and (max-width: $threshold)
     width: 100% !important
 
@@ -69,9 +74,9 @@ $threshold: 959px
   display: inline-block
 
 @media screen and (max-width: $threshold)
-  .hide-shink
+  .hide-shrink
     display: none
-  .full-shink
+  .full-shrink
     width: 100% !important
-  .center-shink
+  .center-shrink
     text-align: center !important
