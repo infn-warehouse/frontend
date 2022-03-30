@@ -74,6 +74,10 @@ export default {
       this.drawer = true;
     },
 
+    close() {
+      this.drawer = false;
+    },
+
     handleChange() {
       let { filters, clear } = this.computeFilters(this.filterData,this.filterInfo);
       this.save();

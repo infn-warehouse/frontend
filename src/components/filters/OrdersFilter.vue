@@ -56,6 +56,9 @@
       <v-btn color="primary" @click="clearFilters">
         {{ $t("buttons.clear") }}
       </v-btn>
+      <v-btn color="primary" @click="close" class="ml-2">
+        {{ $t("buttons.close") }}
+      </v-btn>
     </div>
   </v-navigation-drawer>
 </template>

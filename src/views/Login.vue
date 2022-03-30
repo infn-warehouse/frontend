@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="fixed-container">
     <v-row>
       <v-col cols="12">
         <LocaleSwitch/>
@@ -13,12 +13,12 @@
 
     <v-row align="center" justify="center">
       <v-col cols="12" align="center">
-        <img style="background-color: white;" :src="require('../assets/infn-lns-logo.png')" width="320" />
+        <img style="background-color: white;" :src="require('../assets/infn-lns-logo.png')" class="fixed-content-2" />
       </v-col>
     </v-row>
     <v-row align="center" justify="center">
-      <v-col cols="6">
-        <v-form>
+      <v-col align="center" cols="12">
+        <v-form class="fixed-content">
           <v-text-field
             :label="$t('login.email')"
             v-model="email"

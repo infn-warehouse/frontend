@@ -52,7 +52,7 @@ export default {
       let fields=filter.fields;
       delete filter.fields;
 
-      // items
+      // items and headers
       this.loading++;
       let res=this.operationWithCheck(await this.fetch(this.paginationOpts,this.search,filter));
       this.loading--;

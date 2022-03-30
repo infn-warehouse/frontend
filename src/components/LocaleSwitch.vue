@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="nowrap">
     <button
       v-for="lang in languages"
       :key="lang.title"

@@ -6,8 +6,9 @@
       color="primary"
       dark
       v-if="logged"
+      class="app-bar"
     >
-      <div>
+      <div class="nowrap mr-2 hide-shink">
         <h3 class="app-title">{{ $t('custom.appname') }}</h3>
       </div>
 

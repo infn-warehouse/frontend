@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="6">
+      <v-col cols="3">
         <v-btn
           v-if="withDelete"
           color="warning"
@@ -12,7 +12,7 @@
           <v-icon>delete</v-icon>
         </v-btn>
       </v-col>
-      <v-col cols="6" class="text-right">
+      <v-col cols="9" class="text-right">
         <v-progress-circular indeterminate class="ml-3" v-if="createLoading" />
         <v-btn
           v-if="multiForm && multiLayout > 0"

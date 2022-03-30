@@ -161,6 +161,11 @@ export default {
         });
         return false;
       }
-    }
+    },
+    mobile(value) {
+      if (this.$vuetify.breakpoint.sm || this.$vuetify.breakpoint.xs)
+        return 12;
+      return value;
+    },
   }
 }

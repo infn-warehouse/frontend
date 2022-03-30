@@ -38,6 +38,7 @@
         </v-dialog>
       </v-card>
     </div>
+    <div class="clear"/>
   </div>
 </template>
 

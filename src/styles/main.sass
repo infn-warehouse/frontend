@@ -1,6 +1,8 @@
+$threshold: 959px
+
 .edit-form-dialog
-  min-width: 960px !important
-  width: 65% !important
+  max-width: 960px !important
+  width: 100% !important
 
 .form-error
   color: #F00
@@ -29,15 +31,47 @@
 .my-container
   padding: 12px
 
+.clear
+  clear: both
+
 .center-panel
   margin-left: 320px
+  @media screen and (max-width: $threshold)
+    display: none
 
 .filter-drawer
   width: 320px !important
   padding: 10px
   height: auto !important
-  min-height: 100%
+  position: relative
+  float: left
+  @media screen and (max-width: $threshold)
+    width: 100% !important
 
 .main-container
   position: relative
   min-height: 100%
+
+.fixed-container
+  max-width: 960px
+  width: 100% !important
+.fixed-content
+  max-width: 480px
+  width: 100% !important
+.fixed-content-2
+  max-width: 320px
+  width: 100% !important
+
+.nowrap
+  white-space: nowrap
+.inline-nowrap
+  white-space: nowrap
+  display: inline-block
+
+@media screen and (max-width: $threshold)
+  .hide-shink
+    display: none
+  .full-shink
+    width: 100%
+  .center-shink
+    text-align: center

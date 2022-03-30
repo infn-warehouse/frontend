@@ -1,43 +1,49 @@
 <template>
   <div>
     <div class="custom-header">
-      <div class="total">
+      <div class="total full-shink">
         {{totalLength}} 
         <span v-if="totalLength==1">{{$t('baseGrid.found')}}</span>
         <span v-if="totalLength!=1">{{$t('baseGrid.founds')}}</span>
       </div>
-      <div class="paginator">
-        <v-progress-circular
-          v-if="loading"
-          indeterminate
-          size="32"
-          class="mr-2"
-        ></v-progress-circular>
-        {{$t('baseGrid.rowsPerPage')}}:
-        <div class="per-page-selector">
-          <v-select
-            v-model="paginationOpts.itemsPerPage"
-            :items="[10, 25, 50, 100]"
-            @change="handlePerPageChange"
-          ></v-select>
+      <div class="paginator full-shink center-shink">
+        <div class="inline-nowrap">
+          <v-progress-circular
+            v-if="loading"
+            indeterminate
+            size="32"
+            class="mr-2"
+          ></v-progress-circular>
+          {{$t('baseGrid.rowsPerPage')}}:
+          <div class="per-page-selector">
+            <v-select
+              v-model="paginationOpts.itemsPerPage"
+              :items="[10, 25, 50, 100]"
+              @change="handlePerPageChange"
+            ></v-select>
+          </div>
         </div>
-        {{
-          paginationOpts.page * paginationOpts.itemsPerPage +
-          1 -
-          paginationOpts.itemsPerPage
-        }}-{{
-          Math.min(
-            paginationOpts.page * paginationOpts.itemsPerPage,
-            totalLength
-          )
-        }}
-        {{$t('baseGrid.of')}} {{ totalLength }}
-        <v-btn icon large color="primary" @click="handleLeft">
-          <v-icon dark>{{enums.ICONS.LEFT}}</v-icon>
-        </v-btn>
-        <v-btn icon large color="primary" @click="handleRight">
-          <v-icon dark>{{enums.ICONS.RIGHT}}</v-icon>
-        </v-btn>
+        <div class="inline-nowrap">
+          {{
+            paginationOpts.page * paginationOpts.itemsPerPage +
+            1 -
+            paginationOpts.itemsPerPage
+          }}-{{
+            Math.min(
+              paginationOpts.page * paginationOpts.itemsPerPage,
+              totalLength
+            )
+          }}
+          {{$t('baseGrid.of')}} {{ totalLength }}
+        </div>
+        <div class="inline-nowrap">
+          <v-btn icon large color="primary" @click="handleLeft">
+            <v-icon dark>{{enums.ICONS.LEFT}}</v-icon>
+          </v-btn>
+          <v-btn icon large color="primary" @click="handleRight">
+            <v-icon dark>{{enums.ICONS.RIGHT}}</v-icon>
+          </v-btn>
+        </div>
       </div>
     </div>
     <v-data-table
@@ -47,6 +53,7 @@
       :server-items-length="serverItems ? totalLength : -1"
       :options.sync="paginationOpts"
       :must-sort="true"
+      :mobile-breakpoint="0"
       hide-default-footer
       dense
     >
@@ -145,6 +152,7 @@
 <script>
 import _ from "lodash";
 import enums from "@/enums";
+import helper from "@/mixins/helper";
 
 export default {
   props: {
@@ -166,6 +174,8 @@ export default {
     }
   },
 
+  mixins: [helper],
+  
   computed: {
     tableHeaders() {
       let headersComputed=_.clone(this.headers);

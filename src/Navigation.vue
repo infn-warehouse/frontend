@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="fe-navigation">
     <template v-for="item in navigationItems">
       <div :key="item.route" v-if="!('enabled' in item) || item.enabled" :class="{
         navigationItem: true,
@@ -106,4 +106,7 @@ export default {
   //border-radius: 0.35em
 .nav-button
   padding: 10px
+.fe-navigation
+  white-space: nowrap
+  overflow-x: auto
 </style>
