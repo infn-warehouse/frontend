@@ -167,5 +167,13 @@ export default {
         return 12;
       return value;
     },
+    mobile2(value) {
+      if (this.$vuetify.breakpoint.sm || this.$vuetify.breakpoint.xs || this.$vuetify.breakpoint.md)
+        return 12;
+      return value;
+    },
+    checkMobile() {
+      return (this.$vuetify.breakpoint.sm || this.$vuetify.breakpoint.xs);
+    },
   }
 }

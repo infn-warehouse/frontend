@@ -9,7 +9,8 @@
     "detailResource": "Dettagli {resourceType} {resourceName}",
     "yes": "Sì",
     "no": "No",
-    "fields": "Campi"
+    "fields": "Campi",
+    "menu": "Menù"
   },
   "custom": {
     "appname": "Gestione Magazzino",

@@ -1,13 +1,13 @@
 <template>
   <v-container fluid class="my-toolbar">
     <v-row align="center">
-      <v-col :cols="mobile(withSearch?4:8)" align="left">
+      <v-col :cols="mobile2(withSearch?4:8)" align="left">
         <v-btn class="mr-4 align-middle" v-if="withBack" fab small @click="goTo()">
           <v-icon>{{ enums.ICONS.BACK }}</v-icon>
         </v-btn>
         <span class="align-middle text-h5" v-if="title">{{ title }}</span>
       </v-col>
-      <v-col :cols="mobile(4)" v-if="withSearch">
+      <v-col :cols="mobile2(4)" v-if="withSearch">
         <v-text-field
           :label="$t('misc.search')"
           v-model="searchText"
@@ -16,7 +16,7 @@
           single-line
         ></v-text-field>
       </v-col>
-      <v-col :cols="mobile(4)" align="right">
+      <v-col :cols="mobile2(4)" align="right">
         <v-btn
           v-if="withFilter"
           @click="onFilter"

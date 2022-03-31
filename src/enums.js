@@ -6,6 +6,7 @@ export default {
     DELETE: "delete",
     ADD: "add_circle",
     BACK: "arrow_back",
+    EXPAND: "expand_more",
   },
   TOAST_TYPE: {
     SUCCESS: "success",

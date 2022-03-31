@@ -1,14 +1,56 @@
 <template>
-  <div class="fe-navigation">
-    <template v-for="item in navigationItems">
-      <div :key="item.route" v-if="!('enabled' in item) || item.enabled" :class="{
-        navigationItem: true,
-        navigationItemSelected: isActive(item.name),
-      }">
-        <div class="nav-button" v-if="'name' in item" @click="goTo(item.name)">{{item.text}}</div>
-        <div class="nav-button" v-if="'callback' in item" @click="item.callback(item)">{{item.text}}</div>
-      </div>
+  <div>
+    <template v-if="!checkMobile()">
+      <template v-for="item in navigationItems">
+        <div :key="item.route" v-if="!('enabled' in item) || item.enabled" :class="{
+          navigationItem: true,
+          navigationItemSelected: isActive(item.name),
+        }">
+          <div class="nav-button" v-if="'name' in item" @click="goTo(item.name)">{{item.text}}</div>
+          <div class="nav-button" v-if="'callback' in item" @click="item.callback(item)">{{item.text}}</div>
+        </div>
+      </template>
     </template>
+    <v-menu
+      offset-y
+      v-if="checkMobile()"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          color="secondary"
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
+          {{ $t("misc.menu") }}
+          <v-icon small>{{ enums.ICONS.EXPAND }}</v-icon>
+        </v-btn>
+      </template>
+      <v-list>
+        <template v-for="item in navigationItems">
+          <v-list-item
+            v-if="'name' in item" @click="goTo(item.name)"
+            :key="item.route"
+            :class="{
+              dropdownItem: true,
+              dropdownItemSelected: isActive(item.name),
+            }"
+          >
+            {{item.text}}
+          </v-list-item>
+          <v-list-item
+            v-if="'callback' in item" @click="item.callback(item)"
+            :key="item.route"
+            :class="{
+              dropdownItem: true,
+              dropdownItemSelected: isActive(item.name),
+            }"
+          >
+            {{item.text}}
+          </v-list-item>
+        </template>
+      </v-list>
+    </v-menu>
   </div>
 </template>
 
@@ -16,9 +58,12 @@
 import enums from "@/enums";
 import { AuthService } from "@/services/auth.service";
 import { mapMutations } from "vuex";
+import helper from "@/mixins/helper";
 
 export default {
   name: 'Navigation',
+
+  mixins: [helper],
 
   methods: {
     ...mapMutations("snackbar", ["showMessage","closeMessage"]),
@@ -39,6 +84,7 @@ export default {
 
   data() {
     return {
+      showDropdown: false,
       mapping: {
         Orders: "Orders",
         OrderDetails: "Orders",
@@ -106,7 +152,8 @@ export default {
   //border-radius: 0.35em
 .nav-button
   padding: 10px
-.fe-navigation
-  white-space: nowrap
-  overflow-x: auto
+.dropdownItem
+  cursor: pointer
+.dropdownItemSelected
+  background-color: var(--v-secondary-lighten5) !important
 </style>

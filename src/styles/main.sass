@@ -1,4 +1,5 @@
 $threshold: 959px
+$threshold2: 1263px
 
 .edit-form-dialog
   max-width: 960px !important
@@ -73,10 +74,22 @@ $threshold: 959px
   white-space: nowrap
   display: inline-block
 
+@media screen and (min-width: $threshold)
+  .show-shrink
+    display: none
+
 @media screen and (max-width: $threshold)
   .hide-shrink
     display: none
   .full-shrink
     width: 100% !important
   .center-shrink
+    text-align: center !important
+
+@media screen and (max-width: $threshold2)
+  .hide-shrink-2
+    display: none
+  .full-shrink-2
+    width: 100% !important
+  .center-shrink-2
     text-align: center !important

@@ -9,7 +9,8 @@
     "detailResource": "Details {resourceType} {resourceName}",
     "yes": "Yes",
     "no": "No",
-    "fields": "Fields"
+    "fields": "Fields",
+    "menu": "Menu"
   },
   "custom": {
     "appname": "Warehouse Management",
