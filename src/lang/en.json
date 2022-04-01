@@ -118,6 +118,10 @@
     "monthly_costs": {
       "mese": "Mese",
       "spesa": "Spesa"
+    },
+    "files": {
+      "user": "User",
+      "name": "Name"
     }
   },
   "resource_types": {
@@ -129,7 +133,9 @@
     "unloading_movs": "Unloading movements",
     "order": "order",
     "orders": "Orders",
-    "monthly_costs": "Monthly costs"
+    "monthly_costs": "Monthly costs",
+    "file": "file",
+    "files": "Files"
   },
   "buttons": {
     "login": "Login",

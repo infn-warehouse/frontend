@@ -109,5 +109,8 @@ export default {
     handleDrawer(val) {
       this.drawer_flag = val;
     },
+    refresh() {
+      this._fetch();
+    }
   }
 }

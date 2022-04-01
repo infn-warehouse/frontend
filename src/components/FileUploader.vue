@@ -75,7 +75,7 @@ export default {
       let bodyFormData = new FormData();
       bodyFormData.append('data', this.selectedFile);
 
-      this.cancel=ApiService.upload("alfresco/prova.bin",bodyFormData,(progress) => {
+      this.cancel=ApiService.upload("alfresco/"+encodeURI(this.selectedFile.name),bodyFormData,(progress) => {
         this.progress=Math.round(progress);
       }, (status) => {
         if (status==200) {
@@ -83,6 +83,7 @@ export default {
           this.uploadedFile=this.selectedFile;
           this.selectedFile=null;
           this.status=1;
+          this.$emit('onUploadComplete', this.uploadedFile);
         }
         else if  (status==-1) {
           this.isLoading=false;

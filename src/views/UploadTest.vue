@@ -5,7 +5,10 @@
         :title="title"
       />
       <v-card-text>
-        <FileUploader/>
+        <FileUploader
+          @onUploadComplete="handleUpload"
+        />
+        <FilesList ref="filesList"/>
       </v-card-text>
     </v-card>
   </div>
@@ -16,13 +19,15 @@ import Toolbar from "@/components/Toolbar";
 import helper from "@/mixins/helper";
 import enums from "@/enums";
 import FileUploader from "@/components/FileUploader";
+import FilesList from "@/views/FilesList";
 
 export default {
   name: 'UploadTest',
 
   components: {
     Toolbar,
-    FileUploader
+    FileUploader,
+    FilesList
   },
 
   mixins: [helper],
@@ -36,6 +41,9 @@ export default {
   },
   
   methods: {
+    handleUpload(file) {
+      this.$refs.filesList.refresh();
+    }
   },
 
   data() {
