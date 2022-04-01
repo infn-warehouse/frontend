@@ -68,7 +68,7 @@ export default {
   methods: {
     ...mapMutations("snackbar", ["showMessage","closeMessage"]),
     goToNext() {
-      const startPages = ["Movements", "Home"];
+      const startPages = ["Orders","Home"];
 
       let found = false;
       for (const r of startPages) {
