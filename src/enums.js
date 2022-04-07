@@ -7,6 +7,7 @@ export default {
     ADD: "add_circle",
     BACK: "arrow_back",
     EXPAND: "expand_more",
+    FILE_BAN: "disabled_visible"
   },
   TOAST_TYPE: {
     SUCCESS: "success",

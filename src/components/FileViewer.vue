@@ -13,7 +13,8 @@
     <div v-if="status==2" class="inner-element">
       {{ $t('file_download.error') }}
     </div>
-    <div v-if="!viewable" class="inner-element">
+    <v-icon v-if="!viewable" x-large>{{ enums.ICONS.FILE_BAN }}</v-icon>
+    <div v-if="!viewable" class="bottom-element">
       {{ $t('file_download.cannotDisplay') }}
     </div>
 
