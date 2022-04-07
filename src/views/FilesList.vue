@@ -82,6 +82,11 @@ export default {
         sortable: true,
         align: "start"
       });
+      tableHeaders.push({
+        value: "size",
+        sortable: true,
+        align: "start"
+      });
       return tableHeaders;
     },
     mapItems() {
@@ -91,13 +96,20 @@ export default {
         tableItem.fields = {
           user: { data: item.user, dataType: "text" },
           name: { data: item.name, dataType: "text" },
+          size: { data: item.size, dataType: "size" },
         };
         tableItem.click_action = {
-          actionType: "custom",
-          callback: () => {
-            window.open(item.link, '_blank');
-          },
+          actionType: "router-link",
+          namedRoot: "FileDetails",
+          namedRootId: item.name,
+          icon: "gps_fixed"
         };
+        // tableItem.click_action = {
+        //   actionType: "custom",
+        //   callback: () => {
+        //     window.open(item.link, '_blank');
+        //   },
+        // };
         return tableItem;
       });
       return tableItems;
@@ -107,7 +119,7 @@ export default {
         this.resourceType,
         "Alfresco",
         "Alfresco",
-        "link",
+        "name",
         item,
         payload => payload.p.name
       );

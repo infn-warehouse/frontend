@@ -28,6 +28,15 @@ Vue.filter("month", value => {
     return moment(String(value)).format("MM/YYYY");
   }
 });
+Vue.filter("size", value => {
+  if (value>=1073741824)
+    return (value/1073741824).toFixed(2)+" GB";
+  if (value>=1048576)
+    return (value/1048576).toFixed(2)+" MB";
+  if (value>=1024)
+    return (value/1024).toFixed(2)+" KB";
+  return (value).toFixed(0)+" bytes";
+});
 Vue.filter("currency", value => {
   if (value) {
     return value.toFixed(2)+" €";

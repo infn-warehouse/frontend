@@ -33,6 +33,13 @@
     "uploadButton": "Upload",
     "cancelButton": "Annulla"
   },
+  "file_download": {
+    "error": "Errore di download.",
+    "downloadButton": "Download",
+    "cannotDisplay": "Il file non può essere visualizzato nel browser.",
+    "name": "Nome",
+    "size": "Dimensione"
+},
   "login": {
     "before": "Benvenuto in ",
     "after": ".",
@@ -121,7 +128,8 @@
     },
     "files": {
       "user": "Utente",
-      "name": "Nome"
+      "name": "Nome",
+      "size": "Dimensione"
     }
   },
   "resource_types": {
@@ -164,6 +172,10 @@
     },
     "orders": {
       "tab1": "Movimenti"
+    },
+    "files": {
+      "tab1": "Visualizza",
+      "tab2": "Scarica"
     }
   },
   "filters": {

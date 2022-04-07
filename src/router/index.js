@@ -10,6 +10,7 @@ import ItemDetails from '../views/ItemDetails.vue'
 import MonthlyCostsList from '../views/MonthlyCostsList.vue'
 import Profile from '../views/Profile.vue'
 import UploadTest from '../views/UploadTest.vue'
+import FileDetails from '../views/FileDetails.vue'
 import Restricted from '../views/Restricted.vue'
 import defineAbilitiesFor from '@/abilities'
 import store from "@/store";
@@ -81,6 +82,12 @@ const routes = [
     path: '/upload',
     name: 'UploadTest',
     component: UploadTest
+  },
+  {
+    path: '/files/:id',
+    name: 'FileDetails',
+    component: FileDetails,
+    props: true
   },
 ]
 

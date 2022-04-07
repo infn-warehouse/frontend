@@ -53,6 +53,41 @@ const ApiService = {
     return AXIOS(data);
   },
 
+  download(url, progressCb, endCb) {
+    let cancel;
+    
+    let config = {
+      cancelToken: new CancelToken(function executor(c) {
+        // An executor function receives a cancel function as a parameter
+        cancel = c;
+      }),
+      
+      responseType: "blob", // important
+
+      onDownloadProgress: e => {
+        if (!progressCb) return;
+        const {loaded, total} = e;
+        // Use the local progress event
+        if (e.lengthComputable) {
+            let progress = loaded / total * 100;
+            progressCb(progress);
+        }
+      }
+    };
+
+    (async() => {
+      try {
+        const { status, data } = await AXIOS.get(url, config);
+        endCb(status, data);
+      }
+      catch (e) {
+        endCb(-1);
+      }
+    })();
+
+    return cancel;
+  },
+
   upload(url, formData, progressCb, endCb) {
     let cancel;
     
@@ -69,6 +104,7 @@ const ApiService = {
       
       // Listen for the onUploadProgress event
       onUploadProgress: e => {
+        if (!progressCb) return;
         const {loaded, total} = e;
         // Use the local progress event
         if (e.lengthComputable) {

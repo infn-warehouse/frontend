@@ -49,7 +49,6 @@ import ApiService from "@/services/api.service";
 import KProgress from 'k-progress';
 
 export default {
-  props: ["url"],
   components: {
     KProgress
   },

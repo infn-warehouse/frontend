@@ -77,13 +77,17 @@ export default {
     allClear: {
       type: Boolean,
       default: true
+    },
+    mainPage: {
+      type: String,
+      required: false
     }
   },
   mixins: [helper],
   data() {
     return {
       searchText: "",
-      mainPage: null
+      backUrl: null
     };
   },
   computed: {
@@ -94,7 +98,10 @@ export default {
   methods: {
     goTo() {
       this.$emit("onBack");
-      this.$router.push({ path: this.mainPage });
+      if (this.mainPage)
+        this.$router.push({ name: this.mainPage });
+      else
+        this.$router.push({ path: this.backUrl });
     },    
     onAdd() {
       this.$emit("onAdd");
@@ -114,14 +121,7 @@ export default {
   },
   created() {
     let array = this.$route.path.split("/");
-    let test = array[array.length - 2].split("#")[0];
-    if (!isNaN(test)) {
-      array.splice(array.length - 1, 1);
-      array.splice(array.length - 1, 1);
-    } else {
-      array.splice(array.length - 1, 1);
-    }
-    this.mainPage = "/"+array[array.length - 1];
+    this.backUrl = "/"+array[array.length - 2];
   }
 };
 </script>

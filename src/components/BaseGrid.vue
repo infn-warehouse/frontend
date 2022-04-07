@@ -72,6 +72,9 @@
                 <span v-if="v.dataType == 'text'">
                   {{ v.data }}
                 </span>
+                <span v-if="v.dataType == 'size'">
+                  {{ v.data | size }}
+                </span>
                 <span v-if="v.dataType == 'datetime'">
                   {{ v.data | datetime }}
                 </span>
