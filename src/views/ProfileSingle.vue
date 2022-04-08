@@ -1,5 +1,5 @@
 <template>
-  <div class="my-container">
+  <div class="flex-container">
     <v-card>
       <Toolbar
         :title="resourceTypes"

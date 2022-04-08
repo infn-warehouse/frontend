@@ -1,5 +1,5 @@
 <template>
-  <div class="my-container">
+  <div class="flex-container">
     <v-card>
       <Toolbar
         :title="detailsTitle"
@@ -23,14 +23,14 @@
         </v-tabs>
         <v-tabs-items v-model="activeTab">
           <v-tab-item key="tab1">
-            <div class="my-container">
+            <div class="flex-container">
               <div><b>{{ $t("headers.movements.dataConsegna") }}</b>: {{this.selectedItem.dataConsegna | date}}</div>
               <div><b>{{ $t("headers.movements.consegnatario") }}</b>: {{this.selectedItem.consegnatario}}</div>
               <div><b>{{ $t("headers.movements.nColli") }}</b>: {{this.selectedItem.nColli}}</div>
             </div>
           </v-tab-item>
           <v-tab-item key="tab2">
-            <div class="my-container">
+            <div class="flex-container">
               <div><b>{{ $t("headers.movements.dataInvioCollaudo") }}</b>: {{this.selectedItem.dataInvioCollaudo}}</div>
               <div><b>{{ $t("headers.movements.collaudoEseg") }}</b>: {{this.selectedItem.collaudoEseg | yesNo}}</div>
               <div><b>{{ $t("headers.movements.dataCollaudo") }}</b>: {{this.selectedItem.dataCollaudo}}</div>

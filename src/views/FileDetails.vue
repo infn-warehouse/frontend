@@ -1,5 +1,5 @@
 <template>
-  <div class="my-container">
+  <div class="flex-container">
     <v-card>
       <Toolbar
         mainPage="UploadTest"
@@ -24,14 +24,14 @@
         </v-tabs>
         <v-tabs-items v-model="activeTab">
           <v-tab-item key="tab1">
-            <div class="my-container">
+            <div class="flex-container">
               <FileViewer
                 :name="selectedItem.name"
               />
             </div>
           </v-tab-item>
           <v-tab-item key="tab2">
-            <div class="my-container">
+            <div class="flex-container">
               <FileDownloader
                 :file="selectedItem"
               />

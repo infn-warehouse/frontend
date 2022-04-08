@@ -1,15 +1,15 @@
 <template>
-  <div class="my-container">
+  <div class="flex-container">
     <v-card>
       <Toolbar
         :title="title"
       />
-      <v-card-text>
+      <div class="flex-container">
         <FileUploader
           @onUploadComplete="handleUpload"
         />
         <FilesList ref="filesList"/>
-      </v-card-text>
+      </div>
     </v-card>
   </div>
 </template>

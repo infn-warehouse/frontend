@@ -1,10 +1,10 @@
 <template>
-  <div class="my-container">
+  <div class="flex-container">
     <v-card>
       <Toolbar
         :title="title"
       />
-      <v-card-text>
+      <div class="flex-container">
         <v-text-field
           :label="$t('custom.email')"
           v-model="user.email"
@@ -15,7 +15,7 @@
           v-model="user.role"
           :disabled="true"
         ></v-text-field>
-      </v-card-text>
+      </div>
     </v-card>
   </div>
 </template>

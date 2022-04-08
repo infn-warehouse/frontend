@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="fill">
     <k-progress
       class="inner-element"
       v-if="isLoading"
@@ -89,7 +89,7 @@ export default {
 iframe {
   display: block;
   width: 100%;
-  height: 480px;
+  height: 100%;
   border: none;
 }
 

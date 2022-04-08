@@ -1,5 +1,5 @@
 <template>
-  <div class="my-container">
+  <div class="flex-container">
     <v-card>
       <Toolbar
         :title="detailsTitle"
@@ -22,7 +22,7 @@
         </v-tabs>
         <v-tabs-items v-model="activeTab">
           <v-tab-item key="tab1">
-            <div class="my-container">
+            <div class="flex-container">
               <MovementsList
                 :immutableFilter="selectedItem.idordine"
               />

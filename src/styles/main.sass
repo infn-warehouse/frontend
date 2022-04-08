@@ -32,14 +32,27 @@ $threshold2: 1263px
 .my-container
   padding: 12px
 
+.flex-container
+  padding: 12px
+  display: flex
+  flex-direction: column
+  flex-grow: 1
+
 .list-container-outer
+  flex-grow: 1
   display: flex
   position: relative
 
 .list-container
   padding: 12px
+  display: flex
+  flex-direction: column
   flex: 1 1 auto
   width: 0px
+
+.fill
+  flex-grow: 1
+  height: 1px
 
 .clear
   clear: both
@@ -57,6 +70,29 @@ $threshold2: 1263px
 .main-container
   position: relative
   min-height: 100%
+  display: flex
+  flex-direction: column
+
+.v-card
+  display: flex
+  flex-direction: column
+  flex: 1 0 auto
+.v-window
+  display: flex
+  flex-direction: column
+  flex: 1 0 auto
+.v-window__container
+  display: flex
+  flex-direction: column
+  flex: 1 0 auto
+.v-window-item
+  display: flex
+  flex-direction: column
+  flex: 1 0 auto
+.v-input
+  flex: 0 0 auto
+.v-tabs
+  flex: 0 0 auto
 
 .fixed-container
   max-width: 960px
