@@ -70,9 +70,9 @@ export default {
         this.tableData.items=this.mapItems();
         this.tableData.items2=_.cloneDeep(this.tableData.items);
         for (let item of this.tableData.items2) {
-          for (let key of Object.keys(item.columns)) {
+          for (let key of Object.keys(item.fields)) {
             if (this.getFieldIndex2(key)==-1)
-              delete item.columns[key];
+              delete item.fields[key];
           }
         }
       }

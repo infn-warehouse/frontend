@@ -1,8 +1,9 @@
 import enums from "@/enums";
 import _ from "lodash";
+import helper from "@/mixins/helper";
 
 export default {
-  mixins: [],
+  mixins: [helper],
 
   computed: {
     enums() {
@@ -33,7 +34,8 @@ export default {
 
   async created() {
     try {
-      this.load();
+      if (!this.load())
+        this.loadConf();
 
       if (!this.filterData.columns) {
         this.filterData.columns=[];
@@ -60,6 +62,9 @@ export default {
         filterData: this.filterData,
         filterInfo: this.filterInfo
       });
+    },
+    loadConf() {
+
     },
     load() {
       if (!this.flag) return false;
