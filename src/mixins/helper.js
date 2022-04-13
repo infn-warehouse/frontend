@@ -1,6 +1,7 @@
 import { mapMutations } from "vuex";
 import enums from "@/enums";
 import GraphileService from "@/services/graphile.service";
+import ApiService from "@/services/api.service";
 import _ from "lodash";
 
 export default {
@@ -13,7 +14,7 @@ export default {
   methods: {
     ...mapMutations("snackbar", ["showMessage","closeMessage"]),
 
-    operationWithCheck(res) {
+    checkResult(res) {
       if (res.error) {
         this.showMessage({
           context: enums.TOAST_TYPE.ERROR,
@@ -23,6 +24,14 @@ export default {
       }
       else {
         return res;
+      }
+    },
+    async operationWithCheck(func) {
+      try {
+        return this.checkResult(await func());
+      }
+      catch (error) {
+        return this.checkResult({error});
       }
     },
     makeTitle(resourceTitle,mode,name) {
@@ -161,6 +170,23 @@ export default {
         });
         return false;
       }
+    },
+    async getPref(name) {
+      let res=await this.operationWithCheck(async () => await ApiService.get("prefs/"+name));
+      if (res)
+        return res.data;
+      return null;
+    },
+    async setPref(name,value) {
+      let res=await this.operationWithCheck(async () => await ApiService.put("prefs/"+name,value,
+        {
+          headers: { 'Content-Type': 'text/plain' }
+        }
+      ));
+
+      if (res)
+        return true;
+      return false;
     },
     mobile(value) {
       if (this.$vuetify.breakpoint.sm || this.$vuetify.breakpoint.xs)

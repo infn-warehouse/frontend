@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     async download() {
-      let res=this.operationWithCheck(await ApiService.get("alfresco/"+encodeURI(this.file.name)+"/link"));
+      let res=await this.operationWithCheck(async () => await ApiService.get("alfresco/"+encodeURI(this.file.name)+"/link"));
       if (res)
         window.open(res.data, '_blank');
     }

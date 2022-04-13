@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     async _fetch() {
-      let res=this.operationWithCheck(await this.fetch(this.paginationOpts,this.searchComputed,this.filter));
+      let res=await this.operationWithCheck(async () => await this.fetch(this.paginationOpts,this.searchComputed,this.filter));
       if (res) {
         [this.items,this.total]=res;
       }

@@ -20,9 +20,11 @@
         </template>
         <FilterList
           :type="2"
+          :save="true"
           matchAttribute="value"
           v-model="filterData.columns"
           @change="handleChange"
+          @save="handleSave"
         >
         </FilterList>
       </v-list-group>

@@ -28,8 +28,8 @@
       </v-autocomplete>
     </div>
     <div v-if="type==2 && showAll">
-      <v-list-item v-for="(item, i) in valueCopy" :key="i" dense>
-        <template>
+      <template v-for="(item, i) in valueCopy">
+        <v-list-item v-if="!item.hidden" :key="i" dense>
           <v-list-item-action>
             <v-checkbox
               color="primary"
@@ -40,8 +40,8 @@
           <v-list-item-content>
             <v-list-item-title>{{ item.name }}</v-list-item-title>
           </v-list-item-content>
-        </template>
-      </v-list-item>
+        </v-list-item>
+      </template>
       <v-col v-if="showButton">
         <v-btn
           color="primary"
@@ -49,11 +49,19 @@
           @click="showAll = false"
           >{{ $t("buttons.hideAll") }}</v-btn
         >
+        <v-btn
+          class="ml-2"
+          color="primary"
+          x-small
+          @click="savePref()"
+          v-if="!clear"
+          >{{ $t("buttons.savePref") }}</v-btn
+        >
       </v-col>
     </div>
     <div v-if="type==2 && !showAll">
-      <v-list-item v-for="(item, i) in valueCopy.slice(0, 5)" :key="i" dense>
-        <template>
+      <template v-for="(item, i) in valueCopy.slice(0, 5)">
+        <v-list-item v-if="!item.hidden" :key="i" dense>
           <v-list-item-action>
             <v-checkbox
               color="primary"
@@ -64,14 +72,22 @@
           <v-list-item-content>
             <v-list-item-title>{{ item.name }}</v-list-item-title>
           </v-list-item-content>
-        </template>
-      </v-list-item>
+        </v-list-item>
+      </template>
       <v-col v-if="!alwaysShowAllComputed">
         <v-btn
           color="primary"
           x-small
           @click="(showAll = true), (showButton = true)"
           >{{ $t("buttons.showAll") }}</v-btn
+        >
+        <v-btn
+          class="ml-2"
+          color="primary"
+          x-small
+          @click="savePref()"
+          v-if="!clear"
+          >{{ $t("buttons.savePref") }}</v-btn
         >
       </v-col>
     </div>
@@ -98,7 +114,8 @@ export default {
         itemsPerPage: 10,
         multiSort: false,
         mustSort: true
-      },      
+      },   
+      clear: false   
     };
   },
   mixins: [helper],
@@ -112,8 +129,17 @@ export default {
     "fetch",
     "fetchName",
     "fetchValue",
+    "save",
   ],
   methods: {
+    savePref() {
+      this.valueCopy.forEach(element => {
+        element.default=element.checked;
+      });
+      this.computeClear();
+      this.$emit("save");
+      this.$emit("change");
+    },
     setFilter1(items) {
       this.valueCopy.forEach(element => {
         let found = false;
@@ -129,7 +155,17 @@ export default {
       this.$emit("input", this.valueCopy);
       this.$emit("change");
     },
+    computeClear() {
+      for (let o of this.valueCopy) {
+        if (o.checked!=o.default) {
+          this.clear=false;
+          return;
+        }
+      }
+      this.clear=true;
+    },
     setFilter2() {
+      this.computeClear();
       this.$emit("input", this.valueCopy);
       this.$emit("change");
     },
@@ -140,7 +176,7 @@ export default {
       });
     },
     async _fetch() {
-      let res=this.operationWithCheck(await this.fetch(this.paginationOpts,this.search,null));
+      let res=await this.operationWithCheck(async () => await this.fetch(this.paginationOpts,this.search,null));
       if (res) {
         let items=res[0];
         let valueCopyNew=[];
@@ -188,6 +224,7 @@ export default {
         await this._fetch();
       else
         this.valueCopy=_.cloneDeep(this.value);
+      this.computeClear();
       this.update();
   },
   watch: {
@@ -200,6 +237,7 @@ export default {
     }, process.env.VUE_APP_DEBOUNCE_TIME),
     value: function() {
       this.valueCopy=_.cloneDeep(this.value);
+      this.computeClear();
       this.update();
     }
   }

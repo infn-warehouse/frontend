@@ -8,6 +8,9 @@ export default {
   computed: {
     enums() {
       return enums;
+    },
+    prefName() {
+      return "filterPref_"+this.tableName;
     }
   },
 
@@ -34,8 +37,7 @@ export default {
 
   async created() {
     try {
-      if (!this.load())
-        this.loadConf();
+      this.load();
 
       if (!this.filterData.columns) {
         this.filterData.columns=[];
@@ -45,9 +47,11 @@ export default {
             value: item.value,
             checked: item.show!=1,
             default: item.show!=1,
+            hidden: item.hidden
           });
         }
         this.filterInfo.columns={multiple: true};
+        await this.loadConf();
       }
 
       this.handleChange();
@@ -63,9 +67,21 @@ export default {
         filterInfo: this.filterInfo
       });
     },
-    loadConf() {
+    async loadConf() {
+      let res=await this.getPref(this.prefName);
+      if (!res) return;
 
+      let checkedCols=JSON.parse(atob(res));
+      this.filterData.columns.forEach((o) => {
+        o.default=checkedCols.includes(o.value);
+        o.checked=o.default;
+      });
     },
+    async saveConf() {
+      let checkedCols=_.map(_.filter(this.filterData.columns, (o) => o.checked),(o) => o.value);
+      let res=await this.setPref(this.prefName,btoa(JSON.stringify(checkedCols)));
+    },
+
     load() {
       if (!this.flag) return false;
       this.setFlag(false);
@@ -87,6 +103,10 @@ export default {
       let { filters, clear } = this.computeFilters(this.filterData,this.filterInfo);
       this.save();
       this.$emit("onChange",clear,filters);
+    },
+
+    handleSave() {
+      this.saveConf();
     },
 
     clearFilters() {

@@ -25,7 +25,7 @@ export default {
       }
     },
     async _fetch() {
-      let res=this.operationWithCheck(await this.fetch(this.id));
+      let res=await this.operationWithCheck(async () => await this.fetch(this.id));
       if (res) {
         this.selectedItem=res;
         this.detailsTitle=this.title(this.selectedItem);

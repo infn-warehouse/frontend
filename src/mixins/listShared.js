@@ -37,7 +37,7 @@ export default {
     this.paginationOpts = {...this.paginationOpts, ...this.mergeOpts };
     this.tableData.headers=this.mapHeaders();
     if (this.immutableFilter && this.immutableFilterField)
-      this.tableData.headers.splice(this.getFieldIndex(this.immutableFilterField),1);
+      this.tableData.headers[this.getFieldIndex(this.immutableFilterField)].hidden=true;
     if (this.noFilter)
       await this._fetch();
   },
@@ -54,14 +54,14 @@ export default {
 
       // items and headers
       this.loading++;
-      let res=this.operationWithCheck(await this.fetch(this.paginationOpts,this.search,filter));
+      let res=await this.operationWithCheck(async () => await this.fetch(this.paginationOpts,this.search,filter));
       this.loading--;
       if (res) {
         this.tableData.headers2=_.cloneDeep(this.tableData.headers);
         if (columns) {
           for (let i=this.tableData.headers2.length-1;i>=0;i--) {
             let item=this.tableData.headers2[i];
-            if (!columns.value.includes(item.value))
+            if (item.hidden || !columns.value.includes(item.value))
               this.tableData.headers2.splice(i, 1);
           }
         }

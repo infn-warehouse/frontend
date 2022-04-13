@@ -22,20 +22,20 @@ const ApiService = {
     AXIOS.defaults.headers.get.Authorization = null;
   },
 
-  get(resource) {
-    return AXIOS.get(resource);
+  get(resource,config=null) {
+    return AXIOS.get(resource,config);
   },
 
-  post(resource, data) {
-    return AXIOS.post(resource, data);
+  post(resource, data,config=null) {
+    return AXIOS.post(resource, data,config);
   },
 
-  put(resource, data) {
-    return AXIOS.put(resource, data);
+  put(resource, data,config=null) {
+    return AXIOS.put(resource, data,config);
   },
 
-  delete(resource) {
-    return AXIOS.delete(resource);
+  delete(resource,config=null) {
+    return AXIOS.delete(resource,config);
   },
 
   /**
@@ -49,8 +49,8 @@ const ApiService = {
    *    - username
    *    - password
    **/
-  customRequest(data) {
-    return AXIOS(data);
+  customRequest(payload) {
+    return AXIOS(payload);
   },
 
   download(url, progressCb, endCb) {

@@ -159,7 +159,8 @@
     "clear": "Clear",
     "showAll": "Show all",
     "hideAll": "Hide",
-    "close": "Close"
+    "close": "Close",
+    "savePref": "Save preference"
   },
   "details": {
     "movements": {

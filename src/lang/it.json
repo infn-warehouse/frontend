@@ -159,7 +159,8 @@
     "clear": "Pulisci",
     "showAll": "Mostra tutti",
     "hideAll": "Nascondi",
-    "close": "Chiudi"
+    "close": "Chiudi",
+    "savePref": "Salva preferenza"
   },
   "details": {
     "movements": {
