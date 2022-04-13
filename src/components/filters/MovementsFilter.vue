@@ -14,14 +14,14 @@
         <template v-slot:activator>
           <v-list-item-content>
             <v-list-item-title>
-              {{ $t("misc.fields") }}
+              {{ $t("misc.columns") }}
             </v-list-item-title>
           </v-list-item-content>
         </template>
         <FilterList
           :type="2"
           matchAttribute="value"
-          v-model="filterData.fields"
+          v-model="filterData.columns"
           @change="handleChange"
         >
         </FilterList>

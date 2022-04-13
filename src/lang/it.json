@@ -9,7 +9,7 @@
     "detailResource": "Dettagli {resourceType} {resourceName}",
     "yes": "Sì",
     "no": "No",
-    "fields": "Campi",
+    "columns": "Colonne",
     "menu": "Menù"
   },
   "custom": {

@@ -1,7 +1,6 @@
 <template>
   <div class="fill">
     <k-progress
-      class="inner-element"
       v-if="isLoading"
       active
       type="line"

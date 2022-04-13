@@ -9,7 +9,7 @@
     "detailResource": "Details {resourceType} {resourceName}",
     "yes": "Yes",
     "no": "No",
-    "fields": "Fields",
+    "columns": "Columns",
     "menu": "Menu"
   },
   "custom": {

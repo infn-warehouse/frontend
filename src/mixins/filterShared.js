@@ -35,17 +35,17 @@ export default {
     try {
       this.load();
 
-      if (!this.filterData.fields) {
-        this.filterData.fields=[];
+      if (!this.filterData.columns) {
+        this.filterData.columns=[];
         for (let item of this.headers) {
-          this.filterData.fields.push({
+          this.filterData.columns.push({
             name: this.$i18n.t(`headers.${this.tableName}.${item.value}`),
             value: item.value,
             checked: item.show!=1,
             default: item.show!=1,
           });
         }
-        this.filterInfo.fields={multiple: true};
+        this.filterInfo.columns={multiple: true};
       }
 
       this.handleChange();

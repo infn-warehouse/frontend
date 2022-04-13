@@ -2,7 +2,6 @@
   <div>
     <v-file-input
       show-size
-      counter
       :label="$t('file_upload.select')"
       v-model="selectedFile"
       @change="handleChange"

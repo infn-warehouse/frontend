@@ -48,9 +48,9 @@ export default {
       if (this.immutableFilter && this.immutableFilterField)
         filter[this.immutableFilterField]={value: this.immutableFilter};
       
-      // fields
-      let fields=filter.fields;
-      delete filter.fields;
+      // columns
+      let columns=filter.columns;
+      delete filter.columns;
 
       // items and headers
       this.loading++;
@@ -58,10 +58,10 @@ export default {
       this.loading--;
       if (res) {
         this.tableData.headers2=_.cloneDeep(this.tableData.headers);
-        if (fields) {
+        if (columns) {
           for (let i=this.tableData.headers2.length-1;i>=0;i--) {
             let item=this.tableData.headers2[i];
-            if (!fields.value.includes(item.value))
+            if (!columns.value.includes(item.value))
               this.tableData.headers2.splice(i, 1);
           }
         }
@@ -70,9 +70,9 @@ export default {
         this.tableData.items=this.mapItems();
         this.tableData.items2=_.cloneDeep(this.tableData.items);
         for (let item of this.tableData.items2) {
-          for (let key of Object.keys(item.fields)) {
+          for (let key of Object.keys(item.columns)) {
             if (this.getFieldIndex2(key)==-1)
-              delete item.fields[key];
+              delete item.columns[key];
           }
         }
       }
