@@ -25,7 +25,7 @@
           :items="tableData.items2"
           :totalLength="total"
           :injectOpts="paginationOpts"
-          :loading="loading>0"
+          :loading="loading"
           :withActions="true"
           :withEdit="true"
           :withDelete="true"

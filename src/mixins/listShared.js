@@ -14,7 +14,9 @@ export default {
       tableData: { headers: [], items: [], headers2: [], items2: [] },
       items: [],
       total: 0,
-      loading: 0,
+      loadingCount: 0,
+      loading: true,
+      
       search: "",
       filter: null,
       allClear: true,
@@ -53,9 +55,13 @@ export default {
       delete filter.columns;
 
       // items and headers
-      this.loading++;
+      this.loadingCount++;
+      this.loading=true;
       let res=await this.operationWithCheck(async () => await this.fetch(this.paginationOpts,this.search,filter));
-      this.loading--;
+      this.loadingCount--;
+      if (this.loadingCount==0)
+        this.loading=false;
+        
       if (res) {
         this.tableData.headers2=_.cloneDeep(this.tableData.headers);
         if (columns) {

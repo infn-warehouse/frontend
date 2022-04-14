@@ -11,7 +11,7 @@
           :items="tableData.items2"
           :totalLength="total"
           :injectOpts="paginationOpts"
-          :loading="loading>0"
+          :loading="loading"
           @onPaginationChanged="handlePaginationChanged"
         ></BaseGrid>
       </v-card>
