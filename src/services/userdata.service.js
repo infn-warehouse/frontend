@@ -8,14 +8,10 @@ const UserDataService = {
       url: "userdata",
       method: "get",
     };
-    try {
-      const response = await ApiService.customRequest(requestData);
-      if (response.data.errors)
-        return {error: response.data.errors};
-      return response.data;
-    } catch (error) {
-      return {error};
-    }
+    const response = await ApiService.customRequest(requestData);
+    if (response.data.errors)
+      return {error: response.data.errors};
+    return response.data;
   },
 };
 

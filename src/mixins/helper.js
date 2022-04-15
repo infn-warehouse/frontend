@@ -23,6 +23,11 @@ export default {
 
     checkResult(res,evaluate=null) {
       if (res.error) {
+        if (res.error.jwtExpired) {
+          this.$router.push({ name: "Login" }).catch(()=>{});
+          return null;
+        }
+
         if (evaluate) {
           let temp=evaluate(res.error);
           if (temp) {
@@ -93,15 +98,8 @@ export default {
           delete pcopy[key];
       }
 
-      try {
-        const res = await GraphileService.createOrUpdate(resType,pcopy,idName);
-        if (res && res.error) {
-          this.showMessage({
-            context: enums.TOAST_TYPE.ERROR,
-            text: "Error: " + res.error
-          });
-          return false;
-        }
+      const res=await this.operationWithCheck(async () => await GraphileService.createOrUpdate(resType,pcopy,idName));
+      if (res) {
         if (extra) {
           let extra_res = await extra(res);
           if (extra_res) {
@@ -134,13 +132,6 @@ export default {
           });
           return true;
         }
-      } catch (error) {
-        console.log(error);
-        this.showMessage({
-          context: enums.TOAST_TYPE.ERROR,
-          text: "Error: " + error
-        });        
-        return false;
       }
     },
     async deleteConfirm(resName, resType, resOrig, idName, payload, deletedName) {
@@ -162,15 +153,8 @@ export default {
     },
     async deleteHelper(resName, resType, resOrig, idName, payload, deletedName) {
       let pcopy = _.cloneDeep(payload);
-      try {
-        const res = await GraphileService.delete(resType,resOrig,payload[idName],idName);
-        if (res && res.error) {
-          this.showMessage({
-            context: enums.TOAST_TYPE.ERROR,
-            text: "Error: " + res.error
-          });
-          return false;
-        }
+      const res = await this.operationWithCheck(async () => await GraphileService.delete(resType,resOrig,payload[idName],idName));
+      if (res) {
         this.showMessage({
           context: enums.TOAST_TYPE.SUCCESS,
           text: this.$i18n.t("toasts.deleted") +
@@ -180,13 +164,6 @@ export default {
             deletedName({ v: res ? res.data : {}, p: pcopy })
         });
         return true;
-      } catch (error) {
-        console.log(error);
-        this.showMessage({
-          context: enums.TOAST_TYPE.ERROR,
-          text: "Error: " + error
-        });
-        return false;
       }
     },
     async getPref(name) {

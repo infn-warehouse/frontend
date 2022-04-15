@@ -16,14 +16,10 @@ const GraphileService = {
       method: "post",
       data: { query }
     };
-    try {
-      const response = await ApiService.customRequest(requestData);
-      if (response.data.errors)
-        return {error: response.data.errors};
-      return response.data;
-    } catch (error) {
-      return {error};
-    }
+    const response = await ApiService.customRequest(requestData);
+    if (response.data.errors)
+      return {error: response.data.errors};
+    return response.data;
   },
 
   // do introspection query on GraphQL
@@ -31,64 +27,60 @@ const GraphileService = {
   async fetchInfo() {
     if (this.types && this.assoc && this.dataTypes) return;
 
-    try {
-      let res=await this.sendQuery(`
-      {
-        __schema {
-          types {
+    let res=await this.sendQuery(`
+    {
+      __schema {
+        types {
+          name
+          fields {
             name
-            fields {
+            description
+            type {
               name
-              description
-              type {
+              kind
+              ofType {
                 name
                 kind
-                ofType {
-                  name
-                  kind
-                }
               }
             }
           }
         }
       }
-      `);
-      if (res && res.error) {
-        console.log("fetchTypes error from server: ", res.error);
-        return;
-      }
-
-      this.types=[];
-      this.assoc=[];
-      this.dataTypes=[];
-      
-      let temp=res.data.__schema.types;
-      temp.forEach(el => {
-        if (el.fields) {
-          // dataTypes will be an array of objects, with a single index representing the type
-          // for each object, there will be a property for each field:
-          //   key: field name, value: a string representing the data type of that field
-          this.dataTypes[el.name] = {};
-          el.fields.filter(x => !x.description || (
-            !x.description.includes("that is related to") && !x.description.includes("through a set of")
-          )).forEach(o => {
-            this.dataTypes[el.name][o.name] = o.type.name ? o.type.name : o.type.ofType.name;
-          });
-
-          // types it will be an array of strings, with two indexes representing type and field
-          // the array will not include relations
-          this.types[el.name]=el.fields.filter(x => !x.description || (
-            !x.description.includes("that is related to") && !x.description.includes("through a set of")
-          )).map(x => x.name);
-
-          // assoc will be an array of strings, with two indexes representing type and field
-          // the array will include relations
-          this.assoc[el.name]=el.fields.filter(x => !x.description || x.description.includes("that is related to")).map(x => x.name);
-        }
-      });
-    } catch (error) {
-      console.log("fetchTypes error: ", error);
     }
+    `);
+    if (res && res.error) {
+      console.log("fetchTypes error from server: ", res.error);
+      return;
+    }
+
+    this.types=[];
+    this.assoc=[];
+    this.dataTypes=[];
+    
+    let temp=res.data.__schema.types;
+    temp.forEach(el => {
+      if (el.fields) {
+        // dataTypes will be an array of objects, with a single index representing the type
+        // for each object, there will be a property for each field:
+        //   key: field name, value: a string representing the data type of that field
+        this.dataTypes[el.name] = {};
+        el.fields.filter(x => !x.description || (
+          !x.description.includes("that is related to") && !x.description.includes("through a set of")
+        )).forEach(o => {
+          this.dataTypes[el.name][o.name] = o.type.name ? o.type.name : o.type.ofType.name;
+        });
+
+        // types it will be an array of strings, with two indexes representing type and field
+        // the array will not include relations
+        this.types[el.name]=el.fields.filter(x => !x.description || (
+          !x.description.includes("that is related to") && !x.description.includes("through a set of")
+        )).map(x => x.name);
+
+        // assoc will be an array of strings, with two indexes representing type and field
+        // the array will include relations
+        this.assoc[el.name]=el.fields.filter(x => !x.description || x.description.includes("that is related to")).map(x => x.name);
+      }
+    });
   },
 
   // join the fields of the specified type with line feeds
@@ -274,28 +266,23 @@ const GraphileService = {
     console.log("------- fetchOne");
     type=utils.makeSingular(type);
 
-    try {
-      // make the GraphQL query
-      let name=`all${utils.makePlural(type)}`;
-      let res=await this.sendQuery(`
-      {
-        ${name} (condition: {${idName}: ${await this.formatSingle(type,idName,id)}}) {
-            nodes {
-              ${await this.joinFields(type)}
-              ${await this.joinAssoc(type,include)}
-            }
-        }
+    // make the GraphQL query
+    let name=`all${utils.makePlural(type)}`;
+    let res=await this.sendQuery(`
+    {
+      ${name} (condition: {${idName}: ${await this.formatSingle(type,idName,id)}}) {
+          nodes {
+            ${await this.joinFields(type)}
+            ${await this.joinAssoc(type,include)}
+          }
       }
-      `);
-      if (res && res.error) {
-        console.log("fetchOne error from server: ", res.error);
-        return {error: res.error};
-      }
-      return res.data[name].nodes[0];
-    } catch (error) {
-      console.log("fetchOne error: ", error);
-      return { error };
     }
+    `);
+    if (res && res.error) {
+      console.log("fetchOne error from server: ", res.error);
+      return {error: res.error};
+    }
+    return res.data[name].nodes[0];
   },
 
   async fetchAll(type,include,accents,filter,search,paginationOpts) {
@@ -303,104 +290,90 @@ const GraphileService = {
     console.log(filter);
     type=utils.makeSingular(type);
 
-    try {
-      // make the GraphQL query
-      // first and offset properties are related to pagination
-      // use the createFilter function for making the filter object
-      // retrieve the total count of the records in the queried table
-      let name=`all${utils.makePlural(type)}`;
-      let res=await this.sendQuery(`
-      {
-        ${name} (
-          first:${paginationOpts.itemsPerPage}
-          offset:${(paginationOpts.page-1)*paginationOpts.itemsPerPage}
-          orderBy:${this.makeOrderList(paginationOpts.sortBy,paginationOpts.sortDesc,accents)}
-          ${await this.createFilter(type,filter,search)}
-          ) {
-            totalCount
-            nodes {
-              ${await this.joinFields(type)}
-              ${await this.joinAssoc(type,include)}
-            }
-        }
+    // make the GraphQL query
+    // first and offset properties are related to pagination
+    // use the createFilter function for making the filter object
+    // retrieve the total count of the records in the queried table
+    let name=`all${utils.makePlural(type)}`;
+    let res=await this.sendQuery(`
+    {
+      ${name} (
+        first:${paginationOpts.itemsPerPage}
+        offset:${(paginationOpts.page-1)*paginationOpts.itemsPerPage}
+        orderBy:${this.makeOrderList(paginationOpts.sortBy,paginationOpts.sortDesc,accents)}
+        ${await this.createFilter(type,filter,search)}
+        ) {
+          totalCount
+          nodes {
+            ${await this.joinFields(type)}
+            ${await this.joinAssoc(type,include)}
+          }
       }
-      `);
-      if (res && res.error) {
-        console.log("fetchAll error from server: ", res.error);
-        return {error: res.error};
-      }
-      let nodes=res.data[name].nodes;
-      let count=res.data[name].totalCount;
-      return [nodes,count];
-    } catch (error) {
-      console.log("fetchAll error: ", error);
-      return { error };
     }
+    `);
+    if (res && res.error) {
+      console.log("fetchAll error from server: ", res.error);
+      return {error: res.error};
+    }
+    let nodes=res.data[name].nodes;
+    let count=res.data[name].totalCount;
+    return [nodes,count];
   },
 
   async createOrUpdate(type,payload,idName) {
-    try {
-      let res;
-      let op;
-      console.log(payload);
-      if (payload[idName] == "" || !payload[idName]) {
-        // make create query
-        op=`create${type}`;
-        res=await this.sendQuery(`
-          mutation{${op} (input:{${utils.firstToLower(type)}:{
-            ${await this.formatPayload(type,payload)}
-          }}){
-            ${utils.firstToLower(type)} {
-              ${idName}
-            }
-          }}
-        `);
-      }
-      else {
-        // make update query
-        op=`update${type}By${utils.firstToUpper(idName)}`;
-        res=await this.sendQuery(`
-          mutation{${op} (input: {${idName}: ${await this.formatSingle(type,idName,payload[idName])} ${utils.firstToLower(type)}Patch:{
-            ${await this.formatPayload(type,payload,idName)}
-          }}){
-            ${utils.firstToLower(type)} {
-              ${idName}
-            }
-          }}
-        `);
-      }
-      if (res && res.error) {
-        console.log("createOrUpdate error from server: ", res.error);
-        return {error: res.error};
-      }
-      console.log(res);
-      return {data: res.data[op][utils.firstToLower(type)]};
-    } catch (error) {
-      console.log("createOrUpdate error: ", error);
-      return { error };
+    let res;
+    let op;
+    console.log(payload);
+    if (payload[idName] == "" || !payload[idName]) {
+      // make create query
+      op=`create${type}`;
+      res=await this.sendQuery(`
+        mutation{${op} (input:{${utils.firstToLower(type)}:{
+          ${await this.formatPayload(type,payload)}
+        }}){
+          ${utils.firstToLower(type)} {
+            ${idName}
+          }
+        }}
+      `);
     }
+    else {
+      // make update query
+      op=`update${type}By${utils.firstToUpper(idName)}`;
+      res=await this.sendQuery(`
+        mutation{${op} (input: {${idName}: ${await this.formatSingle(type,idName,payload[idName])} ${utils.firstToLower(type)}Patch:{
+          ${await this.formatPayload(type,payload,idName)}
+        }}){
+          ${utils.firstToLower(type)} {
+            ${idName}
+          }
+        }}
+      `);
+    }
+    if (res && res.error) {
+      console.log("createOrUpdate error from server: ", res.error);
+      return {error: res.error};
+    }
+    console.log(res);
+    return {data: res.data[op][utils.firstToLower(type)]};
   },
 
   async delete(type,originalType,id,idName) {
     if (id == null)
       return null;
-    try {
-      // make delete query
-      let op=`delete${type}By${utils.firstToUpper(idName)}`;
-      let res=await this.sendQuery(`
-        mutation{${op} (input: {${idName}: ${await this.formatSingle(type,idName,id)}}) {
-          deleted${originalType}Id
-        }}
-      `);
-      if (res && res.error) {
-        console.log("delete error from server: ", res.error);
-        return {error: res.error};
-      }
-      return {data: res.data[op]};
-    } catch (error) {
-      console.log("delete error: ", error);
-      return { error };
+
+    // make delete query
+    let op=`delete${type}By${utils.firstToUpper(idName)}`;
+    let res=await this.sendQuery(`
+      mutation{${op} (input: {${idName}: ${await this.formatSingle(type,idName,id)}}) {
+        deleted${originalType}Id
+      }}
+    `);
+    if (res && res.error) {
+      console.log("delete error from server: ", res.error);
+      return {error: res.error};
     }
+    return {data: res.data[op]};
   }
 };
 

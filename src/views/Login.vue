@@ -51,7 +51,7 @@
 
 <script>
 import enums from "@/enums";
-import { mapMutations } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 import { AuthService } from "@/services/auth.service";
 import LocaleSwitch from "@/components/LocaleSwitch";
 import helper from "@/mixins/helper";
@@ -69,6 +69,7 @@ export default {
   mixins: [helper],
   methods: {
     ...mapMutations("snackbar", ["showMessage","closeMessage"]),
+    ...mapMutations("status", ["setExpiredFlag"]),
     goToNext() {
       const startPages = ["Orders","Home"];
 
@@ -93,7 +94,7 @@ export default {
       }
 
       const res=await this.operationWithCheck(async () => await AuthService.login(this.email, this.password),(err) => {
-        if (err.response.data.aaError) {
+        if (err.response && err.response.data.aaError) {
           if (err.response.data.aaError=="NO_USER")
             return "NO_USER";
           if (err.response.data.aaError=="BIND_ERROR")
@@ -123,8 +124,15 @@ export default {
     }
   },
   computed: {
+    ...mapGetters("status", ["expiredFlag"]),
     enums() {
       return enums;
+    }
+  },
+  mounted() {
+    if (this.expiredFlag) {
+      this.setExpiredFlag(false);
+      this.showError("TOKEN_EXPIRED");
     }
   }
 }

@@ -15,6 +15,7 @@ import Restricted from '../views/Restricted.vue'
 import defineAbilitiesFor from '@/abilities'
 import store from "@/store";
 import ApiService from "@/services/api.service";
+import TokenService from "@/services/token.service";
 import i18n from "@/i18n";
 
 Vue.use(VueRouter)
@@ -101,10 +102,17 @@ router.beforeEach(async (to, from, next) => {
   if (!localStorage.locale) localStorage.locale = "en";
   i18n.locale = localStorage.locale;
 
-  const loggedIn = localStorage.getItem("jwt");
+  let loggedIn = TokenService.getToken()!=null;
+  if (loggedIn) {
+    if (!TokenService.isTokenValid()) {
+      TokenService.removeToken();
+      loggedIn=false;
+      store.commit("status/setExpiredFlag", true);
+    }
+  }
 
   if (loggedIn) ApiService.setHeader();
-  if (loggedIn) store.commit("status/setLogged", true);
+  store.commit("status/setLogged", loggedIn);
 
   router.app.$ability(defineAbilitiesFor());
 

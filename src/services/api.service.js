@@ -1,5 +1,5 @@
 import { AXIOS, CancelToken } from "../axios";
-import { TokenService } from "./token.service";
+import TokenService from "./token.service";
 
 const ApiService = {
   setHeader() {
@@ -22,20 +22,31 @@ const ApiService = {
     AXIOS.defaults.headers.get.Authorization = null;
   },
 
-  get(resource,config=null) {
-    return AXIOS.get(resource,config);
+  async check(func) {
+    try {
+      return await func();
+    }
+    catch (e) {
+      if (e.response && e.response.status==401)
+        throw {jwtExpired: true};
+      throw e;
+    }
   },
 
-  post(resource, data,config=null) {
-    return AXIOS.post(resource, data,config);
+  async get(resource,config=null) {
+    return await this.check(async () => AXIOS.get(resource,config));
   },
 
-  put(resource, data,config=null) {
-    return AXIOS.put(resource, data,config);
+  async post(resource, data,config=null) {
+    return await this.check(async () => AXIOS.post(resource, data,config));
   },
 
-  delete(resource,config=null) {
-    return AXIOS.delete(resource,config);
+  async put(resource, data,config=null) {
+    return await this.check(async () => AXIOS.put(resource, data,config));
+  },
+
+  async delete(resource,config=null) {
+    return await this.check(async () => AXIOS.delete(resource,config));
   },
 
   /**
@@ -49,11 +60,11 @@ const ApiService = {
    *    - username
    *    - password
    **/
-  customRequest(payload) {
-    return AXIOS(payload);
+   async customRequest(payload) {
+    return this.check(async () => AXIOS(payload));
   },
 
-  download(url, progressCb, endCb) {
+  download(url, progressCb, endCb, errorCb) {
     let cancel;
     
     let config = {
@@ -81,14 +92,14 @@ const ApiService = {
         endCb(status, data);
       }
       catch (e) {
-        endCb(-1);
+        errorCb(e);
       }
     })();
 
     return cancel;
   },
 
-  upload(url, formData, progressCb, endCb) {
+  upload(url, formData, progressCb, endCb, errorCb) {
     let cancel;
     
     let config = {
@@ -120,7 +131,7 @@ const ApiService = {
         endCb(status);
       }
       catch (e) {
-        endCb(-1);
+        errorCb(e);
       }
     })();
 

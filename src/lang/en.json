@@ -188,6 +188,7 @@
     "NO_PASSWORD": "Missing password.",
     "NO_USER": "User not found.",
     "BIND_ERROR": "Wrong password. Please retry.",
-    "LOGIN_ERROR": "Login error. Please contact the administrator.<br>Error code: {extra}."
+    "LOGIN_ERROR": "Login error. Please contact the administrator.<br>Error code: {extra}.",
+    "TOKEN_EXPIRED": "Session expired. You need to login again."
   }
 }

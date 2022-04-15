@@ -65,6 +65,8 @@ export default {
           this.isLoading=false;
           this.status=2;
         }
+      }, (e) => {
+        this.checkResult(e);
       });
     },
     doCancel() {

@@ -41,7 +41,7 @@ export default {
     }
   },
   async created() {
-    this.user=await UserDataService.getUserData();
+    this.user=await this.operationWithCheck(async () => await UserDataService.getUserData());
   },
   
   data() {
