@@ -54,6 +54,7 @@ import enums from "@/enums";
 import { mapMutations } from "vuex";
 import { AuthService } from "@/services/auth.service";
 import LocaleSwitch from "@/components/LocaleSwitch";
+import helper from "@/mixins/helper";
 
 export default {
   components: {
@@ -65,6 +66,7 @@ export default {
     showPassword: false,
     loading: false,
   }),
+  mixins: [helper],
   methods: {
     ...mapMutations("snackbar", ["showMessage","closeMessage"]),
     goToNext() {
@@ -81,14 +83,25 @@ export default {
       if (!found) this.$router.push({ name: "default" }).catch(()=>{});
     },
     async submit() {
-      const res=await AuthService.login(this.email, this.password);
-      if (res.error) {
-        this.showMessage({
-          context: enums.TOAST_TYPE.ERROR,
-          text: res.error
-        });
+      if (this.email=="") {
+        this.showError("NO_EMAIL");
+        return;
       }
-      else {
+      if (this.password=="") {
+        this.showError("NO_PASSWORD");
+        return;
+      }
+
+      const res=await this.operationWithCheck(async () => await AuthService.login(this.email, this.password),(err) => {
+        if (err.response.data.aaError) {
+          if (err.response.data.aaError=="NO_USER")
+            return "NO_USER";
+          if (err.response.data.aaError=="BIND_ERROR")
+            return "BIND_ERROR";
+          return {code: "LOGIN_ERROR", extra: err.response.data.aaError};
+        }
+      });
+      if (res) {
         this.showMessage({
           context: enums.TOAST_TYPE.SUCCESS,
           text: this.$t('toasts.login_ok')

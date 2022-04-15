@@ -9,10 +9,10 @@
     v-model="snackbar"
     :timeout="-1"
   >
-    <div class="snack-text">{{ text }}</div>
+    <div class="snack-text" v-html="text"/>
     <template v-slot:action="{ attrs }">
       <v-btn v-bind="attrs" class="close-button" dark @click="closeMessage()"
-        >Close</v-btn
+        >{{ $t("misc.close") }}</v-btn
       >
     </template>
   </v-snackbar>
@@ -30,7 +30,7 @@ export default {
         text: "",
         x: "",
         y: "bottom",
-        duration: 5000,
+        duration: 15000,
         timeout: null
     };
   },

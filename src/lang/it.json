@@ -10,7 +10,8 @@
     "yes": "Sì",
     "no": "No",
     "columns": "Colonne",
-    "menu": "Menù"
+    "menu": "Menù",
+    "close": "Chiudi"
   },
   "custom": {
     "appname": "Gestione Magazzino",
@@ -180,5 +181,13 @@
     }
   },
   "filters": {
+  },
+  "errors": {
+    "GENERIC": "<br>Contattare l'amministratore.",
+    "NO_EMAIL": "Email mancante.",
+    "NO_PASSWORD": "Password mancante.",
+    "NO_USER": "Utente non trovato.",
+    "BIND_ERROR": "Password errata. Riprovare.",
+    "LOGIN_ERROR": "Errore nel login. Contattare l'amministratore.<br>Codice errore: {extra}."
   }
 }

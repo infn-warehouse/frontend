@@ -14,11 +14,29 @@ export default {
   methods: {
     ...mapMutations("snackbar", ["showMessage","closeMessage"]),
 
-    checkResult(res) {
+    showError(code,extra=null) {
+      this.showMessage({
+        context: enums.TOAST_TYPE.ERROR,
+        text: this.$t("errors."+code,{extra})
+      });
+    },
+
+    checkResult(res,evaluate=null) {
       if (res.error) {
+        if (evaluate) {
+          let temp=evaluate(res.error);
+          if (temp) {
+            if (typeof temp === 'object')
+              this.showError(temp.code,temp.extra);
+            else
+              this.showError(temp);
+            return null;
+          }
+        }
+        
         this.showMessage({
           context: enums.TOAST_TYPE.ERROR,
-          text: res.error
+          text: res.error+this.$t("errors.GENERIC")
         });
         return null;
       }
@@ -26,12 +44,12 @@ export default {
         return res;
       }
     },
-    async operationWithCheck(func) {
+    async operationWithCheck(func,evaluate=null) {
       try {
-        return this.checkResult(await func());
+        return this.checkResult(await func(),evaluate);
       }
       catch (error) {
-        return this.checkResult({error});
+        return this.checkResult({error},evaluate);
       }
     },
     makeTitle(resourceTitle,mode,name) {

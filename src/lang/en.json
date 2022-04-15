@@ -10,7 +10,8 @@
     "yes": "Yes",
     "no": "No",
     "columns": "Columns",
-    "menu": "Menu"
+    "menu": "Menu",
+    "close": "Close"
   },
   "custom": {
     "appname": "Warehouse Management",
@@ -180,5 +181,13 @@
     }
  },
   "filters": {
+  },
+  "errors": {
+    "GENERIC": "<br>Please contact the administrator.",
+    "NO_EMAIL": "Missing email.",
+    "NO_PASSWORD": "Missing password.",
+    "NO_USER": "User not found.",
+    "BIND_ERROR": "Wrong password. Please retry.",
+    "LOGIN_ERROR": "Login error. Please contact the administrator.<br>Error code: {extra}."
   }
 }
