@@ -17,6 +17,7 @@
     "appname": "Warehouse Management",
     "profile": "Profile",
     "upload_test": "Upload test",
+    "fill_test": "Forms filling test",
     "role": "Role",
     "email": "Email"
   },
@@ -62,6 +63,7 @@
     "stats": "Statistics",
     "profile": "Profile",
     "upload_test": "Upload",
+    "fill_test": "Fill",
     "logout": "Logout"
   },
   "confirm": {
@@ -161,7 +163,8 @@
     "showAll": "Show all",
     "hideAll": "Hide",
     "close": "Close",
-    "savePref": "Save preference"
+    "savePref": "Save preference",
+    "fill": "Fill"
   },
   "details": {
     "movements": {

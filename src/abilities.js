@@ -18,6 +18,7 @@ export default function defineAbilitiesFor() {
         can('route', 'ItemDetails');
         can('route', 'Profile');
         can('route', 'UploadTest');
+        can('route', 'FillTest');
         can('route', 'Stats');
         can('route', 'FileDetails');
         break;
@@ -30,6 +31,7 @@ export default function defineAbilitiesFor() {
         can('route', 'ItemDetails');
         can('route', 'Profile');
         can('route', 'UploadTest');
+        can('route', 'FillTest');
         can('route', 'Stats');
         can('route', 'FileDetails');
         break;

@@ -17,6 +17,7 @@
     "appname": "Gestione Magazzino",
     "profile": "Profilo",
     "upload_test": "Test di upload",
+    "fill_test": "Test riempimento moduli",
     "role": "Ruolo",
     "email": "Email"
   },
@@ -62,6 +63,7 @@
     "stats": "Statistiche",
     "profile": "Profilo",
     "upload_test": "Upload",
+    "fill_test": "Riempi",
     "logout": "Logout"
   },
   "confirm": {
@@ -161,7 +163,8 @@
     "showAll": "Mostra tutti",
     "hideAll": "Nascondi",
     "close": "Chiudi",
-    "savePref": "Salva preferenza"
+    "savePref": "Salva preferenza",
+    "fill": "Riempi"
   },
   "details": {
     "movements": {

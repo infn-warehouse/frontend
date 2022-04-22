@@ -96,6 +96,7 @@ export default {
         Stats: "Stats",
         Profile: "Profile",
         UploadTest: "UploadTest",
+        FillTest: "FillTest",
       },
       navigationItems: [
         {
@@ -118,6 +119,11 @@ export default {
           name: "UploadTest",
           text: this.$t('navigation.upload_test'),
           enabled: this.$can("route","UploadTest")
+        },
+        {
+          name: "FillTest",
+          text: this.$t('navigation.fill_test'),
+          enabled: this.$can("route","FillTest")
         },
         {
           name: "Profile",
