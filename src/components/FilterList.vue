@@ -130,6 +130,7 @@ export default {
     "fetchName",
     "fetchValue",
     "save",
+    "filterInfo",
   ],
   methods: {
     savePref() {
@@ -164,7 +165,13 @@ export default {
       }
       this.clear=true;
     },
-    setFilter2() {
+    setFilter2(item) {
+      if (!this.filterInfo.multiple) {
+        this.valueCopy.forEach((i) => {
+          if (i!=item) i.checked=false;
+        });
+      }
+
       this.computeClear();
       this.$emit("input", this.valueCopy);
       this.$emit("change");

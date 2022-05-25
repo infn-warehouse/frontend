@@ -11,7 +11,8 @@
     "no": "No",
     "columns": "Columns",
     "menu": "Menu",
-    "close": "Close"
+    "close": "Close",
+    "all": "All"
   },
   "custom": {
     "appname": "Warehouse Management",

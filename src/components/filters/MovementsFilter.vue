@@ -178,16 +178,10 @@ export default {
   data() {
     return {
       filterData: {
-        agreementTypes: [
-          { name: "Tutti", checked: false, all: true },
-          { name: "SI", value: "SI", checked: false },
-          { name: "NO", value: "NO", checked: false }
-        ],
         tipoDocAcc: [],
         dataMovimento: {}
       },
       filterInfo: {
-        agreementTypes: { multiple: true },
         tipoDocAcc: { multiple: true },
         dataMovimento: { type: "range" }
       },

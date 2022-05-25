@@ -54,6 +54,26 @@
       </v-list-group>
     </v-list>
     <v-divider></v-divider>
+    <v-list dense>
+      <v-list-group>
+        <template v-slot:activator>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ $t("headers.orders.statOrdine") }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </template>
+        <FilterList
+          :type="2"
+          matchAttribute="value"
+          v-model="filterData.statOrdine"
+          :filterInfo="filterInfo.statOrdine"
+          @change="handleChange"
+        >
+        </FilterList>
+      </v-list-group>
+    </v-list>
+    <v-divider></v-divider>
     <div class="my-container align-right">
       <v-btn color="primary" @click="clearFilters">
         {{ $t("buttons.clear") }}
@@ -90,10 +110,16 @@ export default {
   data() {
     return {
       filterData: {
-        dataordine: {}
+        dataordine: {},
+        statOrdine: [
+          { name: this.$t("misc.all"), all: true, checked: true, default: true },
+          { name: this.$t("custom.c"), value: "C", checked: false },
+          { name: this.$t("custom.s"), value: "S", checked: false }
+        ]
       },
       filterInfo: {
-        dataordine: { type: "range" }
+        dataordine: { type: "range" },
+        statOrdine: { }
       },
       setFilter: this.setOrdersFilter,
       setFlag: this.setOrdersFlag,

@@ -186,9 +186,9 @@ export default {
           responsabile: { data: item.responsabile, dataType: "text" },
           importo: { data: item.importo, dataType: "currency" },
           statOrdine: { data: item.statOrdine ? (
-            item.statOrdine.toUpperCase()=="S" ? this.$t("custom.s") : this.$t("custom.c")
+            item.statOrdine=="S" ? this.$t("custom.s") : this.$t("custom.c")
           ) : this.$t("custom.?"), dataType: "chip", chipClass: item.statOrdine ? (
-            item.statOrdine.toUpperCase()=="S" ? "green" : "yellow"
+            item.statOrdine=="S" ? "green" : "yellow"
           ) : null },
           nConsegne: { data: item.nConsegne, dataType: "text" },
           dataconsegna: { data: item.dataconsegna, dataType: "date" },

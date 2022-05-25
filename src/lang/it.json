@@ -11,7 +11,8 @@
     "no": "No",
     "columns": "Colonne",
     "menu": "Menù",
-    "close": "Chiudi"
+    "close": "Chiudi",
+    "all": "Tutti"
   },
   "custom": {
     "appname": "Gestione Magazzino",
