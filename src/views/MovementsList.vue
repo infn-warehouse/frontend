@@ -85,11 +85,6 @@ export default {
   methods: {
     mapHeaders() {
       let tableHeaders=[];
-      // tableHeaders.push({
-      //   value: "idMovimento",
-      //   align: "start",
-      //   sortable: true
-      // });
       tableHeaders.push({
         value: "nMovimento",
         sortable: true,
@@ -100,16 +95,6 @@ export default {
         sortable: true,
         align: "start"
       });
-      tableHeaders.push({
-        value: "tipoMovimento",
-        sortable: true,
-        align: "start"
-      });
-      // tableHeaders.push({
-      //   value: "rifMov",
-      //   sortable: true,
-      //   align: "start"
-      // });
       tableHeaders.push({
         value: "idOrdine",
         sortable: true,
@@ -145,31 +130,35 @@ export default {
         sortable: true,
         align: "start"
       });
-      // tableHeaders.push({
-      //   value: "dataInvioCollaudo",
-      //   sortable: true,
-      //   align: "start"
-      // });
-      // tableHeaders.push({
-      //   value: "collaudoEseg",
-      //   sortable: true,
-      //   align: "start"
-      // });
       tableHeaders.push({
         value: "dataCollaudo",
         sortable: true,
+        align: "start",
+        show: 1
+      });
+      tableHeaders.push({
+        value: "note",
+        sortable: true,
+        align: "start",
+        show: 1
+      });
+      tableHeaders.push({
+        value: "codificaSpaziale",
+        sortable: true,
+        align: "start",
+        show: 1
+      });
+      tableHeaders.push({
+        value: "tipoCollaudo",
+        sortable: true,
+        align: "start",
+        show: 1
+      });
+      tableHeaders.push({
+        value: "inUscita",
+        sortable: true,
         align: "start"
       });
-      // tableHeaders.push({
-      //   value: "note",
-      //   sortable: true,
-      //   align: "start"
-      // });
-      // tableHeaders.push({
-      //   value: "reparto",
-      //   sortable: true,
-      //   align: "start"
-      // });
       return tableHeaders;
     },
     mapItems() {
@@ -177,23 +166,25 @@ export default {
         let tableItem={};
         tableItem.baseItem=item;
         tableItem.fields = {
-          // idMovimento: { data: item.idMovimento, dataType: "text" },
+          idMovimento: { data: item.idMovimento, dataType: "text" },
           nMovimento: { data: item.nMovimento, dataType: "text" },
           dataMovimento: { data: item.dataMovimento, dataType: "date" },
-          tipoMovimento: { data: item.tipoMovimento, dataType: "text" },
-          // rifMov: { data: item.rifMov, dataType: "text" },
           idOrdine: { data: item.idOrdine, dataType: "text" },
           datadocumento: { data: item.datadocumento, dataType: "date" },
-          tipoDocAcc: { data: item.documentoByTipoDocAcc ? item.documentoByTipoDocAcc.dicitura : "", dataType: "text" },
+          tipoDocAcc: { data: item.documentoByTipoDocAcc ? item.documentoByTipoDocAcc.dicitura : this.$t("custom.?"), dataType: "chip" },
           nDocAcc: { data: item.nDocAcc, dataType: "text" },
           dataConsegna: { data: item.dataConsegna, dataType: "date" },
           consegnatario: { data: item.consegnatario, dataType: "text" },
           nColli: { data: item.nColli, dataType: "text" },
-          // dataInvioCollaudo: { data: item.dataInvioCollaudo, dataType: "date" },
-          // collaudoEseg: { data: item.collaudoEseg, dataType: "text" },
           dataCollaudo: { data: item.dataCollaudo, dataType: "date" },
-          // note: { data: item.note, dataType: "text" },
-          // reparto: { data: item.reparto, dataType: "text" },
+          note: { data: item.note, dataType: "text" },
+          codificaSpaziale: { data: item.codificaSpaziale, dataType: "text" },
+          tipoCollaudo: { data: item.tipoCollaudo, dataType: "text" },
+          inUscita: {
+            data: item.inUscita ? this.$t("custom.outbound") : this.$t("custom.inbound"),
+            dataType: "chip",
+            chipClass: item.inUscita ? "blue" : "green"
+          },
         };
         /*{
           actionType: "custom",
@@ -218,7 +209,7 @@ export default {
         "Movimenti",
         "idMovimento",
         item,
-        payload => payload.p.idMovimento
+        payload => payload.p.nMovimento
       );
     },
     fetch(paginationOpts=null,search,filter) {

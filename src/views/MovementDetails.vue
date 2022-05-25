@@ -31,9 +31,8 @@
           </v-tab-item>
           <v-tab-item key="tab2">
             <div class="flex-container">
-              <div><b>{{ $t("headers.movements.dataInvioCollaudo") }}</b>: {{this.selectedItem.dataInvioCollaudo}}</div>
-              <div><b>{{ $t("headers.movements.collaudoEseg") }}</b>: {{this.selectedItem.collaudoEseg | yesNo}}</div>
-              <div><b>{{ $t("headers.movements.dataCollaudo") }}</b>: {{this.selectedItem.dataCollaudo}}</div>
+              <div><b>{{ $t("headers.movements.dataCollaudo") }}</b>: {{this.selectedItem.dataCollaudo | date}}</div>
+              <div><b>{{ $t("headers.movements.tipoCollaudo") }}</b>: {{this.selectedItem.tipoCollaudo}}</div>
             </div>
           </v-tab-item>
         </v-tabs-items>
@@ -82,7 +81,7 @@ export default {
     },
     
     title(item) {
-      return this.makeTitleDetails(this.resourceType,item.idMovimento+" ("+item.idOrdine+")");
+      return this.makeTitleDetails(this.resourceType,item.nMovimento+" ("+item.idOrdine+")");
     },
 
     delete(item) {
@@ -92,7 +91,7 @@ export default {
         "Movimenti",
         "idMovimento",
         item,
-        payload => payload.p.id
+        payload => payload.p.nMovimento
       );
     },
   },

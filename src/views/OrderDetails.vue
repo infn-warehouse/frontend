@@ -71,7 +71,7 @@ export default {
     ...mapMutations("filters", ["setOrdersFlag"]),
     
     fetch(id) {
-      return GraphileService.fetchOne("Ordini",[],id,"idordine");
+      return GraphileService.fetchOne("OrdiniWithCounters",[],id,"idordine");
     },
     
     title(item) {
@@ -85,7 +85,7 @@ export default {
         "Ordini",
         "idordine",
         item,
-        payload => payload.p.id
+        payload => payload.p.idordine
       );
     },
   },

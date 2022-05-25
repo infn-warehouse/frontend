@@ -98,17 +98,70 @@ export default {
       tableHeaders.push({
         value: "fornitore",
         sortable: true,
-        align: "start",
-        show: 1,
+        align: "start"
       });
       tableHeaders.push({
         value: "descrizione",
         sortable: true,
+        align: "start"
+      });
+      tableHeaders.push({
+        value: "terminiCons",
+        sortable: true,
         align: "start",
-        show: 1,
+        show: 1
+      });
+      tableHeaders.push({
+        value: "servizioRichi",
+        sortable: true,
+        align: "start",
+        show: 1
+      });
+      tableHeaders.push({
+        value: "responsabile",
+        sortable: true,
+        align: "start"
+      });
+      tableHeaders.push({
+        value: "importo",
+        sortable: true,
+        align: "start"
       });
       tableHeaders.push({
         value: "statOrdine",
+        sortable: true,
+        align: "start"
+      });
+      tableHeaders.push({
+        value: "nConsegne",
+        sortable: true,
+        align: "start",
+        show: 1
+      });
+      tableHeaders.push({
+        value: "dataconsegna",
+        sortable: true,
+        align: "start"
+      });
+      tableHeaders.push({
+        value: "collaudatore",
+        sortable: true,
+        align: "start",
+        show: 1
+      });
+      tableHeaders.push({
+        value: "note",
+        sortable: true,
+        align: "start",
+        show: 1
+      });
+      tableHeaders.push({
+        value: "cig",
+        sortable: true,
+        align: "start"
+      });
+      tableHeaders.push({
+        value: "rup",
         sortable: true,
         align: "start"
       });
@@ -128,7 +181,21 @@ export default {
           dataordine: { data: item.dataordine, dataType: "date" },
           fornitore: { data: item.fornitore, dataType: "text" },
           descrizione: { data: item.descrizione, dataType: "text" },
-          statOrdine: { data: item.statOrdine, dataType: "text" },
+          terminiCons: { data: item.terminiCons, dataType: "text" },
+          servizioRichi: { data: item.servizioRichi, dataType: "text" },
+          responsabile: { data: item.responsabile, dataType: "text" },
+          importo: { data: item.importo, dataType: "currency" },
+          statOrdine: { data: item.statOrdine ? (
+            item.statOrdine.toUpperCase()=="S" ? this.$t("custom.s") : this.$t("custom.c")
+          ) : this.$t("custom.?"), dataType: "chip", chipClass: item.statOrdine ? (
+            item.statOrdine.toUpperCase()=="S" ? "green" : "yellow"
+          ) : null },
+          nConsegne: { data: item.nConsegne, dataType: "text" },
+          dataconsegna: { data: item.dataconsegna, dataType: "date" },
+          collaudatore: { data: item.collaudatore, dataType: "text" },
+          note: { data: item.note, dataType: "text" },
+          cig: { data: item.cig, dataType: "text" },
+          rup: { data: item.rup, dataType: "text" },
           movimentiCount: { data: item.movimentiCount, dataType: "text" },
         };
         tableItem.click_action = {

@@ -41,7 +41,7 @@ export default {
         
         this.showMessage({
           context: enums.TOAST_TYPE.ERROR,
-          text: res.error+this.$t("errors.GENERIC")
+          text: JSON.stringify(res.error)+this.$t("errors.GENERIC")
         });
         return null;
       }

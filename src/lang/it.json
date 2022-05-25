@@ -19,7 +19,12 @@
     "upload_test": "Test di upload",
     "fill_test": "Test riempimento moduli",
     "role": "Ruolo",
-    "email": "Email"
+    "email": "Email",
+    "inbound": "In ingresso",
+    "outbound": "In uscita",
+    "c": "In conto",
+    "s": "In saldo",
+    "?": "?"
   },
   "date_picker": {
     "clear": "Pulisci",
@@ -80,23 +85,20 @@
   },
   "headers": {
     "movements": {
-      "idMovimento": "ID",
-      "nMovimento": "Numero",
-      "dataMovimento": "Data",
-      "tipoMovimento": "Tipo",
-      "rifMov": "Riferimento",
-      "idOrdine": "ID ordine",
-      "datadocumento": "Data doc",
-      "tipoDocAcc": "Tipo doc",
-      "nDocAcc": "Numero doc",
+      "nMovimento": "N° registrazione",
+      "dataMovimento": "Data registrazione",
+      "idOrdine": "Ordine associato",
+      "datadocumento": "Data bolla",
+      "tipoDocAcc": "Tipo documento",
+      "nDocAcc": "Numero bolla",
       "dataConsegna": "Data consegna",
-      "consegnatario": "Consegnatario",
-      "nColli": "Numero colli",
-      "dataInvioCollaudo": "Data invio collaudo",
-      "collaudoEseg": "Collaudo eseguito",
+      "consegnatario": "Conseg. / Destin.",
+      "nColli": "N° colli",
       "dataCollaudo": "Data collaudo",
       "note": "Note",
-      "reparto": "Reparto"
+      "codificaSpaziale": "Codifica spaziale",
+      "tipoCollaudo": "Tipo collaudo",
+      "inUscita": "Tipo"
     },
     "unloading_movs": {
       "articolo": "Codice articolo",
@@ -118,11 +120,21 @@
       "ubicazione": "Ubicazione"
     },
     "orders": {
-      "idordine": "ID",
+      "idordine": "Numero",
       "dataordine": "Data",
-      "fornitore": "Fornitore",
-      "descrizione": "Descrizione",
+      "fornitore": "Azienda",
+      "descrizione": "Categoria materiale",
+      "terminiCons": "Termini di consegna",
+      "servizioRichi": "Richiedente",
+      "responsabile": "Referente",
+      "importo": "Importo",
       "statOrdine": "Stato",
+      "nConsegne": "Numero consegne",
+      "dataconsegna": "Data consegna prevista",
+      "collaudatore": "Collaudatore",
+      "note": "Note",
+      "cig": "CIG",
+      "rup": "RUP",
       "movimentiCount": "# movimenti"
     },
     "monthly_costs": {
@@ -187,6 +199,7 @@
   },
   "errors": {
     "GENERIC": "<br>Contattare l'amministratore.",
+    "QUERY": "Errore nell'esecuzione di una query.<br>Contattare l'amministratore.",
     "NO_EMAIL": "Email mancante.",
     "NO_PASSWORD": "Password mancante.",
     "NO_USER": "Utente non trovato.",
