@@ -53,14 +53,14 @@ const GraphileService = {
       return;
     }
 
-    this.types=[];
-    this.assoc=[];
-    this.dataTypes=[];
+    this.types={};
+    this.assoc={};
+    this.dataTypes={};
     
     let temp=res.data.__schema.types;
     temp.forEach(el => {
       if (el.fields) {
-        // dataTypes will be an array of objects, with a single index representing the type
+        // dataTypes will be a dictionary of objects, with the key representing the type
         // for each object, there will be a property for each field:
         //   key: field name, value: a string representing the data type of that field
         this.dataTypes[el.name] = {};
@@ -70,14 +70,16 @@ const GraphileService = {
           this.dataTypes[el.name][o.name] = o.type.name ? o.type.name : o.type.ofType.name;
         });
 
-        // types it will be an array of strings, with two indexes representing type and field
-        // the array will not include relations
+        // types will be a dictionary of arrays, with the key representing the type
+        // each array will contain the fields (as strings)
+        // the arrays will not include relations
         this.types[el.name]=el.fields.filter(x => !x.description || (
           !x.description.includes("that is related to") && !x.description.includes("through a set of")
         )).map(x => x.name);
 
-        // assoc will be an array of strings, with two indexes representing type and field
-        // the array will include relations
+        // assoc will be a dictionary of arrays, with the key representing the type
+        // each array will contain the fields (as strings)
+        // the arrays will include relations
         this.assoc[el.name]=el.fields.filter(x => !x.description || x.description.includes("that is related to")).map(x => x.name);
       }
     });
@@ -170,7 +172,7 @@ const GraphileService = {
   // retrieve data type
   async formatSingle(type,field,value) {
     let dataType=await this.getDataType(type,field);
-    if (dataType!="Int")
+    if (dataType!="Int" && dataType!="Boolean")
       return "\""+value+"\"";
     return value;
   },
@@ -184,7 +186,7 @@ const GraphileService = {
       return await this.formatSingle(type,field,list);
 
     let dataType=await this.getDataType(type,field);
-    if (dataType!="Int")
+    if (dataType!="Int" && dataType!="Boolean")
       return "\""+list.join("\",\"")+"\"";
     return list.join(",");
   },

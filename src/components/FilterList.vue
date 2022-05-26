@@ -91,6 +91,25 @@
         >
       </v-col>
     </div>
+    <div v-if="type==3">
+      <template v-for="(item, i) in valueCopy">
+        <v-list-item v-if="!item.hidden" :key="i" dense>
+          <v-list-item-action>
+            <v-checkbox
+              color="primary"
+              v-model="item.checked"
+              @change="setFilter3(item)"
+              off-icon="$radioOff"
+              on-icon="$radioOn"
+              :readonly="item.checked"
+            ></v-checkbox>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>{{ item.name }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -115,7 +134,8 @@ export default {
         multiSort: false,
         mustSort: true
       },   
-      clear: false   
+      clear: false,
+      radioIndex: 0
     };
   },
   mixins: [helper],
@@ -123,7 +143,6 @@ export default {
     "type",
     "value",
     "alwaysShowAll",
-    "allowMultiple",
     "matchAttribute",
     "fetchSort",
     "fetch",
@@ -166,15 +185,15 @@ export default {
       this.clear=true;
     },
     setFilter2(item) {
-      if (!this.filterInfo.multiple) {
-        this.valueCopy.forEach((i) => {
-          if (i!=item) i.checked=false;
-        });
-      }
-
       this.computeClear();
       this.$emit("input", this.valueCopy);
       this.$emit("change");
+    },
+    setFilter3(item) {
+      this.valueCopy.forEach((i) => {
+        if (i!=item) i.checked=false;
+      });
+      this.setFilter2(item);
     },
     loadSelectedItems() {
       this.selectedItems = [];

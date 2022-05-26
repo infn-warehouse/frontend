@@ -15,4 +15,9 @@ export default {
             return name.substring(0,name.length-1);
         return name;
     },
-}  
+    checkEmptyString(s) {
+        if (s instanceof String)
+            return s=="";
+        return false;
+    }
+}

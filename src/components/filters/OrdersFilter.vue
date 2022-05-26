@@ -64,7 +64,7 @@
           </v-list-item-content>
         </template>
         <FilterList
-          :type="2"
+          :type="3"
           matchAttribute="value"
           v-model="filterData.statOrdine"
           :filterInfo="filterInfo.statOrdine"

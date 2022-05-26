@@ -91,7 +91,7 @@ export default {
         ubicazione: []
       },
       filterInfo: {
-        ubicazione: { multiple: true },
+        ubicazione: { },
       },
       setFilter: this.setItemsFilter,
       setFlag: this.setItemsFlag,

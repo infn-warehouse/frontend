@@ -1,6 +1,7 @@
 import enums from "@/enums";
 import _ from "lodash";
 import helper from "@/mixins/helper";
+import utils from "../utils";
 
 export default {
   mixins: [helper],
@@ -135,13 +136,17 @@ export default {
         else if (Array.isArray(data)) {
           if (info.multiple) {
             filter = [];
+            let check=true;
             data.forEach(function(item) {
               if (item.checked) {
                 filter.push(item[matchAttribute]);
               }
+              else check=false;
               if (item.checked != (item.default ?? false))
                 clear=false;
             });
+            if (check)
+              filter=[];
           }
           else {
             filter = "";
@@ -163,7 +168,7 @@ export default {
           clear=false;
         }
 
-        if (filter!=null && filter!="")
+        if (filter!=null && !utils.checkEmptyString(filter))
           filters[key]={
             type: info.type,
             value: filter

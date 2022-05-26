@@ -76,70 +76,26 @@
         </FilterList>
       </v-list-group>
     </v-list>
-    <!-- <v-toolbar color="primary" dark>
-      <v-toolbar-title>{{ $t("misc.filters") }}</v-toolbar-title>
-    </v-toolbar>
-    <v-list dense>
-      <v-list-group>
-        <template v-slot:activator>
-          <v-list-item-content>
-            <v-list-item-title>
-              {{ $t("filters.movements.tipoDocAcc") }}
-            </v-list-item-title>
-          </v-list-item-content>
-        </template>
-        <FilterList
-          :type="1"
-          matchAttribute="value"
-          v-model="filterData.agreementTypes"
-          @change="handleChange"
-        >
-        </FilterList>
-      </v-list-group>
-    </v-list>
     <v-divider></v-divider>
     <v-list dense>
       <v-list-group>
         <template v-slot:activator>
           <v-list-item-content>
             <v-list-item-title>
-              {{ $t("filters.users.name") }}
+              {{ $t("headers.movements.inUscita") }}
             </v-list-item-title>
           </v-list-item-content>
         </template>
         <FilterList
-          :type="2"
-          :allowMultiple="false"
-          :alwaysShowAll="false"
-          v-model="filterData.agreementTypes"
+          :type="3"
+          matchAttribute="value"
+          v-model="filterData.inUscita"
+          :filterInfo="filterInfo.inUscita"
           @change="handleChange"
         >
         </FilterList>
       </v-list-group>
     </v-list>
-    <v-divider></v-divider>
-    <v-list dense>
-      <v-list-group>
-        <template v-slot:activator>
-          <v-list-item-content>
-            <v-list-item-title>
-              {{ $t("filters.users.services") }}
-            </v-list-item-title>
-          </v-list-item-content>
-        </template>
-        <FilterList
-          :type="1"
-          matchAttribute="value"
-          v-model="filterData.services"
-          @change="handleChange"
-          :fetch="documentFetch"
-          fetchSort="name"
-          fetchName="name"
-          fetchValue="id"
-        >
-        </FilterList>
-      </v-list-group>
-    </v-list> -->
     <v-divider></v-divider>
     <div class="my-container align-right">
       <v-btn color="primary" @click="clearFilters">
@@ -179,11 +135,17 @@ export default {
     return {
       filterData: {
         tipoDocAcc: [],
-        dataMovimento: {}
+        dataMovimento: {},
+        inUscita: [
+          { name: this.$t("misc.all"), all: true, checked: true, default: true },
+          { name: this.$t("custom.inbound"), value: false, checked: false },
+          { name: this.$t("custom.outbound"), value: true, checked: false }
+        ]
       },
       filterInfo: {
-        tipoDocAcc: { multiple: true },
-        dataMovimento: { type: "range" }
+        tipoDocAcc: { },
+        dataMovimento: { type: "range" },
+        inUscita: { }
       },
       setFilter: this.setMovementsFilter,
       setFlag: this.setMovementsFlag,
