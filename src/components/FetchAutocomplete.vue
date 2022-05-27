@@ -47,8 +47,6 @@ export default {
         sortDesc: [false],
         page: 1,
         itemsPerPage: 10,
-        multiSort: false,
-        mustSort: true
       },
       search: "",
       searchComputed: "",

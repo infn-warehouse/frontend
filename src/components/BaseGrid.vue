@@ -209,8 +209,6 @@ export default {
         page: 1,
         itemsPerPage: 25,
         sortDesc: [false],
-        multiSort: false,
-        mustSort: true
       },
     };
   },

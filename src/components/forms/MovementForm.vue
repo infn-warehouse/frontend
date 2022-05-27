@@ -5,12 +5,23 @@
     }}</v-card-title>
     <ValidationObserver v-slot="{ invalid }">
       <v-card-text>
-        <v-text-field
-          class="required"
-          :label="$t('headers.movements.idOrdine')"
-          v-model="form.idOrdine"
-        ></v-text-field>
+        <ValidationProvider name="Prova 1" immediate rules="required" v-slot="{ errors }">
+          <v-text-field
+            class="required"
+            :label="$t('headers.movements.nMovimento')"
+            v-model="form.nMovimento"
+          ></v-text-field>
+          <span class="form-error">{{ errors[0] }}</span>
+        </ValidationProvider>
         <ValidationProvider name="Prova 2" immediate rules="required" v-slot="{ errors }">
+          <v-text-field
+            class="required"
+            :label="$t('headers.movements.idOrdine')"
+            v-model="form.idOrdine"
+          ></v-text-field>
+          <span class="form-error">{{ errors[0] }}</span>
+        </ValidationProvider>
+        <ValidationProvider name="Prova 3" immediate rules="required" v-slot="{ errors }">
           <FetchAutocomplete
             class="required"
             :label="$t('headers.movements.tipoDocAcc')"
@@ -22,7 +33,7 @@
           ></FetchAutocomplete>
           <span class="form-error">{{ errors[0] }}</span>
         </ValidationProvider>
-        <ValidationProvider name="Prova 3" immediate rules="required" v-slot="{ errors }">
+        <ValidationProvider name="Prova 4" immediate rules="required" v-slot="{ errors }">
           <v-text-field
             class="required"
             :label="$t('headers.movements.nDocAcc')"
@@ -30,7 +41,7 @@
           ></v-text-field>
           <span class="form-error">{{ errors[0] }}</span>
         </ValidationProvider>
-        <ValidationProvider name="Prova 4" immediate rules="required" v-slot="{ errors }">
+        <ValidationProvider name="Prova 5" immediate rules="required" v-slot="{ errors }">
           <DatePicker
             class="required"
             :label="$t('headers.movements.dataConsegna')"
@@ -40,9 +51,13 @@
         </ValidationProvider>
       </v-card-text>
       <FormButtons
+        :loading="loading"
         @onSave="onSubmit"
         @onCancel="onCancel"
+        @onBack="onBack"
         :disabled="invalid"
+        :multiForm="hasBack"
+        multiLayout="2"
       />
     </ValidationObserver>
   </div>
@@ -68,6 +83,7 @@ export default {
       formTitle: "",
       form: {
         idMovimento: "",
+        nMovimento: "",
         idOrdine: "",
         tipoDocAcc: null,
         nDocAcc: "",
@@ -86,25 +102,27 @@ export default {
         "MovimentiTemp",
         "idMovimento",
         this.form,
-        payload => payload.v.idMovimento,
-        payload => payload.p.idMovimento
+        payload => payload.p.nMovimento,
+        payload => payload.p.nMovimento
       );
     },
     setForm() {
       if (this.mode == enums.FORM_MODE.UPDATE) {
         this.form.idMovimento = this.selectedItem.idMovimento;
+        this.form.nMovimento = this.selectedItem.nMovimento;
         this.form.idOrdine = this.selectedItem.idOrdine;
         this.form.tipoDocAcc = this.selectedItem.documentoByTipoDocAcc.idocumento;
         this.form.nDocAcc = this.selectedItem.nDocAcc;
         this.form.dataConsegna = this.selectedItem.dataConsegna;
       } else {
         this.form.idMovimento = "";
+        this.form.nMovimento = "";
         this.form.idOrdine = "";
         this.form.tipoDocAcc = null;
         this.form.nDocAcc = "";
         this.form.dataConsegna = "";
       }
-      this.formTitle=this.makeTitle(this.resourceType,this.mode,this.form.idMovimento);
+      this.formTitle=this.makeTitle(this.resourceType,this.mode,this.form.nMovimento);
     },
     documentFetch(paginationOpts=null,search,filter) {
       return GraphileService.fetchAll("Documento",[],[],filter,{search, on: ["dicitura"]},paginationOpts);

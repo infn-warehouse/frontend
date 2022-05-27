@@ -22,29 +22,23 @@ import singleShared from "@/mixins/singleShared";
 import MovementForm from "@/components/forms/MovementForm";
 import GraphileService from "@/services/graphile.service";
 import enums from "@/enums";
-
 export default {
   name: 'ProfileSingle',
-
   components: {
     MovementForm,
     Toolbar
   },
-
   mixins: [helper,singleShared],
-
   computed: {
     enums() {
       return enums;
     }
   },
-
   methods: {
     fetch(id) {
       return GraphileService.fetchOne("MovimentiTemp",["documento"],id,"idMovimento");
     },
   },
-
   data() {
     return {
       resourceTypes: this.$t("resource_types.movements"),

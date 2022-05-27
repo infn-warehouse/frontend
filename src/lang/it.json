@@ -17,6 +17,7 @@
   "custom": {
     "appname": "Gestione Magazzino",
     "profile": "Profilo",
+    "registration": "Registrazione",
     "upload_test": "Test di upload",
     "fill_test": "Test riempimento moduli",
     "role": "Ruolo",
@@ -47,12 +48,19 @@
     "cannotDisplay": "Il file non può essere visualizzato nel browser.",
     "name": "Nome",
     "size": "Dimensione"
-},
+  },
   "login": {
     "before": "Benvenuto in ",
     "after": ".",
     "email": "Email",
     "password": "Password"
+  },
+  "registration": {
+    "step1": "Inserire CIG",
+    "step2": "Inserire dati ordine",
+    "step3": "Registrazione lotto",
+    "cig": "CIG",
+    "orderNotFound": "Ordine non trovato."
   },
   "baseGrid": {
     "noResults": "Nessun risultato.",
@@ -63,6 +71,7 @@
     "founds": "elementi trovati"
   },
   "navigation": {
+    "registration": "Registrazione",
     "movements": "Movimenti",
     "items": "Articoli",
     "orders": "Ordini",

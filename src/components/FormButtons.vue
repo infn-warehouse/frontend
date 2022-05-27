@@ -7,19 +7,19 @@
           color="warning"
           text
           @click="onDelete()"
-          :disabled="createLoading"
+          :disabled="loading"
         >
           <v-icon>delete</v-icon>
         </v-btn>
       </v-col>
       <v-col cols="9" class="text-right">
-        <v-progress-circular indeterminate class="ml-3" v-if="createLoading" />
+        <v-progress-circular indeterminate class="ml-3" v-if="loading" />
         <v-btn
           v-if="multiForm && multiLayout > 0"
           class="ml-3"
           @click="onBack()"
           color="primary"
-          :disabled="createLoading"
+          :disabled="loading"
           >{{ $t("buttons.back") }}</v-btn
         >
         <v-btn
@@ -27,7 +27,7 @@
           class="ml-3"
           @click="onNext()"
           color="primary"
-          :disabled="disabled || createLoading"
+          :disabled="disabled || loading"
           >{{ $t("buttons.next") }}</v-btn
         >
         <v-btn
@@ -35,10 +35,10 @@
           class="ml-3"
           color="primary"
           @click="onSave()"
-          :disabled="disabled || createLoading"
+          :disabled="disabled || loading"
           >{{ $t("buttons.save") }}</v-btn
         >
-        <v-btn class="ml-3" :disabled="createLoading" text @click="onCancel()">{{
+        <v-btn v-if="!noCancel" class="ml-3" :disabled="loading" text @click="onCancel()">{{
           $t("buttons.cancel")
         }}</v-btn>
       </v-col>
@@ -53,7 +53,8 @@ export default {
     "disabled",
     "multiForm",
     "multiLayout",
-    "createLoading"
+    "loading",
+    "noCancel"
   ],
   methods: {
     onDelete() {

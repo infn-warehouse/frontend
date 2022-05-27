@@ -11,7 +11,7 @@ export default {
   data() {
     return {
       item: null,
-      loading: 0,
+      loading: false,
     }
   },
   async created() {
@@ -19,9 +19,9 @@ export default {
   },
   methods: {
     async _fetch() {
-      this.loading++;
+      this.loading=true;
       let res=await this.operationWithCheck(async () => await this.fetch(this.editing_id));
-      this.loading--;
+      this.loading=false;
       if (res) {
         this.item=res;
       }

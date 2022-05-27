@@ -145,7 +145,7 @@ export default {
               if (item.checked != (item.default ?? false))
                 clear=false;
             });
-            if (check)
+            if (check && info.resetAll)
               filter=[];
           }
           else {
@@ -167,12 +167,12 @@ export default {
           filter=data;
           clear=false;
         }
-
-        if (filter!=null && !utils.checkEmptyString(filter))
+        if (filter!=null && filter!=="") {
           filters[key]={
             type: info.type,
             value: filter
           };
+        }
       }
       return { filters, clear };
     },

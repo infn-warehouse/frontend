@@ -39,10 +39,16 @@ export default {
           }
         }
         
-        this.showMessage({
-          context: enums.TOAST_TYPE.ERROR,
-          text: JSON.stringify(res.error)+this.$t("errors.GENERIC")
-        });
+        if (res.error instanceof Error)
+          this.showMessage({
+            context: enums.TOAST_TYPE.ERROR,
+            text: res.error+this.$t("errors.GENERIC")
+          });
+        else
+          this.showMessage({
+            context: enums.TOAST_TYPE.ERROR,
+            text: JSON.stringify(res.error)+this.$t("errors.GENERIC")
+          });
         return null;
       }
       else {

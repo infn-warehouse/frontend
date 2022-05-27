@@ -38,7 +38,7 @@
           content-class="edit-form-dialog"
         >
           <v-card>
-            <MovementForm
+            <OrderForm
               v-if="formDialog"
               :mode="mode"
               :selectedItem="editItem"
@@ -59,7 +59,7 @@ import _ from "lodash";
 import helper from "@/mixins/helper";
 import formDialog from "@/mixins/formDialog";
 import listShared from "@/mixins/listShared";
-import MovementForm from "@/components/forms/MovementForm";
+import OrderForm from "@/components/forms/OrderForm";
 import OrdersFilter from "@/components/filters/OrdersFilter";
 import GraphileService from "@/services/graphile.service";
 import enums from "@/enums";
@@ -69,7 +69,7 @@ export default {
 
   components: {
     BaseGrid,
-    MovementForm,
+    OrderForm,
     Toolbar,
     OrdersFilter
   },

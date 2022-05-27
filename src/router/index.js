@@ -9,6 +9,7 @@ import ItemsList from '../views/ItemsList.vue'
 import ItemDetails from '../views/ItemDetails.vue'
 import MonthlyCostsList from '../views/MonthlyCostsList.vue'
 import Profile from '../views/Profile.vue'
+import Registration from '../views/Registration.vue'
 import UploadTest from '../views/UploadTest.vue'
 import FillTest from '../views/FillTest.vue'
 import FileDetails from '../views/FileDetails.vue'
@@ -31,6 +32,11 @@ const routes = [
     path: '/restricted',
     name: 'Restricted',
     component: Restricted
+  },
+  {
+    path: '/registration',
+    name: 'Registration',
+    component: Registration
   },
   {
     path: '/orders',

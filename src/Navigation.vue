@@ -86,6 +86,7 @@ export default {
     return {
       showDropdown: false,
       mapping: {
+        Registration: "Registration",
         Orders: "Orders",
         OrderDetails: "Orders",
         Movements: "Movements",
@@ -99,6 +100,10 @@ export default {
         FillTest: "FillTest",
       },
       navigationItems: [
+        {
+          name: "Registration",
+          text: this.$t('navigation.registration')
+        },
         {
           name: "Orders",
           text: this.$t('navigation.orders')

@@ -17,6 +17,7 @@
   "custom": {
     "appname": "Warehouse Management",
     "profile": "Profile",
+    "registration": "Registration",
     "upload_test": "Upload test",
     "fill_test": "Forms filling test",
     "role": "Role",
@@ -47,12 +48,19 @@
     "cannotDisplay": "File cannot be displayed in browser.",
     "name": "Name",
     "size": "Size"
-},
+  },
   "login": {
     "before": "Welcome in ",
     "after": ".",
     "email": "Email",
     "password": "Password"
+  },
+  "registration": {
+    "step1": "Enter CIG",
+    "step2": "Enter order data",
+    "step3": "Lot registration",
+    "cig": "CIG",
+    "orderNotFound": "Order not found."
   },
   "baseGrid": {
     "noResults": "No results.",
@@ -63,6 +71,7 @@
     "founds": "elements found"
   },
   "navigation": {
+    "registration": "Registration",
     "movements": "Movements",
     "items": "Items",
     "orders": "Orders",

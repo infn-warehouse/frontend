@@ -213,7 +213,6 @@ const GraphileService = {
           filterExists=true;
         }
         else {
-          if (item.value.length==0) continue;
           filterString+=key+": {";
           filterString+=`in: [${await this.formatList(type,key,item.value)}]`;
           filterString+="}";
@@ -287,7 +286,7 @@ const GraphileService = {
     return res.data[name].nodes[0];
   },
 
-  async fetchAll(type,include,accents,filter,search,paginationOpts) {
+  async fetchAll(type,include,accents,filter,search=null,paginationOpts=null) {
     console.log("------- fetchAll");
     console.log(filter);
     type=utils.makeSingular(type);
@@ -300,9 +299,11 @@ const GraphileService = {
     let res=await this.sendQuery(`
     {
       ${name} (
-        first:${paginationOpts.itemsPerPage}
-        offset:${(paginationOpts.page-1)*paginationOpts.itemsPerPage}
-        orderBy:${this.makeOrderList(paginationOpts.sortBy,paginationOpts.sortDesc,accents)}
+        ${paginationOpts ? `
+          first:${paginationOpts.itemsPerPage}
+          offset:${(paginationOpts.page-1)*paginationOpts.itemsPerPage}
+          orderBy:${this.makeOrderList(paginationOpts.sortBy,paginationOpts.sortDesc,accents)}
+        ` : ""}
         ${await this.createFilter(type,filter,search)}
         ) {
           totalCount
