@@ -323,41 +323,49 @@ const GraphileService = {
     return [nodes,count];
   },
 
-  async createOrUpdate(type,payload,idName) {
+  async create(type,payload,idName) {
     let res;
     let op;
-    console.log(payload);
-    if (payload[idName] == "" || !payload[idName]) {
-      // make create query
-      op=`create${type}`;
-      res=await this.sendQuery(`
-        mutation{${op} (input:{${utils.firstToLower(type)}:{
-          ${await this.formatPayload(type,payload)}
-        }}){
-          ${utils.firstToLower(type)} {
-            ${idName}
-          }
-        }}
-      `);
-    }
-    else {
-      // make update query
-      op=`update${type}By${utils.firstToUpper(idName)}`;
-      res=await this.sendQuery(`
-        mutation{${op} (input: {${idName}: ${await this.formatSingle(type,idName,payload[idName])} ${utils.firstToLower(type)}Patch:{
-          ${await this.formatPayload(type,payload,idName)}
-        }}){
-          ${utils.firstToLower(type)} {
-            ${idName}
-          }
-        }}
-      `);
-    }
+
+    // make create query
+    op=`create${type}`;
+    res=await this.sendQuery(`
+      mutation{${op} (input:{${utils.firstToLower(type)}:{
+        ${await this.formatPayload(type,payload)}
+      }}){
+        ${utils.firstToLower(type)} {
+          ${idName}
+        }
+      }}
+    `);
+
     if (res && res.error) {
-      console.log("createOrUpdate error from server: ", res.error);
+      console.log("create error from server: ", res.error);
       return {error: res.error};
     }
-    console.log(res);
+    return {data: res.data[op][utils.firstToLower(type)]};
+  },
+
+  async update(type,payload,idName) {
+    let res;
+    let op;
+
+    // make update query
+    op=`update${type}By${utils.firstToUpper(idName)}`;
+    res=await this.sendQuery(`
+      mutation{${op} (input: {${idName}: ${await this.formatSingle(type,idName,payload[idName])} ${utils.firstToLower(type)}Patch:{
+        ${await this.formatPayload(type,payload,idName)}
+      }}){
+        ${utils.firstToLower(type)} {
+          ${idName}
+        }
+      }}
+    `);
+
+    if (res && res.error) {
+      console.log("update error from server: ", res.error);
+      return {error: res.error};
+    }
     return {data: res.data[op][utils.firstToLower(type)]};
   },
 

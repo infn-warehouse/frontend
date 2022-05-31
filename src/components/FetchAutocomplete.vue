@@ -9,7 +9,7 @@
     :return-object="returnObject"
     :label="label"
     :search-input.sync="search"
-    :disabled="disabled"
+    :disabled="disabled || withModelId!=null"
     no-filter
     clearable
   >
@@ -61,17 +61,22 @@ export default {
     }
   },
   watch: {
-    search: _.debounce(async function querySearch(newVal,oldVal) {
+    search: function (newVal,oldVal) {
+      if (this.withModelId) return;
+
       let oldCheck=oldVal==null || oldVal=="";
       let newCheck=newVal==null || newVal=="";
       if (oldCheck && newCheck) return;
 
+      this.updateSearch();
+    },
+  },
+  methods: {
+    updateSearch: _.debounce(async function () {
       this.searchComputed=this.search;
       this.filter=null;
       await this._fetch();
     }, process.env.VUE_APP_DEBOUNCE_TIME),
-  },
-  methods: {
     async _fetch() {
       let res=await this.operationWithCheck(async () => await this.fetch(this.paginationOpts,this.searchComputed,this.filter));
       if (res) {
@@ -94,8 +99,12 @@ export default {
 
     await this._fetch();
 
-    if (this.withModelId && this.mode==enums.FORM_MODE.CREATE)
-      this.$emit("input", this.items[0]);
+    if (this.withModelId && this.mode==enums.FORM_MODE.CREATE) {
+      if (this.returnObject)
+        this.$emit("input", this.items[0]);
+      else
+        this.$emit("input", this.items[0][this.itemValue]);
+    }
   }
 };
 </script>

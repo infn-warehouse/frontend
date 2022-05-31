@@ -59,8 +59,12 @@
     "step1": "Inserire CIG",
     "step2": "Inserire dati ordine",
     "step3": "Registrazione lotto",
+    "step4": "Fine",
     "cig": "CIG",
-    "orderNotFound": "Ordine non trovato."
+    "orderNotFound": "Ordine non trovato.",
+    "complete": "Registrazione completa.",
+    "go": "Vai all'ordine",
+    "new": "Nuova registrazione"
   },
   "baseGrid": {
     "noResults": "Nessun risultato.",

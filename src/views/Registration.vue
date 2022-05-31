@@ -17,6 +17,10 @@
           <v-stepper-step :complete="step>3" step="3">
             {{ $t("registration.step3") }}
           </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step :complete="step>4" step="4">
+            {{ $t("registration.step4") }}
+          </v-stepper-step>
         </v-stepper-header>
         <v-stepper-items>
           <v-stepper-content step="1">
@@ -38,10 +42,11 @@
           </v-stepper-content>
           <v-stepper-content step="2">
             <OrderForm
-              :mode="enums.FORM_MODE.UPDATE"
+              v-if="step>1"
+              :mode="orderExists ? enums.FORM_MODE.UPDATE : enums.FORM_MODE.CREATE"
               :selectedItem="orderItem"
-              v-if="orderItem"
-              :hasBack="true"
+              :multiForm="true"
+              :multiLayout="1"
               @formCancel="handleOrderCancel"
               @formSucceed="handleOrderSave"
               @formBack="handleBack"
@@ -49,12 +54,23 @@
           </v-stepper-content>
           <v-stepper-content step="3">
             <MovementForm
+              v-if="step>2"
               :mode="enums.FORM_MODE.CREATE"
-              :hasBack="true"
+              :multiForm="true"
+              :multiLayout="1"
               @formCancel="handleMovementCancel"
               @formSucceed="handleMovementSave"
               @formBack="handleBack"
+              :withModelId="orderItem.idordine"
             />
+          </v-stepper-content>
+          <v-stepper-content step="4">
+            <v-card-text v-if="step>3">
+              <v-icon x-large>{{ enums.ICONS.DONE }}</v-icon>
+              <div class="inner-element">{{$t('registration.complete')}}</div>
+              <div class="inner-element"><a @click="go">{{$t('registration.go')}} {{orderItem.idordine}}</a></div>
+              <div class="bottom-element"><a @click="restart">{{$t('registration.new')}}</a></div>
+            </v-card-text>
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
@@ -90,6 +106,9 @@ export default {
   },
 
   methods: {
+    protoOrderFind(filter) {
+      return GraphileService.fetchAll("OrdiniProto",[],[],filter);
+    },
     orderFind(filter) {
       return GraphileService.fetchAll("Ordini",[],[],filter);
     },
@@ -98,30 +117,52 @@ export default {
     },
     async handleCigNext() {
       this.loading=true;
+
+      let resProto=await this.operationWithCheck(async () => await this.protoOrderFind({
+        cig: {value: this.cig}
+      }));
+      if (!resProto) {
+        this.loading=false;
+        return;
+      }
+
       let res=await this.operationWithCheck(async () => await this.orderFind({
         cig: {value: this.cig}
       }));
+      if (!res) {
+        this.loading=false;
+        return;
+      }
+
       this.loading=false;
-      if (res) {
-        let [items,total]=res;
-        if (total>0) {
-          this.orderItem=items[0];
-          this.step++;
-        }
-        else {
-          this.showMessage({
-            context: enums.TOAST_TYPE.ERROR,
-            text: this.$t('registration.orderNotFound')
-          });
-        }
+
+      let [itemsProto,totalProto]=resProto;
+      let [items,total]=res;
+      if (total>0) {
+        this.orderExists=true;
+        this.orderItem=items[0];
+        this.step++;
+      }
+      else if (totalProto>0) {
+        this.orderExists=false;
+        this.orderItem=JSON.parse(itemsProto[0].orderData);
+        this.step++;
+      }
+      else {
+        this.showMessage({
+          context: enums.TOAST_TYPE.ERROR,
+          text: this.$t('registration.orderNotFound')
+        });
       }
     },
-    handleOrderSave() {
+    handleOrderSave(form) {
+      this.orderExists=true;
+      this.orderItem=form;
       this.step++;
     },
     handleMovementSave() {
       this.cig="";
-      this.step=1;
+      this.step++;
     },
     handleBack() {
       this.step--;
@@ -131,6 +172,15 @@ export default {
     },
     handleMovementCancel() {
       this.movementItem={...this.movementItem};
+    },
+    go() {
+      this.$router.push({
+        name: "OrderDetails",
+        params: { id: this.orderItem.idordine.toString() }
+      }).catch(()=>{});
+    },
+    restart() {
+      this.step=1;
     }
   },
 
@@ -140,6 +190,7 @@ export default {
       step: 1,
       cig: "",
       orderItem: null,
+      orderExists: false,
       loading: false
     };
   }

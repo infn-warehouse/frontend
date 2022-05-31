@@ -40,12 +40,13 @@
       </v-card-text>
       <FormButtons
         :loading="loading"
+        @onBack="onBack"
+        @onNext="onSubmit"
         @onSave="onSubmit"
         @onCancel="onCancel"
-        @onBack="onBack"
         :disabled="invalid"
-        :multiForm="hasBack"
-        multiLayout="2"
+        :multiForm="multiForm"
+        :multiLayout="multiLayout"
       />
     </ValidationObserver>
   </div>
@@ -80,7 +81,7 @@ export default {
 
   methods: {
     async submitToStore() {
-      await this.createOrUpdateHelper(
+      return await this.createOrUpdateHelper(
         this.mode,
         this.resourceType,
         "Ordini",
@@ -91,7 +92,7 @@ export default {
       );
     },
     setForm() {
-      if (this.mode == enums.FORM_MODE.UPDATE) {
+      if (this.selectedItem) {
         this.form.idordine = this.selectedItem.idordine;
         this.form.dataordine = this.selectedItem.dataordine;
         this.form.fornitore = this.selectedItem.fornitore;
@@ -102,8 +103,10 @@ export default {
         this.form.fornitore = "";
         this.form.descrizione = "";
       }
-      this.formTitle=this.makeTitle(this.resourceType,this.mode,this.form.idordine);
     },
+    setTitle() {
+      this.formTitle=this.makeTitle(this.resourceType,this.mode,this.form.idordine);
+    }
   },
   
   computed: {

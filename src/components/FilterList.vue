@@ -150,6 +150,9 @@ export default {
     "filterInfo",
   ],
   methods: {
+    updateSearch: _.debounce(async function () {
+      await this._fetch();
+    }, process.env.VUE_APP_DEBOUNCE_TIME),
     savePref() {
       this.valueCopy.forEach(element => {
         element.default=element.checked;
@@ -252,13 +255,13 @@ export default {
       this.update();
   },
   watch: {
-    search: _.debounce(async function(newVal,oldVal) {
+    search: function(newVal,oldVal) {
       let oldCheck=oldVal==null || oldVal=="";
       let newCheck=newVal==null || newVal=="";
       if (oldCheck && newCheck) return;
 
-      await this._fetch();
-    }, process.env.VUE_APP_DEBOUNCE_TIME),
+      this.updateSearch();
+    },
     value: function() {
       this.valueCopy=_.cloneDeep(this.value);
       this.computeClear();

@@ -9,6 +9,9 @@ export default {
   watch: {
     selectedItem() {
       this.setForm();
+    },
+    mode() {
+      this.setTitle();
     }
   },
   data() {
@@ -30,18 +33,25 @@ export default {
       type: String,
       required: false
     },
-    hasBack: {
+    multiForm: {
       type: Boolean,
       required: false
     },
+    multiLayout: {
+      type: Number,
+      required: false
+    }
   },
   methods: {
     async onSubmit() {
       this.loading=true;
-      await this.submitToStore();
+      let res=await this.submitToStore();
       this.loading=false;
-      this.$emit("formSucceed");
-      this.$emit("formClose");
+
+      if (res) {
+        this.$emit("formSucceed",this.form);
+        this.$emit("formClose");
+      }
     },
     async onCancel() {
       this.$emit("formCancel");
@@ -53,5 +63,6 @@ export default {
   },
   created() {
     this.setForm();
+    this.setTitle();
   },
 }

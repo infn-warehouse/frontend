@@ -14,11 +14,17 @@
           <span class="form-error">{{ errors[0] }}</span>
         </ValidationProvider>
         <ValidationProvider name="Prova 2" immediate rules="required" v-slot="{ errors }">
-          <v-text-field
+          <FetchAutocomplete
             class="required"
             :label="$t('headers.movements.idOrdine')"
             v-model="form.idOrdine"
-          ></v-text-field>
+            :fetch="orderFetch"
+            itemText="idordine"
+            itemValue="idordine"
+            :returnObject="false"
+            :withModelId="withModelId"
+            :mode="mode"
+          ></FetchAutocomplete>
           <span class="form-error">{{ errors[0] }}</span>
         </ValidationProvider>
         <ValidationProvider name="Prova 3" immediate rules="required" v-slot="{ errors }">
@@ -52,12 +58,13 @@
       </v-card-text>
       <FormButtons
         :loading="loading"
+        @onBack="onBack"
+        @onNext="onSubmit"
         @onSave="onSubmit"
         @onCancel="onCancel"
-        @onBack="onBack"
         :disabled="invalid"
-        :multiForm="hasBack"
-        multiLayout="2"
+        :multiForm="multiForm"
+        :multiLayout="multiLayout"
       />
     </ValidationObserver>
   </div>
@@ -96,7 +103,7 @@ export default {
 
   methods: {
     async submitToStore() {
-      await this.createOrUpdateHelper(
+      return await this.createOrUpdateHelper(
         this.mode,
         this.resourceType,
         "MovimentiTemp",
@@ -107,7 +114,7 @@ export default {
       );
     },
     setForm() {
-      if (this.mode == enums.FORM_MODE.UPDATE) {
+      if (this.selectedItem) {
         this.form.idMovimento = this.selectedItem.idMovimento;
         this.form.nMovimento = this.selectedItem.nMovimento;
         this.form.idOrdine = this.selectedItem.idOrdine;
@@ -122,10 +129,15 @@ export default {
         this.form.nDocAcc = "";
         this.form.dataConsegna = "";
       }
+    },
+    setTitle() {
       this.formTitle=this.makeTitle(this.resourceType,this.mode,this.form.nMovimento);
     },
     documentFetch(paginationOpts=null,search,filter) {
       return GraphileService.fetchAll("Documento",[],[],filter,{search, on: ["dicitura"]},paginationOpts);
+    },
+    orderFetch(paginationOpts=null,search,filter) {
+      return GraphileService.fetchAll("Ordini",[],[],filter,{search, on: ["idordine"]},paginationOpts);
     },
   },
   

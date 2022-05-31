@@ -104,7 +104,13 @@ export default {
           delete pcopy[key];
       }
 
-      const res=await this.operationWithCheck(async () => await GraphileService.createOrUpdate(resType,pcopy,idName));
+      let res;
+
+      if (mode == enums.FORM_MODE.CREATE)
+        res=await this.operationWithCheck(async () => await GraphileService.create(resType,pcopy,idName));
+      else
+        res=await this.operationWithCheck(async () => await GraphileService.update(resType,pcopy,idName));
+      
       if (res) {
         if (extra) {
           let extra_res = await extra(res);
@@ -116,7 +122,6 @@ export default {
             return false;
           }
         }
-        
         if (mode == enums.FORM_MODE.CREATE) {
           this.showMessage({
             context: enums.TOAST_TYPE.SUCCESS,
@@ -139,6 +144,7 @@ export default {
           return true;
         }
       }
+      return false;
     },
     async deleteConfirm(resName, resType, resOrig, idName, payload, deletedName) {
       return new Promise((resolve) => {

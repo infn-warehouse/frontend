@@ -59,8 +59,12 @@
     "step1": "Enter CIG",
     "step2": "Enter order data",
     "step3": "Lot registration",
+    "step4": "End",
     "cig": "CIG",
-    "orderNotFound": "Order not found."
+    "orderNotFound": "Order not found.",
+    "complete": "Registration complete.",
+    "go": "Go to the order",
+    "new": "New registration"
   },
   "baseGrid": {
     "noResults": "No results.",
