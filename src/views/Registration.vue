@@ -50,6 +50,7 @@
               @formCancel="handleOrderCancel"
               @formSucceed="handleOrderSave"
               @formBack="handleBack"
+              :locked="true"
             />
           </v-stepper-content>
           <v-stepper-content step="3">
@@ -61,7 +62,7 @@
               @formCancel="handleMovementCancel"
               @formSucceed="handleMovementSave"
               @formBack="handleBack"
-              :withModelId="orderItem.idordine"
+              :modelId="orderItem.idordine"
             />
           </v-stepper-content>
           <v-stepper-content step="4">
@@ -146,6 +147,7 @@ export default {
       else if (totalProto>0) {
         this.orderExists=false;
         this.orderItem=JSON.parse(itemsProto[0].orderData);
+        this.orderItem.cig=this.cig;
         this.step++;
       }
       else {

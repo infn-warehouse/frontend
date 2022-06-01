@@ -5,38 +5,110 @@
     }}</v-card-title>
     <ValidationObserver v-slot="{ invalid }">
       <v-card-text>
-        <ValidationProvider name="Prova 1" immediate rules="required" v-slot="{ errors }">
-          <v-text-field
-            class="required"
-            :label="$t('headers.orders.idordine')"
-            v-model="form.idordine"
-          ></v-text-field>
-          <span class="form-error">{{ errors[0] }}</span>
-        </ValidationProvider>
-        <ValidationProvider name="Prova 2" immediate rules="required" v-slot="{ errors }">
-          <DatePicker
-            class="required"
-            :label="$t('headers.orders.dataordine')"
-            v-model="form.dataordine"
-          ></DatePicker>
-          <span class="form-error">{{ errors[0] }}</span>
-        </ValidationProvider>
-        <ValidationProvider name="Prova 3" immediate rules="required" v-slot="{ errors }">
-          <v-text-field
-            class="required"
-            :label="$t('headers.orders.fornitore')"
-            v-model="form.fornitore"
-          ></v-text-field>
-          <span class="form-error">{{ errors[0] }}</span>
-        </ValidationProvider>
-        <ValidationProvider name="Prova 4" immediate rules="required" v-slot="{ errors }">
-          <v-text-field
-            class="required"
-            :label="$t('headers.orders.descrizione')"
-            v-model="form.descrizione"
-          ></v-text-field>
-          <span class="form-error">{{ errors[0] }}</span>
-        </ValidationProvider>
+        <v-row>
+          <v-col cols="4">
+            <ValidationProvider :name="$t('headers.orders.idordine')" immediate rules="required" v-slot="{ errors }">
+              <v-text-field
+                class="required"
+                :label="$t('headers.orders.idordine')"
+                v-model="form.idordine"
+              ></v-text-field>
+              <span class="form-error">{{ errors[0] }}</span>
+            </ValidationProvider>
+          </v-col>
+          <v-col cols="4">
+            <ValidationProvider :name="$t('headers.orders.cig')" immediate rules="required" v-slot="{ errors }">
+              <v-text-field
+                class="required"
+                :label="$t('headers.orders.cig')"
+                v-model="form.cig"
+                :disabled="locked"
+              ></v-text-field>
+              <span class="form-error">{{ errors[0] }}</span>
+            </ValidationProvider>
+          </v-col>
+          <v-col cols="4">
+            <DatePicker
+              :label="$t('headers.orders.dataordine')"
+              v-model="form.dataordine"
+            ></DatePicker>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="6">
+            <v-text-field
+              :label="$t('headers.orders.fornitore')"
+              v-model="form.fornitore"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field
+              :label="$t('headers.orders.descrizione')"
+              v-model="form.descrizione"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="6">
+            <v-text-field
+              :label="$t('headers.orders.servizioRichi')"
+              v-model="form.servizioRichi"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <v-text-field
+              :label="$t('headers.orders.importo')"
+              v-model="form.importo"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
+            <v-text-field
+              :label="$t('headers.orders.terminiCons')"
+              v-model="form.terminiCons"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="4">
+            <v-text-field
+              :label="$t('headers.orders.nConsegne')"
+              v-model="form.nConsegne"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="4">
+            <DatePicker
+              :label="$t('headers.orders.dataconsegna')"
+              v-model="form.dataconsegna"
+            ></DatePicker>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
+            <v-text-field
+              :label="$t('headers.orders.responsabile')"
+              v-model="form.responsabile"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="4">
+            <v-text-field
+              :label="$t('headers.orders.collaudatore')"
+              v-model="form.collaudatore"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="4">
+            <v-text-field
+              :label="$t('headers.orders.rup')"
+              v-model="form.rup"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-textarea
+          :label="$t('headers.orders.note')"
+          v-model="form.note"
+          rows="1"
+          auto-grow
+          filled
+        ></v-textarea>
       </v-card-text>
       <FormButtons
         :loading="loading"
@@ -58,6 +130,7 @@ import FormButtons from "@/components/FormButtons";
 import DatePicker from "@/components/DatePicker";
 import helper from "@/mixins/helper";
 import formShared from "@/mixins/formShared";
+import utils from "../../utils";
 
 export default {
   name: "OrderForm",
@@ -68,12 +141,24 @@ export default {
     return {
       resourceType: this.$t("resource_types.order"),
       formTitle: "",
-      form: {
+      idName: "idordine",
+      emptyForm: {
         idordine: "",
-        dataordine: "",
+        dataordine: utils.formatDate(new Date()),
         fornitore: "",
         descrizione: "",
-      },
+        terminiCons: "",
+        servizioRichi: "",
+        responsabile: "",
+        importo: "",
+        statOrdine: "C",
+        nConsegne: "",
+        dataconsegna: "",
+        collaudatore: "",
+        note: "",
+        cig: "",
+        rup: "",
+      }
     };
 
   },
@@ -87,22 +172,10 @@ export default {
         "Ordini",
         "idordine",
         this.form,
+        this.currentId,
         payload => payload.p.idordine,
         payload => payload.p.idordine
       );
-    },
-    setForm() {
-      if (this.selectedItem) {
-        this.form.idordine = this.selectedItem.idordine;
-        this.form.dataordine = this.selectedItem.dataordine;
-        this.form.fornitore = this.selectedItem.fornitore;
-        this.form.descrizione = this.selectedItem.descrizione;
-      } else {
-        this.form.idordine = "";
-        this.form.dataordine = "";
-        this.form.fornitore = "";
-        this.form.descrizione = "";
-      }
     },
     setTitle() {
       this.formTitle=this.makeTitle(this.resourceType,this.mode,this.form.idordine);

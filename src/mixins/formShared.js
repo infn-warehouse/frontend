@@ -1,4 +1,5 @@
 import enums from "@/enums";
+import _ from "lodash";
 
 export default {
   computed: {
@@ -9,10 +10,8 @@ export default {
   watch: {
     selectedItem() {
       this.setForm();
-    },
-    mode() {
       this.setTitle();
-    }
+    },
   },
   data() {
     return {
@@ -25,12 +24,12 @@ export default {
       type: String
     },
     selectedItem: Object,
-    withModelId: {
+    modelId: {
       type: String,
       required: false
     },
-    withModelType: {
-      type: String,
+    locked: {
+      type: Boolean,
       required: false
     },
     multiForm: {
@@ -59,6 +58,15 @@ export default {
     },
     async onBack() {
       this.$emit("formBack");
+    },
+    setForm() {
+      this.form=_.cloneDeep(this.emptyForm);
+      if (this.selectedItem) {
+        this.currentId=this.selectedItem[this.idName];
+        for (let key in this.selectedItem)
+          if (key in this.form)
+            this.form[key]=this.selectedItem[key];
+      }
     },
   },
   created() {

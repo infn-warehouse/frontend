@@ -94,6 +94,7 @@ export default {
       resType,
       idName,
       payload,
+      currentId,
       createdName,
       updatedName,
       extra = null
@@ -109,8 +110,8 @@ export default {
       if (mode == enums.FORM_MODE.CREATE)
         res=await this.operationWithCheck(async () => await GraphileService.create(resType,pcopy,idName));
       else
-        res=await this.operationWithCheck(async () => await GraphileService.update(resType,pcopy,idName));
-      
+        res=await this.operationWithCheck(async () => await GraphileService.update(resType,pcopy,idName,currentId));
+
       if (res) {
         if (extra) {
           let extra_res = await extra(res);
@@ -119,7 +120,7 @@ export default {
               context: enums.TOAST_TYPE.ERROR,
               text: "Error: " + extra_res
             });
-            return false;
+            return null;
           }
         }
         if (mode == enums.FORM_MODE.CREATE) {
@@ -131,7 +132,7 @@ export default {
               " " +
               createdName({ v: res ? res.data : {}, p: pcopy })
           });
-          return true;
+          return res;
         } else {
           this.showMessage({
             context: enums.TOAST_TYPE.SUCCESS,
@@ -141,10 +142,10 @@ export default {
               " " +
               updatedName({ v: res ? res.data : {}, p: pcopy })
           });
-          return true;
+          return res;
         }
       }
-      return false;
+      return null;
     },
     async deleteConfirm(resName, resType, resOrig, idName, payload, deletedName) {
       return new Promise((resolve) => {

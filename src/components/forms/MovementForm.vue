@@ -5,56 +5,124 @@
     }}</v-card-title>
     <ValidationObserver v-slot="{ invalid }">
       <v-card-text>
-        <ValidationProvider name="Prova 1" immediate rules="required" v-slot="{ errors }">
-          <v-text-field
-            class="required"
-            :label="$t('headers.movements.nMovimento')"
-            v-model="form.nMovimento"
-          ></v-text-field>
-          <span class="form-error">{{ errors[0] }}</span>
-        </ValidationProvider>
-        <ValidationProvider name="Prova 2" immediate rules="required" v-slot="{ errors }">
-          <FetchAutocomplete
-            class="required"
-            :label="$t('headers.movements.idOrdine')"
-            v-model="form.idOrdine"
-            :fetch="orderFetch"
-            itemText="idordine"
-            itemValue="idordine"
-            :returnObject="false"
-            :withModelId="withModelId"
-            :mode="mode"
-          ></FetchAutocomplete>
-          <span class="form-error">{{ errors[0] }}</span>
-        </ValidationProvider>
-        <ValidationProvider name="Prova 3" immediate rules="required" v-slot="{ errors }">
-          <FetchAutocomplete
-            class="required"
-            :label="$t('headers.movements.tipoDocAcc')"
-            v-model="form.tipoDocAcc"
-            :fetch="documentFetch"
-            itemText="dicitura"
-            itemValue="idocumento"
-            :returnObject="false"
-          ></FetchAutocomplete>
-          <span class="form-error">{{ errors[0] }}</span>
-        </ValidationProvider>
-        <ValidationProvider name="Prova 4" immediate rules="required" v-slot="{ errors }">
-          <v-text-field
-            class="required"
-            :label="$t('headers.movements.nDocAcc')"
-            v-model="form.nDocAcc"
-          ></v-text-field>
-          <span class="form-error">{{ errors[0] }}</span>
-        </ValidationProvider>
-        <ValidationProvider name="Prova 5" immediate rules="required" v-slot="{ errors }">
-          <DatePicker
-            class="required"
-            :label="$t('headers.movements.dataConsegna')"
-            v-model="form.dataConsegna"
-          ></DatePicker>
-          <span class="form-error">{{ errors[0] }}</span>
-        </ValidationProvider>
+        <v-row>
+          <v-col cols="3">
+            <ValidationProvider :name="$t('headers.movements.nMovimento')" immediate rules="required" v-slot="{ errors }">
+              <v-text-field
+                class="required"
+                :label="$t('headers.movements.nMovimento')"
+                v-model="form.nMovimento"
+              ></v-text-field>
+              <span class="form-error">{{ errors[0] }}</span>
+            </ValidationProvider>
+          </v-col>
+          <v-col cols="3">
+            <ValidationProvider :name="$t('headers.movements.idOrdine')" immediate rules="required" v-slot="{ errors }">
+              <FetchAutocomplete
+                class="required"
+                :label="$t('headers.movements.idOrdine')"
+                v-model="form.idOrdine"
+                :fetch="orderFetch"
+                itemText="idordine"
+                itemValue="idordine"
+                :returnObject="false"
+                :modelId="modelId"
+                :mode="mode"
+              ></FetchAutocomplete>
+              <span class="form-error">{{ errors[0] }}</span>
+            </ValidationProvider>
+          </v-col>
+          <v-col cols="3">
+            <DatePicker
+              :label="$t('headers.movements.dataMovimento')"
+              v-model="form.dataMovimento"
+            ></DatePicker>
+          </v-col>
+          <v-col cols="3">
+            <ValidationProvider :name="$t('headers.movements.inUscita')" immediate rules="required" v-slot="{ errors }">
+              <v-autocomplete
+                class="required"
+                :label="$t('headers.movements.inUscita')"
+                v-model="form.inUscita"
+                :items="inUscitaItems"
+                item-text="name"
+                item-value="value"
+                :return-object="false"
+              >
+              </v-autocomplete>
+              <span class="form-error">{{ errors[0] }}</span>
+            </ValidationProvider>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
+            <DatePicker
+              :label="$t('headers.movements.datadocumento')"
+              v-model="form.datadocumento"
+            ></DatePicker>
+          </v-col>
+          <v-col cols="4">
+            <FetchAutocomplete
+              :label="$t('headers.movements.tipoDocAcc')"
+              v-model="form.tipoDocAcc"
+              :fetch="documentFetch"
+              itemText="dicitura"
+              itemValue="idocumento"
+              :returnObject="false"
+            ></FetchAutocomplete>
+          </v-col>
+          <v-col cols="4">
+            <v-text-field
+              :label="$t('headers.movements.nDocAcc')"
+              v-model="form.nDocAcc"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
+            <DatePicker
+              :label="$t('headers.movements.dataConsegna')"
+              v-model="form.dataConsegna"
+            ></DatePicker>
+          </v-col>
+          <v-col cols="4">
+            <v-text-field
+              :label="$t('headers.movements.consegnatario')"
+              v-model="form.consegnatario"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="4">
+            <v-text-field
+              :label="$t('headers.movements.nColli')"
+              v-model="form.nColli"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
+            <DatePicker
+              :label="$t('headers.movements.dataCollaudo')"
+              v-model="form.dataCollaudo"
+            ></DatePicker>
+          </v-col>
+          <v-col cols="4">
+            <v-text-field
+              :label="$t('headers.movements.tipoCollaudo')"
+              v-model="form.tipoCollaudo"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-text-field
+          :label="$t('headers.movements.codificaSpaziale')"
+          v-model="form.codificaSpaziale"
+        ></v-text-field>
+        <v-textarea
+          :label="$t('headers.orders.note')"
+          v-model="form.note"
+          rows="1"
+          auto-grow
+          filled
+        ></v-textarea>
       </v-card-text>
       <FormButtons
         :loading="loading"
@@ -78,6 +146,7 @@ import FetchAutocomplete from "@/components/FetchAutocomplete";
 import helper from "@/mixins/helper";
 import formShared from "@/mixins/formShared";
 import GraphileService from "@/services/graphile.service";
+import utils from "../../utils";
 
 export default {
   name: "MovementForm",
@@ -88,16 +157,29 @@ export default {
     return {
       resourceType: this.$t("resource_types.movement"),
       formTitle: "",
-      form: {
+      idName: "idMovimento",
+      emptyForm: {
         idMovimento: "",
         nMovimento: "",
+        dataMovimento: utils.formatDate(new Date()),
         idOrdine: "",
-        tipoDocAcc: null,
+        datadocumento: "",
+        tipoDocAcc: "",
         nDocAcc: "",
-        dataConsegna: ""
+        dataConsegna: "",
+        consegnatario: "",
+        nColli: "",
+        dataCollaudo: "",
+        note: "",
+        codificaSpaziale: "",
+        tipoCollaudo: "",
+        inUscita: ""
       },
+      inUscitaItems: [
+        { name: this.$t("custom.inbound"), value: false },
+        { name: this.$t("custom.outbound"), value: true }
+      ]
     };
-
   },
   components: { FormButtons, DatePicker, FetchAutocomplete },
 
@@ -109,26 +191,10 @@ export default {
         "MovimentiTemp",
         "idMovimento",
         this.form,
+        this.currentId,
         payload => payload.p.nMovimento,
         payload => payload.p.nMovimento
       );
-    },
-    setForm() {
-      if (this.selectedItem) {
-        this.form.idMovimento = this.selectedItem.idMovimento;
-        this.form.nMovimento = this.selectedItem.nMovimento;
-        this.form.idOrdine = this.selectedItem.idOrdine;
-        this.form.tipoDocAcc = this.selectedItem.documentoByTipoDocAcc.idocumento;
-        this.form.nDocAcc = this.selectedItem.nDocAcc;
-        this.form.dataConsegna = this.selectedItem.dataConsegna;
-      } else {
-        this.form.idMovimento = "";
-        this.form.nMovimento = "";
-        this.form.idOrdine = "";
-        this.form.tipoDocAcc = null;
-        this.form.nDocAcc = "";
-        this.form.dataConsegna = "";
-      }
     },
     setTitle() {
       this.formTitle=this.makeTitle(this.resourceType,this.mode,this.form.nMovimento);

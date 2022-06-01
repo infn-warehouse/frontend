@@ -220,5 +220,8 @@
     "BIND_ERROR": "Password errata. Riprovare.",
     "LOGIN_ERROR": "Errore nel login. Contattare l'amministratore.<br>Codice errore: {extra}.",
     "TOKEN_EXPIRED": "Sessione scaduta. Fare di nuovo il login."
+  },
+  "vee": {
+    "required": "Il campo {field} è richiesto."
   }
 }

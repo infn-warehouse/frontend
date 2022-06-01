@@ -41,6 +41,7 @@
 
 <script>
 import moment from "moment";
+import utils from "../utils";
 
 export default {
   props: ["label", "value"],
@@ -85,7 +86,7 @@ export default {
     },
     formatDate() {
       if (this.date != null)
-        this.dateFormatted=moment(String(this.date)).format("DD/MM/YYYY");
+        this.dateFormatted=utils.formatDate(this.date);
       else
         this.dateFormatted = "";
     },

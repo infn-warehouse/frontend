@@ -44,6 +44,7 @@
               :selectedItem="editItem"
               @formSucceed="_fetch()"
               @formClose="close()"
+              :modelId="immutableFilter"
             />
           </v-card>
         </v-dialog>

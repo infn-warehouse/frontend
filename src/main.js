@@ -25,6 +25,7 @@ Vue.component('ValidationObserver', ValidationObserver);
 
 import { extend } from 'vee-validate';
 extend('required', {
+  message: field => i18n.t("vee.required",{field}),
   validate (value) {
     return {
       required: true,

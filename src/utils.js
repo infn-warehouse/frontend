@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export default {
     firstToUpper: (s) => {
         return s.substring(0,1).toUpperCase()+s.substring(1);
@@ -15,4 +17,7 @@ export default {
             return name.substring(0,name.length-1);
         return name;
     },
+    formatDate(date) {
+        return moment(String(date)).format("DD/MM/YYYY");
+    }
 }

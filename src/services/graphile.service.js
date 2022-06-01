@@ -346,15 +346,15 @@ const GraphileService = {
     return {data: res.data[op][utils.firstToLower(type)]};
   },
 
-  async update(type,payload,idName) {
+  async update(type,payload,idName,currentId) {
     let res;
     let op;
 
     // make update query
     op=`update${type}By${utils.firstToUpper(idName)}`;
     res=await this.sendQuery(`
-      mutation{${op} (input: {${idName}: ${await this.formatSingle(type,idName,payload[idName])} ${utils.firstToLower(type)}Patch:{
-        ${await this.formatPayload(type,payload,idName)}
+      mutation{${op} (input: {${idName}: ${await this.formatSingle(type,idName,currentId)} ${utils.firstToLower(type)}Patch:{
+        ${await this.formatPayload(type,payload)}
       }}){
         ${utils.firstToLower(type)} {
           ${idName}
