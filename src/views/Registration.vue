@@ -25,15 +25,19 @@
         <v-stepper-items>
           <v-stepper-content step="1">
             <v-card-text>
-              <v-text-field
+              <FetchAutocomplete
                 class="required"
                 :label="$t('registration.cig')"
                 v-model="cig"
-              ></v-text-field>
+                :fetch="protoOrderFetch"
+                itemText="cig"
+                itemValue="cig"
+                :returnObject="false"
+              ></FetchAutocomplete>
             </v-card-text>
             <FormButtons
               @onNext="handleCigNext"
-              :disabled="cig==''"
+              :disabled="cig=='' || cig==null"
               :multiForm="true"
               :multiLayout="0"
               :noCancel="true"
@@ -87,6 +91,7 @@ import MovementForm from "@/components/forms/MovementForm";
 import GraphileService from "@/services/graphile.service";
 import enums from "@/enums";
 import FormButtons from "@/components/FormButtons";
+import FetchAutocomplete from "@/components/FetchAutocomplete";
 
 export default {
   name: 'Registration',
@@ -95,7 +100,8 @@ export default {
     OrderForm,
     MovementForm,
     Toolbar,
-    FormButtons
+    FormButtons,
+    FetchAutocomplete
   },
 
   mixins: [helper],
@@ -112,6 +118,9 @@ export default {
     },
     orderFind(filter) {
       return GraphileService.fetchAll("Ordini",[],[],filter);
+    },
+    protoOrderFetch(paginationOpts=null,search) {
+      return GraphileService.fetchAll("OrdiniProto",[],[],null,{search, on: ["cig"]},paginationOpts);
     },
     movementFetch(id) {
       return GraphileService.fetchOne("MovimentiTemp",["documento"],id,"idMovimento");

@@ -18,12 +18,16 @@
           </v-col>
           <v-col cols="4">
             <ValidationProvider :name="$t('headers.orders.cig')" immediate rules="required" v-slot="{ errors }">
-              <v-text-field
+              <FetchAutocomplete
                 class="required"
                 :label="$t('headers.orders.cig')"
                 v-model="form.cig"
-                :disabled="locked"
-              ></v-text-field>
+                :disabled="locked || mode==enums.FORM_MODE.UPDATE"
+                :fetch="protoOrderFetch"
+                itemText="cig"
+                itemValue="cig"
+                :returnObject="false"
+              ></FetchAutocomplete>
               <span class="form-error">{{ errors[0] }}</span>
             </ValidationProvider>
           </v-col>
@@ -131,6 +135,8 @@ import DatePicker from "@/components/DatePicker";
 import helper from "@/mixins/helper";
 import formShared from "@/mixins/formShared";
 import utils from "../../utils";
+import GraphileService from "@/services/graphile.service";
+import FetchAutocomplete from "@/components/FetchAutocomplete";
 
 export default {
   name: "OrderForm",
@@ -162,7 +168,7 @@ export default {
     };
 
   },
-  components: { FormButtons, DatePicker },
+  components: { FormButtons, DatePicker, FetchAutocomplete },
 
   methods: {
     async submitToStore() {
@@ -179,7 +185,10 @@ export default {
     },
     setTitle() {
       this.formTitle=this.makeTitle(this.resourceType,this.mode,this.form.idordine);
-    }
+    },
+    protoOrderFetch(paginationOpts=null,search) {
+      return GraphileService.fetchAll("OrdiniProto",[],[],null,{search, on: ["cig"]},paginationOpts);
+    },
   },
   
   computed: {
