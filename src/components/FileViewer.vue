@@ -8,7 +8,7 @@
       :percent="progress"
       :line-height="32" >
     </k-progress>
-  
+
     <div v-if="status==2" class="inner-element">
       {{ $t('file_download.error') }}
     </div>
@@ -66,7 +66,14 @@ export default {
           this.status=2;
         }
       }, (e) => {
-        this.checkResult(e);
+        if (this.checkResult(e)) {
+          this.isLoading=false;
+          this.status=3;
+        }
+        else {
+          this.isLoading=false;
+          this.status=2;
+        }
       });
     },
     doCancel() {

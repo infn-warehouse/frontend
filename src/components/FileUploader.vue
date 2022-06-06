@@ -46,11 +46,13 @@
 <script>
 import ApiService from "@/services/api.service";
 import KProgress from 'k-progress';
+import helper from "@/mixins/helper";
 
 export default {
   components: {
     KProgress
   },
+  mixins: [helper],
   props: {
     fileGroup: {
       required: false
@@ -71,7 +73,7 @@ export default {
       this.status=0;
     },
     doUpload() {
-      this.isLoading=true;
+      this.setLoading(true);
       this.progress=0;
       this.status=0;
 
@@ -82,27 +84,40 @@ export default {
       this.cancel=ApiService.upload("alfresco/"+encodeURI(this.selectedFile.name),bodyFormData,(progress) => {
         this.progress=Math.round(progress);
       }, (status) => {
+        console.log("STATUS")
+        console.log(status)
         if (status==200) {
-          this.isLoading=false;
+          this.setLoading(false);
           this.uploadedFile=this.selectedFile;
           this.selectedFile=null;
           this.status=1;
           this.$emit('onUploadComplete', this.uploadedFile);
         }
-        else if  (status==-1) {
-          this.isLoading=false;
+        else if (status==-1) {
+          this.setLoading(false);
           this.status=3;
         }
         else {
-          this.isLoading=false;
+          this.setLoading(false);
           this.status=2;
         }
       }, (e) => {
-        this.checkResult(e);
+        if (this.checkResult(e)) {
+          this.setLoading(false);
+          this.status=3;
+        }
+        else {
+          this.setLoading(false);
+          this.status=2;
+        }
       });
     },
     doCancel() {
       this.cancel();
+    },
+    setLoading(isLoading) {
+      this.isLoading=isLoading;
+      this.$emit('onLoading', isLoading);
     }
   },
   created() {

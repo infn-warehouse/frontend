@@ -78,7 +78,7 @@
             <template v-if="step>3">
               <div class="my-container">
                 <FileUploader
-                  ref="fileUploader1"
+                  @onLoading="handleLoading"
                   @onUploadComplete="handleUpload1"
                   :fileGroup="orderItem.fileGroup"
                 />
@@ -90,6 +90,7 @@
                 :noDetails="true"
               />
               <FormButtons
+                :loading="uploadIsLoading>0"
                 @onNext="handleUploadNext"
                 @onBack="handleBack"
                 :multiForm="true"
@@ -102,7 +103,7 @@
             <template v-if="step>4">
               <div class="my-container">
                 <FileUploader
-                  ref="fileUploader2"
+                  @onLoading="handleLoading"
                   @onUploadComplete="handleUpload2"
                   :fileGroup="movementItem.fileGroup"
                 />
@@ -114,6 +115,7 @@
                 :noDetails="true"
               />
               <FormButtons
+                :loading="uploadIsLoading>0"
                 @onNext="handleUploadNext"
                 @onBack="handleBack"
                 :multiForm="true"
@@ -167,9 +169,6 @@ export default {
     enums() {
       return enums;
     },
-    loadingUpload() {
-      return this.$refs.fileUploader1.isLoading || this.$refs.fileUploader2.isLoading;
-    }
   },
 
   methods: {
@@ -265,6 +264,12 @@ export default {
     },
     handleUpload2(file) {
       this.$refs.filesList2.refresh();
+    },
+    handleLoading(isLoading) {
+      if (isLoading)
+        this.uploadIsLoading++;
+      else
+        this.uploadIsLoading--;
     }
   },
 
@@ -277,7 +282,8 @@ export default {
       movementItem: null,
       orderExists: false,
       movementExists: false,
-      loading: false
+      loading: false,
+      uploadIsLoading: 0
     };
   }
 };
