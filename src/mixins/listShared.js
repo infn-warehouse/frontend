@@ -36,8 +36,10 @@ export default {
   async created() {
     this.paginationOpts = {...this.paginationOpts, ...this.mergeOpts };
     this.tableData.headers=this.mapHeaders();
-    if (this.immutableFilter && this.immutableFilterField)
-      this.tableData.headers[this.getFieldIndex(this.immutableFilterField)].hidden=true;
+    if (this.immutableFilter && this.immutableFilterField) {
+      let i=this.getFieldIndex(this.immutableFilterField);
+      if (i>=0) this.tableData.headers[i].hidden=true;
+    }
     if (this.noFilter)
       await this._fetch();
   },

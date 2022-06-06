@@ -4,12 +4,12 @@
       <Toolbar
         :title="title"
       />
-      <div class="flex-container">
+      <div class="my-container">
         <FileUploader
           @onUploadComplete="handleUpload"
         />
-        <FilesList ref="filesList"/>
       </div>
+      <FilesList ref="filesList"/>
     </v-card>
   </div>
 </template>

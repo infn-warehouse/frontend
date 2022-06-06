@@ -26,7 +26,8 @@
     "outbound": "Outbound",
     "c": "In conto",
     "s": "In saldo",
-    "?": "?"
+    "?": "?",
+    "attachments": "Attachments"
   },
   "date_picker": {
     "clear": "Clear",
@@ -59,7 +60,8 @@
     "step1": "Enter CIG",
     "step2": "Enter order data",
     "step3": "Lot registration",
-    "step4": "End",
+    "step4": "Upload order",
+    "step5": "Upload delivery",
     "cig": "CIG",
     "orderNotFound": "Order not found.",
     "complete": "Registration complete.",
@@ -194,19 +196,19 @@
   },
   "details": {
     "movements": {
-      "tab1": "Delivery",
-      "tab2": "Testing"
+      "tabDelivery": "Delivery",
+      "tabTesting": "Testing"
     },
     "items": {
-      "tab1": "Loading",
-      "tab2": "Unloading"
+      "tabLoading": "Loading",
+      "tabUnloading": "Unloading"
     },
     "orders": {
-      "tab1": "Movements"
+      "tabMovements": "Movements"
     },
     "files": {
-      "tab1": "View",
-      "tab2": "Download"
+      "tabView": "View",
+      "tabDownload": "Download"
     }
  },
   "filters": {

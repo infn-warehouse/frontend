@@ -29,6 +29,7 @@ Vue.filter("month", value => {
   }
 });
 Vue.filter("size", value => {
+  value=parseInt(value);
   if (value>=1073741824)
     return (value/1073741824).toFixed(2)+" GB";
   if (value>=1048576)

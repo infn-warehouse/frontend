@@ -18,18 +18,32 @@
           slider-color="accent"
           dark
         >
-          <v-tab key="tab1">{{ $t("details.movements.tab1") }}</v-tab>
-          <v-tab key="tab2">{{ $t("details.movements.tab2") }}</v-tab>
+          <v-tab key="tabAttachments">{{ $t("custom.attachments") }}</v-tab>
+          <v-tab key="tabDelivery">{{ $t("details.movements.tabDelivery") }}</v-tab>
+          <v-tab key="tabTesting">{{ $t("details.movements.tabTesting") }}</v-tab>
         </v-tabs>
         <v-tabs-items v-model="activeTab">
-          <v-tab-item key="tab1">
+          <v-tab-item key="tabAttachments">
+            <div class="my-container">
+              <FileUploader
+                @onUploadComplete="handleUpload"
+                :fileGroup="this.selectedItem.fileGroup"
+              />
+            </div>
+            <FilesList
+              ref="filesList"
+              :immutableFilter="this.selectedItem.fileGroup"
+              :title="$t('custom.attachments')"
+            />
+          </v-tab-item>
+          <v-tab-item key="tabDelivery">
             <div class="flex-container">
               <div><b>{{ $t("headers.movements.dataConsegna") }}</b>: {{this.selectedItem.dataConsegna | date}}</div>
               <div><b>{{ $t("headers.movements.consegnatario") }}</b>: {{this.selectedItem.consegnatario}}</div>
               <div><b>{{ $t("headers.movements.nColli") }}</b>: {{this.selectedItem.nColli}}</div>
             </div>
           </v-tab-item>
-          <v-tab-item key="tab2">
+          <v-tab-item key="tabTesting">
             <div class="flex-container">
               <div><b>{{ $t("headers.movements.dataCollaudo") }}</b>: {{this.selectedItem.dataCollaudo | date}}</div>
               <div><b>{{ $t("headers.movements.tipoCollaudo") }}</b>: {{this.selectedItem.tipoCollaudo}}</div>
@@ -64,6 +78,8 @@ import formDialog from "@/mixins/formDialog";
 import detailsShared from "@/mixins/detailsShared";
 import GraphileService from "@/services/graphile.service";
 import { mapMutations } from "vuex";
+import FileUploader from "@/components/FileUploader";
+import FilesList from "@/views/FilesList";
 
 export default {
   name: "MovementDetails",
@@ -94,6 +110,10 @@ export default {
         payload => payload.p.nMovimento
       );
     },
+
+    handleUpload(file) {
+      this.$refs.filesList.refresh();
+    },
   },
   created() {
     this.setMovementsFlag(true);
@@ -101,6 +121,8 @@ export default {
   components: {
     MovementForm,
     Toolbar,
+    FileUploader,
+    FilesList
   },
   mixins: [helper,formDialog,detailsShared],
   computed: {

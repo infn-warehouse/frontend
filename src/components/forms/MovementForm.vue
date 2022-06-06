@@ -26,7 +26,7 @@
                 itemText="idordine"
                 itemValue="idordine"
                 :returnObject="false"
-                :modelId="modelId"
+                :model="model"
                 :mode="mode"
               ></FetchAutocomplete>
               <span class="form-error">{{ errors[0] }}</span>
@@ -147,6 +147,7 @@ import helper from "@/mixins/helper";
 import formShared from "@/mixins/formShared";
 import GraphileService from "@/services/graphile.service";
 import utils from "../../utils";
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
   name: "MovementForm",
@@ -158,6 +159,7 @@ export default {
       resourceType: this.$t("resource_types.movement"),
       formTitle: "",
       idName: "idMovimento",
+      modelField: "idOrdine",
       emptyForm: {
         idMovimento: "",
         nMovimento: "",
@@ -173,7 +175,8 @@ export default {
         note: "",
         codificaSpaziale: "",
         tipoCollaudo: "",
-        inUscita: ""
+        inUscita: "",
+        fileGroup: uuidv4()
       },
       inUscitaItems: [
         { name: this.$t("custom.inbound"), value: false },

@@ -51,6 +51,11 @@ export default {
   components: {
     KProgress
   },
+  props: {
+    fileGroup: {
+      required: false
+    },
+  },
   data() {
     return {
       isLoading: false,
@@ -71,6 +76,7 @@ export default {
       this.status=0;
 
       let bodyFormData = new FormData();
+      bodyFormData.append('fileGroup', this.fileGroup);
       bodyFormData.append('data', this.selectedFile);
 
       this.cancel=ApiService.upload("alfresco/"+encodeURI(this.selectedFile.name),bodyFormData,(progress) => {

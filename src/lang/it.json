@@ -26,7 +26,8 @@
     "outbound": "In uscita",
     "c": "In conto",
     "s": "In saldo",
-    "?": "?"
+    "?": "?",
+    "attachments": "Allegati"
   },
   "date_picker": {
     "clear": "Pulisci",
@@ -59,7 +60,8 @@
     "step1": "Inserire CIG",
     "step2": "Inserire dati ordine",
     "step3": "Registrazione lotto",
-    "step4": "Fine",
+    "step4": "Upload ordine",
+    "step5": "Upload bolla",
     "cig": "CIG",
     "orderNotFound": "Ordine non trovato.",
     "complete": "Registrazione completa.",
@@ -194,19 +196,19 @@
   },
   "details": {
     "movements": {
-      "tab1": "Consegna",
-      "tab2": "Collaudo"
+      "tabDelivery": "Consegna",
+      "tabTesting": "Collaudo"
     },
     "items": {
-      "tab1": "Carico",
-      "tab2": "Scarico"
+      "tabLoading": "Carico",
+      "tabUnloading": "Scarico"
     },
     "orders": {
-      "tab1": "Movimenti"
+      "tabMovements": "Movimenti"
     },
     "files": {
-      "tab1": "Visualizza",
-      "tab2": "Scarica"
+      "tabView": "Visualizza",
+      "tabDownload": "Scarica"
     }
   },
   "filters": {

@@ -137,6 +137,7 @@ import formShared from "@/mixins/formShared";
 import utils from "../../utils";
 import GraphileService from "@/services/graphile.service";
 import FetchAutocomplete from "@/components/FetchAutocomplete";
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
   name: "OrderForm",
@@ -164,6 +165,7 @@ export default {
         note: "",
         cig: "",
         rup: "",
+        fileGroup: uuidv4()
       }
     };
 

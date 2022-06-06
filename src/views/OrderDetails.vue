@@ -18,15 +18,27 @@
           slider-color="accent"
           dark
         >
-          <v-tab key="tab1">{{ $t("details.orders.tab1") }}</v-tab>
+          <v-tab key="tabAttachments">{{ $t("custom.attachments") }}</v-tab>
+          <v-tab key="tabMovements">{{ $t("details.orders.tabMovements") }}</v-tab>
         </v-tabs>
         <v-tabs-items v-model="activeTab">
-          <v-tab-item key="tab1">
-            <div class="flex-container">
-              <MovementsList
-                :immutableFilter="selectedItem.idordine"
+          <v-tab-item key="tabAttachments">
+            <div class="my-container">
+              <FileUploader
+                @onUploadComplete="handleUpload"
+                :fileGroup="this.selectedItem.fileGroup"
               />
             </div>
+            <FilesList
+              ref="filesList"
+              :immutableFilter="this.selectedItem.fileGroup"
+              :title="$t('custom.attachments')"
+            />
+          </v-tab-item>
+          <v-tab-item key="tabMovements">
+            <MovementsList
+              :immutableFilter="selectedItem.idordine"
+            />
           </v-tab-item>
         </v-tabs-items>
         <v-dialog
@@ -58,6 +70,8 @@ import detailsShared from "@/mixins/detailsShared";
 import GraphileService from "@/services/graphile.service";
 import { mapMutations } from "vuex";
 import MovementsList from "@/views/MovementsList";
+import FileUploader from "@/components/FileUploader";
+import FilesList from "@/views/FilesList";
 
 export default {
   name: "OrderDetails",
@@ -88,6 +102,10 @@ export default {
         payload => payload.p.idordine
       );
     },
+
+    handleUpload(file) {
+      this.$refs.filesList.refresh();
+    },
   },
   created() {
     this.setOrdersFlag(true);
@@ -96,6 +114,8 @@ export default {
     MovementForm,
     Toolbar,
     MovementsList,
+    FileUploader,
+    FilesList
   },
   mixins: [helper,formDialog,detailsShared],
   computed: {

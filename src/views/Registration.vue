@@ -21,10 +21,14 @@
           <v-stepper-step :complete="step>4" step="4">
             {{ $t("registration.step4") }}
           </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step :complete="step>5" step="5">
+            {{ $t("registration.step5") }}
+          </v-stepper-step>
         </v-stepper-header>
         <v-stepper-items>
           <v-stepper-content step="1">
-            <v-card-text>
+            <div class="my-container">
               <FetchAutocomplete
                 class="required"
                 :label="$t('registration.cig')"
@@ -34,7 +38,7 @@
                 itemValue="cig"
                 :returnObject="false"
               ></FetchAutocomplete>
-            </v-card-text>
+            </div>
             <FormButtons
               @onNext="handleCigNext"
               :disabled="cig=='' || cig==null"
@@ -60,17 +64,64 @@
           <v-stepper-content step="3">
             <MovementForm
               v-if="step>2"
-              :mode="enums.FORM_MODE.CREATE"
+              :mode="movementExists ? enums.FORM_MODE.UPDATE : enums.FORM_MODE.CREATE"
+              :selectedItem="movementItem"
               :multiForm="true"
               :multiLayout="1"
               @formCancel="handleMovementCancel"
               @formSucceed="handleMovementSave"
               @formBack="handleBack"
-              :modelId="orderItem.idordine"
+              :model="orderItem.idordine"
             />
           </v-stepper-content>
           <v-stepper-content step="4">
-            <v-card-text v-if="step>3">
+            <template v-if="step>3">
+              <div class="my-container">
+                <FileUploader
+                  ref="fileUploader1"
+                  @onUploadComplete="handleUpload1"
+                  :fileGroup="orderItem.fileGroup"
+                />
+              </div>
+              <FilesList
+                ref="filesList1"
+                :immutableFilter="orderItem.fileGroup"
+                :title="$t('custom.attachments')"
+              />
+              <FormButtons
+                @onNext="handleUploadNext"
+                @onBack="handleBack"
+                :multiForm="true"
+                :multiLayout="1"
+                :noCancel="true"
+              />
+            </template>
+          </v-stepper-content>
+          <v-stepper-content step="5">
+            <template v-if="step>4">
+              <div class="my-container">
+                <FileUploader
+                  ref="fileUploader2"
+                  @onUploadComplete="handleUpload2"
+                  :fileGroup="movementItem.fileGroup"
+                />
+              </div>
+              <FilesList
+                ref="filesList2"
+                :immutableFilter="movementItem.fileGroup"
+                :title="$t('custom.attachments')"
+              />
+              <FormButtons
+                @onNext="handleUploadNext"
+                @onBack="handleBack"
+                :multiForm="true"
+                :multiLayout="1"
+                :noCancel="true"
+              />
+            </template>
+          </v-stepper-content>
+          <v-stepper-content step="6">
+            <v-card-text v-if="step>5">
               <v-icon x-large>{{ enums.ICONS.DONE }}</v-icon>
               <div class="inner-element">{{$t('registration.complete')}}</div>
               <div class="inner-element"><a @click="go">{{$t('registration.go')}} {{orderItem.idordine}}</a></div>
@@ -92,6 +143,8 @@ import GraphileService from "@/services/graphile.service";
 import enums from "@/enums";
 import FormButtons from "@/components/FormButtons";
 import FetchAutocomplete from "@/components/FetchAutocomplete";
+import FileUploader from "@/components/FileUploader";
+import FilesList from "@/views/FilesList";
 
 export default {
   name: 'Registration',
@@ -101,7 +154,9 @@ export default {
     MovementForm,
     Toolbar,
     FormButtons,
-    FetchAutocomplete
+    FetchAutocomplete,
+    FileUploader,
+    FilesList
   },
 
   mixins: [helper],
@@ -109,6 +164,9 @@ export default {
   computed: {
     enums() {
       return enums;
+    },
+    loadingUpload() {
+      return this.$refs.fileUploader1.isLoading || this.$refs.fileUploader2.isLoading;
     }
   },
 
@@ -171,8 +229,12 @@ export default {
       this.orderItem=form;
       this.step++;
     },
-    handleMovementSave() {
-      this.cig="";
+    handleMovementSave(form) {
+      this.movementExists=true;
+      this.movementItem=form;
+      this.step++;
+    },
+    handleUploadNext() {
       this.step++;
     },
     handleBack() {
@@ -192,6 +254,15 @@ export default {
     },
     restart() {
       this.step=1;
+      this.cig="";
+      this.movementExists=false;
+      this.movementItem=null;
+    },
+    handleUpload1(file) {
+      this.$refs.filesList1.refresh();
+    },
+    handleUpload2(file) {
+      this.$refs.filesList2.refresh();
     }
   },
 
@@ -201,7 +272,9 @@ export default {
       step: 1,
       cig: "",
       orderItem: null,
+      movementItem: null,
       orderExists: false,
+      movementExists: false,
       loading: false
     };
   }

@@ -18,15 +18,15 @@
           slider-color="accent"
           dark
         >
-          <v-tab key="tab1">{{ $t("details.items.tab1") }}</v-tab>
-          <v-tab key="tab2">{{ $t("details.items.tab2") }}</v-tab>
+          <v-tab key="tabLoading">{{ $t("details.items.tabLoading") }}</v-tab>
+          <v-tab key="tabUnloading">{{ $t("details.items.tabUnloading") }}</v-tab>
         </v-tabs>
         <v-tabs-items v-model="activeTab">
-          <v-tab-item key="tab1">
+          <v-tab-item key="tabLoading">
             <div class="flex-container">
             </div>
           </v-tab-item>
-          <v-tab-item key="tab2">
+          <v-tab-item key="tabUnloading">
             <div class="flex-container">
               <UnloadingMovsList
                 :immutableFilter="selectedItem.codiceArticolo"

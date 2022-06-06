@@ -19,18 +19,18 @@
           slider-color="accent"
           dark
         >
-          <v-tab key="tab1">{{ $t("details.files.tab1") }}</v-tab>
-          <v-tab key="tab2">{{ $t("details.files.tab2") }}</v-tab>
+          <v-tab key="tabViewer">{{ $t("details.files.tabViewer") }}</v-tab>
+          <v-tab key="tabDownloader">{{ $t("details.files.tabDownloader") }}</v-tab>
         </v-tabs>
         <v-tabs-items v-model="activeTab">
-          <v-tab-item key="tab1">
+          <v-tab-item key="tabViewer">
             <div class="flex-container">
               <FileViewer
                 :name="selectedItem.name"
               />
             </div>
           </v-tab-item>
-          <v-tab-item key="tab2">
+          <v-tab-item key="tabDownloader">
             <div class="flex-container">
               <FileDownloader
                 :file="selectedItem"

@@ -15,7 +15,8 @@ export default {
   },
   data() {
     return {
-      loading: false
+      loading: false,
+      form: {}
     };
   },
   props: {
@@ -24,7 +25,7 @@ export default {
       type: String
     },
     selectedItem: Object,
-    modelId: {
+    model: {
       type: String,
       required: false
     },
@@ -48,6 +49,7 @@ export default {
       this.loading=false;
 
       if (res) {
+        this.form[this.idName]=res.data[this.idName];
         this.$emit("formSucceed",this.form);
         this.$emit("formClose");
       }
@@ -60,16 +62,23 @@ export default {
       this.$emit("formBack");
     },
     setForm() {
-      this.form=_.cloneDeep(this.emptyForm);
+      let newForm=_.cloneDeep(this.emptyForm);
+      
       if (this.selectedItem) {
         this.currentId=this.selectedItem[this.idName];
         for (let key in this.selectedItem)
-          if (key in this.form)
-            this.form[key]=this.selectedItem[key];
+          if (key in newForm)
+            newForm[key]=this.selectedItem[key];
       }
+
+      if (this.model)
+        newForm[this.modelField]=this.model;
+
+      this.form=newForm;
     },
   },
   created() {
+    this.form=_.cloneDeep(this.emptyForm);
     this.setForm();
     this.setTitle();
   },

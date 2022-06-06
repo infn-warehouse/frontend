@@ -9,7 +9,7 @@
     :return-object="returnObject"
     :label="label"
     :search-input.sync="search"
-    :disabled="disabled || modelId!=null"
+    :disabled="disabled || model!=null"
     no-filter
     clearable
   >
@@ -36,7 +36,7 @@ export default {
     "label",
     "disabled",
     "value",
-    "modelId",
+    "model",
     "fetch"
   ],
   mixins: [helper],
@@ -62,7 +62,7 @@ export default {
   },
   watch: {
     search: function (newVal,oldVal) {
-      if (this.modelId) return;
+      if (this.model) return;
 
       let oldCheck=oldVal==null || oldVal=="";
       let newCheck=newVal==null || newVal=="";
@@ -88,8 +88,8 @@ export default {
     }
   },
   async created() {
-    if (this.modelId)
-      this.filter[this.itemValue]={value: this.modelId};
+    if (this.model)
+      this.filter[this.itemValue]={value: this.model};
     else if (this.value) {
       if (!this.returnObject)
         this.filter[this.itemValue]={value: this.value};
@@ -99,7 +99,7 @@ export default {
 
     await this._fetch();
 
-    if (this.modelId && this.mode==enums.FORM_MODE.CREATE) {
+    if (this.model && this.mode==enums.FORM_MODE.CREATE) {
       if (this.returnObject)
         this.$emit("input", this.items[0]);
       else

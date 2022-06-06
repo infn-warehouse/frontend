@@ -3,8 +3,7 @@
     <div :class="{ 'hide-shrink': drawer_flag, 'list-container': true }">
       <v-card>
         <Toolbar
-          :title="resourceTypes"
-          :withAdd="true"
+          :title="title || resourceTypes"
           :allClear="allClear"
           @onAdd="openCreate"
         />
@@ -61,6 +60,12 @@ export default {
     Toolbar,
   },
 
+  props: {
+    title: {
+      required: false
+    },
+  },
+  
   mixins: [helper,formDialog,listShared],
 
   computed: {
@@ -137,7 +142,8 @@ export default {
         sortBy: [],
         sortDesc: [],
       },
-      noFilter: true
+      noFilter: true,
+      immutableFilterField: "fileGroup"
     };
   }
 };

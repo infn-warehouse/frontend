@@ -38,8 +38,26 @@ $threshold2: 1263px
   flex-direction: column
   flex-grow: 1
 
+.v-stepper
+  display: flex
+  flex-direction: column
+  flex: 1 0 auto
+.v-stepper__items
+  display: flex
+  flex-direction: column
+  flex: 1 0 auto
 .v-stepper__content
-  padding: 0px
+  display: flex
+  flex-direction: column
+  flex: 1 0 auto
+  padding: 0px !important
+.v-stepper__content.tab-transition-leave-active,
+.v-stepper__content.tab-reverse-transition-leave-active
+  height: 100%
+.v-stepper__wrapper
+  display: flex
+  flex-direction: column
+  flex: 1 0 auto
 
 .list-container-outer
   flex-grow: 1
