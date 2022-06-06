@@ -53,7 +53,7 @@
   "login": {
     "before": "Benvenuto in ",
     "after": ".",
-    "email": "Email",
+    "email": "Email / Username",
     "password": "Password"
   },
   "registration": {
