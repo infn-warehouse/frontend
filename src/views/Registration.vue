@@ -90,7 +90,7 @@
                 :noDetails="true"
               />
               <FormButtons
-                :loading="uploadIsLoading>0"
+                :disabledAll="uploadIsLoading>0"
                 @onNext="handleUploadNext"
                 @onBack="handleBack"
                 :multiForm="true"
@@ -115,7 +115,7 @@
                 :noDetails="true"
               />
               <FormButtons
-                :loading="uploadIsLoading>0"
+                :disabledAll="uploadIsLoading>0"
                 @onNext="handleUploadNext"
                 @onBack="handleBack"
                 :multiForm="true"

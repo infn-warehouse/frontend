@@ -7,7 +7,7 @@
           color="warning"
           text
           @click="onDelete()"
-          :disabled="loading"
+          :disabled="disabledAll || loading"
         >
           <v-icon>delete</v-icon>
         </v-btn>
@@ -19,7 +19,7 @@
           class="ml-3"
           @click="onBack()"
           color="primary"
-          :disabled="loading"
+          :disabled="disabledAll || loading"
           >{{ $t("buttons.back") }}</v-btn
         >
         <v-btn
@@ -27,7 +27,7 @@
           class="ml-3"
           @click="onNext()"
           color="primary"
-          :disabled="disabled || loading"
+          :disabled="disabledAll || disabled || loading"
           >{{ $t("buttons.next") }}</v-btn
         >
         <v-btn
@@ -35,12 +35,16 @@
           class="ml-3"
           color="primary"
           @click="onSave()"
-          :disabled="disabled || loading"
+          :disabled="disabledAll || disabled || loading"
           >{{ $t("buttons.save") }}</v-btn
         >
-        <v-btn v-if="!noCancel" class="ml-3" :disabled="loading" text @click="onCancel()">{{
-          $t("buttons.cancel")
-        }}</v-btn>
+        <v-btn
+          v-if="!noCancel"
+          class="ml-3"
+          text
+          @click="onCancel()"
+          :disabled="disabledAll || loading"
+          >{{ $t("buttons.cancel") }}</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -51,6 +55,7 @@ export default {
   props: [
     "withDelete",
     "disabled",
+    "disabledAll",
     "multiForm",
     "multiLayout",
     "loading",
