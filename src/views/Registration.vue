@@ -87,6 +87,7 @@
                 ref="filesList1"
                 :immutableFilter="orderItem.fileGroup"
                 :title="$t('custom.attachments')"
+                :noDetails="true"
               />
               <FormButtons
                 @onNext="handleUploadNext"
@@ -110,6 +111,7 @@
                 ref="filesList2"
                 :immutableFilter="movementItem.fileGroup"
                 :title="$t('custom.attachments')"
+                :noDetails="true"
               />
               <FormButtons
                 @onNext="handleUploadNext"

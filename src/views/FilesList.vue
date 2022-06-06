@@ -64,6 +64,9 @@ export default {
     title: {
       required: false
     },
+    noDetails: {
+      required: false
+    },
   },
   
   mixins: [helper,formDialog,listShared],
@@ -103,12 +106,13 @@ export default {
           name: { data: item.name, dataType: "text" },
           size: { data: item.size, dataType: "size" },
         };
-        tableItem.click_action = {
-          actionType: "router-link",
-          namedRoot: "FileDetails",
-          namedRootId: item.name,
-          icon: "gps_fixed"
-        };
+        if (!this.noDetails)
+          tableItem.click_action = {
+            actionType: "router-link",
+            namedRoot: "FileDetails",
+            namedRootId: item.name,
+            icon: "gps_fixed"
+          };
         // tableItem.click_action = {
         //   actionType: "custom",
         //   callback: () => {
