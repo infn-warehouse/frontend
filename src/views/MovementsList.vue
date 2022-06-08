@@ -214,7 +214,13 @@ export default {
       );
     },
     fetch(paginationOpts=null,search,filter) {
-      return GraphileService.fetchAll("MovimentiTemp",["documento"],[],filter,{search, on: ["nMovimento","idOrdine","nDocAcc","consegnatario"]},paginationOpts);
+      return GraphileService.fetchAll("MovimentiTemp",["documento"],[],filter,{search, on: [
+        "nMovimento",
+        "idOrdine",
+        "nDocAcc",
+        "consegnatario",
+        "note"
+      ]},paginationOpts);
     },
   },
 

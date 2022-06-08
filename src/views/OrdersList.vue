@@ -219,7 +219,17 @@ export default {
       );
     },
     fetch(paginationOpts=null,search,filter) {
-      return GraphileService.fetchAll("OrdiniWithCounters",[],[],filter,{search, on: ["idordine","fornitore","descrizione"]},paginationOpts);
+      return GraphileService.fetchAll("OrdiniWithCounters",[],[],filter,{search, on: [
+        "idordine",
+        "fornitore",
+        "descrizione",
+        "servizioRichi",
+        "responsabile",
+        "collaudatore",
+        "note",
+        "cig",
+        "rup"
+      ]},paginationOpts);
     },
   },
 
