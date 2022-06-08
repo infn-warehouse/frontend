@@ -15,7 +15,6 @@
           :injectOpts="paginationOpts"
           :loading="loading"
           :withActions="true"
-          :withEdit="true"
           :withDelete="true"
           @onPaginationChanged="handlePaginationChanged"
           @onEdit="openUpdate"
