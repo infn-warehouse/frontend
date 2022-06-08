@@ -128,8 +128,8 @@
             <v-card-text v-if="step>5">
               <v-icon x-large>{{ enums.ICONS.DONE }}</v-icon>
               <div class="inner-element">{{$t('registration.complete')}}</div>
-              <div class="inner-element"><a @click="go">{{$t('registration.go')}} {{orderItem.idordine}}</a></div>
               <div class="bottom-element"><a @click="restart">{{$t('registration.new')}}</a></div>
+              <div class="inner-element"><a @click="go">{{$t('registration.go')}} {{orderItem.idordine}}</a></div>
             </v-card-text>
           </v-stepper-content>
         </v-stepper-items>

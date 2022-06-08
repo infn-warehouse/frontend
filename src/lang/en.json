@@ -27,7 +27,10 @@
     "c": "In conto",
     "s": "In saldo",
     "?": "?",
-    "attachments": "Attachments"
+    "attachments": "Attachments",
+    "a_type": "A type",
+    "b_type": "B type",
+    "f_type": "F type"
   },
   "date_picker": {
     "clear": "Clear",

@@ -106,10 +106,16 @@
             ></DatePicker>
           </v-col>
           <v-col cols="4">
-            <v-text-field
+            <v-autocomplete
               :label="$t('headers.movements.tipoCollaudo')"
               v-model="form.tipoCollaudo"
-            ></v-text-field>
+              :items="tipoCollaudoItems"
+              item-text="name"
+              item-value="value"
+              :return-object="false"
+              clearable
+            >
+            </v-autocomplete>
           </v-col>
         </v-row>
         <v-text-field
@@ -181,6 +187,11 @@ export default {
       inUscitaItems: [
         { name: this.$t("custom.inbound"), value: false },
         { name: this.$t("custom.outbound"), value: true }
+      ],
+      tipoCollaudoItems: [
+        { name: this.$t("custom.a_type"), value: "A" },
+        { name: this.$t("custom.b_type"), value: "B" },
+        { name: this.$t("custom.f_type"), value: "F" }
       ]
     };
   },

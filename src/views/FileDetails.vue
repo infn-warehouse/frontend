@@ -2,7 +2,6 @@
   <div class="flex-container">
     <v-card>
       <Toolbar
-        mainPage="UploadTest"
         :title="detailsTitle"
         :withBack="true"
         :withEdit="true"

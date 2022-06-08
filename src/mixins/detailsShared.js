@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     syncUrl() {
-      window.location.hash = this.activeTab+1;
+      this.$router.replace({path: this.$route.path + '#' + (this.activeTab+1)});
     },
     async handleDelete() {
       if (await this.delete(this.selectedItem)) {

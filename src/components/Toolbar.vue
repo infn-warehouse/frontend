@@ -78,16 +78,11 @@ export default {
       type: Boolean,
       default: true
     },
-    mainPage: {
-      type: String,
-      required: false
-    }
   },
   mixins: [helper],
   data() {
     return {
       searchText: "",
-      backUrl: null
     };
   },
   computed: {
@@ -98,10 +93,7 @@ export default {
   methods: {
     goTo() {
       this.$emit("onBack");
-      if (this.mainPage)
-        this.$router.push({ name: this.mainPage });
-      else
-        this.$router.push({ path: this.backUrl });
+      this.$router.go(-1);
     },    
     onAdd() {
       this.$emit("onAdd");
@@ -119,10 +111,6 @@ export default {
       this.$emit("onSearch", this.searchText);
     }, process.env.VUE_APP_DEBOUNCE_TIME)
   },
-  created() {
-    let array = this.$route.path.split("/");
-    this.backUrl = "/"+array[array.length - 2];
-  }
 };
 </script>
 
