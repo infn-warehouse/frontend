@@ -13,7 +13,7 @@
                 :label="$t('headers.movements.nMovimento')"
                 v-model="form.nMovimento"
               ></v-text-field>
-              <span class="form-error">{{ errors[0] }}</span>
+              <span class="form-error">{{ errors[0] || "&nbsp;" }}</span>
             </ValidationProvider>
           </v-col>
           <v-col cols="3">
@@ -29,7 +29,7 @@
                 :model="model"
                 :mode="mode"
               ></FetchAutocomplete>
-              <span class="form-error">{{ errors[0] }}</span>
+              <span class="form-error">{{ errors[0] || "&nbsp;" }}</span>
             </ValidationProvider>
           </v-col>
           <v-col cols="3">
@@ -50,7 +50,7 @@
                 :return-object="false"
               >
               </v-autocomplete>
-              <span class="form-error">{{ errors[0] }}</span>
+              <span class="form-error">{{ errors[0] || "&nbsp;" }}</span>
             </ValidationProvider>
           </v-col>
         </v-row>

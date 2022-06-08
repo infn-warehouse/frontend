@@ -16,7 +16,7 @@
           single-line
         ></v-text-field>
       </v-col>
-      <v-col :cols="mobile2(4)" align="right">
+      <v-col :cols="mobile2(4)" align="right" v-if="withFilter || withAdd || withEdit || withDelete">
         <v-btn
           v-if="withFilter"
           @click="onFilter"

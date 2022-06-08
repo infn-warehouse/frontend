@@ -13,7 +13,7 @@
                 :label="$t('headers.orders.idordine')"
                 v-model="form.idordine"
               ></v-text-field>
-              <span class="form-error">{{ errors[0] }}</span>
+              <span class="form-error">{{ errors[0] || "&nbsp;" }}</span>
             </ValidationProvider>
           </v-col>
           <v-col cols="4">
@@ -28,7 +28,7 @@
                 itemValue="cig"
                 :returnObject="false"
               ></FetchAutocomplete>
-              <span class="form-error">{{ errors[0] }}</span>
+              <span class="form-error">{{ errors[0] || "&nbsp;" }}</span>
             </ValidationProvider>
           </v-col>
           <v-col cols="4">
