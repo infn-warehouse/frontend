@@ -53,7 +53,7 @@
   "login": {
     "before": "Benvenuto in ",
     "after": ".",
-    "email": "Email / Username",
+    "username": "Username",
     "password": "Password"
   },
   "registration": {
@@ -216,7 +216,7 @@
   "errors": {
     "GENERIC": "<br>Contattare l'amministratore.",
     "QUERY": "Errore nell'esecuzione di una query.<br>Contattare l'amministratore.",
-    "NO_EMAIL": "Email mancante.",
+    "NO_USERNAME": "Username mancante.",
     "NO_PASSWORD": "Password mancante.",
     "NO_USER": "Utente non trovato.",
     "BIND_ERROR": "Password errata. Riprovare.",

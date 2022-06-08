@@ -53,7 +53,7 @@
   "login": {
     "before": "Welcome in ",
     "after": ".",
-    "email": "Email / Username",
+    "username": "Username",
     "password": "Password"
   },
   "registration": {
@@ -216,7 +216,7 @@
   "errors": {
     "GENERIC": "<br>Please contact the administrator.",
     "QUERY": "Error executing a query.<br>Please contact the administrator.",
-    "NO_EMAIL": "Missing email.",
+    "NO_USERNAME": "Missing username.",
     "NO_PASSWORD": "Missing password.",
     "NO_USER": "User not found.",
     "BIND_ERROR": "Wrong password. Please retry.",

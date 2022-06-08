@@ -20,8 +20,8 @@
       <v-col align="center" cols="12">
         <v-form class="fixed-content">
           <v-text-field
-            :label="$t('login.email')"
-            v-model="email"
+            :label="$t('login.username')"
+            v-model="username"
             required
             dark
             @keyup.enter.native="submit"
@@ -61,7 +61,7 @@ export default {
     LocaleSwitch
   },
   data: () => ({
-    email: "",
+    username: "",
     password: "",
     showPassword: false,
     loading: false,
@@ -84,8 +84,8 @@ export default {
       if (!found) this.$router.push({ name: "default" }).catch(()=>{});
     },
     async submit() {
-      if (this.email=="") {
-        this.showError("NO_EMAIL");
+      if (this.username=="") {
+        this.showError("NO_USERNAME");
         return;
       }
       if (this.password=="") {
@@ -93,7 +93,7 @@ export default {
         return;
       }
 
-      const res=await this.operationWithCheck(async () => await AuthService.login(this.email, this.password),(err) => {
+      const res=await this.operationWithCheck(async () => await AuthService.login(this.username, this.password),(err) => {
         if (err.response && err.response.data.aaError) {
           if (err.response.data.aaError=="NO_USER")
             return "NO_USER";

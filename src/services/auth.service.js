@@ -2,14 +2,14 @@ import TokenService from "./token.service";
 import ApiService from "./api.service";
 import store from "@/store";
 
-async function login(email, password) {
+async function login(username, password) {
   const requestData = {
     url: "login",
     method: "post",
     headers: { "Content-Type": "application/json" },
     //withCredentials: true,
     data: {
-      email: email,
+      username: username,
       password: password
     }
   };
