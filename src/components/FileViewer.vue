@@ -9,9 +9,13 @@
       :line-height="32" >
     </k-progress>
 
-    <div v-if="status==2" class="inner-element">
+    <div v-if="status==0 && !isLoading" class="inner-element loading-label">
+      &nbsp;
+    </div>
+    <div v-if="status==2" class="inner-element loading-label">
       {{ $t('file_download.error') }}
     </div>
+
     <v-icon v-if="!viewable" x-large>{{ enums.ICONS.FILE_BAN }}</v-icon>
     <div v-if="!viewable" class="bottom-element">
       {{ $t('file_download.cannotDisplay') }}
@@ -99,6 +103,10 @@ iframe {
   width: 100%;
   height: 100%;
   border: none;
+}
+
+.loading-label {
+  line-height: 32px;
 }
 
 </style>

@@ -17,13 +17,16 @@
       :line-height="32" >
     </k-progress>
   
-    <div v-if="status==1" class="inner-element">
+    <div v-if="status==0 && !isLoading" class="inner-element loading-label">
+      &nbsp;
+    </div>
+    <div v-if="status==1" class="inner-element loading-label">
       {{ $t('file_upload.complete1')+this.uploadedFile.name+$t('file_upload.complete2') }}
     </div>
-    <div v-if="status==2" class="inner-element">
+    <div v-if="status==2" class="inner-element loading-label">
       {{ $t('file_upload.error') }}
     </div>
-    <div v-if="status==3" class="inner-element">
+    <div v-if="status==3" class="inner-element loading-label">
       {{ $t('file_upload.cancel') }}
     </div>
 
@@ -124,3 +127,11 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+
+.loading-label {
+  line-height: 32px;
+}
+
+</style>
