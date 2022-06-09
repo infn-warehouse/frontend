@@ -180,6 +180,7 @@ export default {
         "Ordini",
         "idordine",
         this.form,
+        this.formOld,
         this.currentId,
         payload => payload.p.idordine,
         payload => payload.p.idordine

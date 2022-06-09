@@ -94,15 +94,18 @@ export default {
       resType,
       idName,
       payload,
+      payloadOld,
       currentId,
       createdName,
       updatedName,
       extra = null
     ) {
+      console.log("createOrUpdateHelper");
       let pcopy = _.cloneDeep(payload);
       for (let key in pcopy) {
         if (pcopy[key]==null || pcopy[key]==="")
-          delete pcopy[key];
+          if (mode == enums.FORM_MODE.CREATE || payloadOld[key]==null || payloadOld[key]==="")
+            delete pcopy[key];
       }
 
       let res;

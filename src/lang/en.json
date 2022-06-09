@@ -117,7 +117,8 @@
       "note": "Note",
       "codificaSpaziale": "Codifica spaziale",
       "tipoCollaudo": "Tipo collaudo",
-      "inUscita": "Tipo"
+      "inUscita": "Tipo",
+      "tipoMovimento": "C / S"
     },
     "unloading_movs": {
       "articolo": "Codice articolo",

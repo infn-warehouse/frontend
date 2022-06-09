@@ -79,23 +79,34 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="4">
+          <v-col cols="3">
             <DatePicker
               :label="$t('headers.movements.dataConsegna')"
               v-model="form.dataConsegna"
             ></DatePicker>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="3">
             <v-text-field
               :label="$t('headers.movements.consegnatario')"
               v-model="form.consegnatario"
             ></v-text-field>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="3">
             <v-text-field
               :label="$t('headers.movements.nColli')"
               v-model="form.nColli"
             ></v-text-field>
+          </v-col>
+          <v-col cols="3">
+            <v-autocomplete
+              :label="$t('headers.movements.tipoMovimento')"
+              v-model="form.tipoMovimento"
+              :items="tipoMovimentoItems"
+              item-text="name"
+              item-value="value"
+              :return-object="false"
+              clearable
+            ></v-autocomplete>
           </v-col>
         </v-row>
         <v-row>
@@ -182,11 +193,16 @@ export default {
         codificaSpaziale: "",
         tipoCollaudo: "",
         inUscita: "",
+        tipoMovimento: "",
         fileGroup: uuidv4()
       },
       inUscitaItems: [
         { name: this.$t("custom.inbound"), value: false },
         { name: this.$t("custom.outbound"), value: true }
+      ],
+      tipoMovimentoItems: [
+        { name: this.$t("custom.c"), value: 'C' },
+        { name: this.$t("custom.s"), value: 'S' }
       ],
       tipoCollaudoItems: [
         { name: this.$t("custom.a_type"), value: "A" },
@@ -205,6 +221,7 @@ export default {
         "MovimentiTemp",
         "idMovimento",
         this.form,
+        this.formOld,
         this.currentId,
         payload => payload.p.nMovimento,
         payload => payload.p.nMovimento

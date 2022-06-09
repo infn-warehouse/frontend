@@ -160,6 +160,12 @@ export default {
         sortable: true,
         align: "start"
       });
+      tableHeaders.push({
+        value: "tipoMovimento",
+        sortable: true,
+        align: "start",
+        show: 1
+      });
       return tableHeaders;
     },
     mapItems() {
@@ -185,6 +191,11 @@ export default {
             data: item.inUscita ? this.$t("custom.outbound") : this.$t("custom.inbound"),
             dataType: "chip",
             chipClass: item.inUscita ? "blue" : "green"
+          },
+          tipoMovimento: {
+            data: item.tipoMovimento ? (item.tipoMovimento=='C' ? this.$t("custom.c") : this.$t("custom.s")) : "",
+            dataType: "chip",
+            chipClass: item.tipoMovimento ? (item.tipoMovimento=='C' ? "blue" : "green") : null
           },
         };
         /*{

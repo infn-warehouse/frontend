@@ -16,7 +16,8 @@ export default {
   data() {
     return {
       loading: false,
-      form: {}
+      form: {},
+      formOld: {}
     };
   },
   props: {
@@ -75,10 +76,10 @@ export default {
         newForm[this.modelField]=this.model;
 
       this.form=newForm;
+      this.formOld=_.cloneDeep(newForm);
     },
   },
   created() {
-    this.form=_.cloneDeep(this.emptyForm);
     this.setForm();
     this.setTitle();
   },
