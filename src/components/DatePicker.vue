@@ -1,42 +1,39 @@
 <template>
-  <v-menu
-    ref="menu"
-    v-model="menu"
-    :close-on-content-click="false"
-    transition="scale-transition"
-    offset-y
-    min-width="290px"
+  <vc-date-picker
+    v-model="date"
+    scrollable
+    color="primary"
+    header-color="primary"
+    @input="handleInput"
+    :mode="mode"
+    :popover="popoverProps"
+    :attributes="attributes"
+    :select-attribute='selectAttribute'
+    ref="dp"
+    @popoverWillShow="handleShow"
+    @popoverWillHide="handleHide"
   >
-    <template v-slot:activator="{ on, attrs }">
+    <template v-slot="{ }">
       <v-text-field
         v-model="dateFormatted"
         :label="label"
         prepend-icon="event"
         readonly
-        v-bind="attrs"
-        v-on="on"
-        @click="(oldDate = date)"
+        @click="(oldDate = date), (open())"
       ></v-text-field>
     </template>
-    <v-date-picker
-      v-model="date"
-      scrollable
-      color="primary"
-      header-color="primary"
-      @change="handleChange"
-    >
-      <v-spacer></v-spacer>
-      <v-btn text color="primary" @click="(date = null), (handleChange()), (menu = false)">
+    <template v-slot:footer>
+      <v-btn text color="primary" @click="(date = null), (handleInput()), (close())">
         {{ $t('date_picker.clear') }}
       </v-btn>
-      <v-btn text color="primary" @click="(date = oldDate), (handleChange()), (menu = false)">
+      <v-btn text color="primary" @click="(date = oldDate), (handleInput()), (close())">
         {{ $t('date_picker.cancel') }}
       </v-btn>
-      <v-btn text color="primary" @click="menu = false">
+      <v-btn text color="primary" @click="close()">
         {{ $t('date_picker.ok') }}
       </v-btn>
-    </v-date-picker>
-  </v-menu>
+    </template>
+  </vc-date-picker>
 </template>
 
 <script>
@@ -44,56 +41,75 @@ import moment from "moment";
 import utils from "../utils";
 
 export default {
-  props: ["label", "value"],
+  props: ["label", "value","mode"],
   data() {
     return {
-      date: {
-        content: null
-      },
+      date: null,
       oldDate: null,
       dateFormatted: "",
-      menu: false,
-      opened: false
+      popoverProps: {
+        visibility: 'click',
+        keepVisibleOnInput: true
+      },
+      selectAttribute: {
+        highlight: 'blue',
+        content: 'black',
+      },
+      attributes: [
+        {
+          key: "today",
+          highlight: {
+            color: 'blue',
+            fillMode: 'outline',
+          },
+          content: 'black',
+          dates: new Date(),
+        }
+      ],
     };
   },
   watch: {
-    menu() {
-      if (this.menu) {
-        if (this.dateFormatted=="")
-          this.dateFormatted=" ";
-      }
-      else {
-        if (this.dateFormatted==" ")
-          this.dateFormatted="";
-      }
-    },
     value() {
       this.date = this.parseDate(this.$props.value);
       this.formatDate();
     }
   },
   methods: {
-    handleChange() {
+    open() {
+      this.$refs.dp.showPopover();
+    },
+    close() {
+      this.$refs.dp.hidePopover();
+    },
+    handleShow() {
+      if (this.dateFormatted=="")
+        this.dateFormatted=" ";
+    },
+    handleHide() {
+      if (this.dateFormatted==" ")
+        this.dateFormatted="";
+    },
+    handleInput() {
       this.formatDate();
       this.emit();
     },
     emit() {
       if (this.date != null)
-        this.$emit("input", moment.utc(this.date).format());
+        this.$emit("input", utils.postgreDate(this.date));
       else
         this.$emit("input", null);
       this.$emit("change");
     },
     formatDate() {
       if (this.date != null)
-        this.dateFormatted=utils.formatDate(this.date);
+        this.dateFormatted=this.mode=="dateTime" ? utils.formatDateTime(this.date) : utils.formatDate(this.date);
       else
         this.dateFormatted = "";
     },
     parseDate(date) {
       if (!date) return null;
 
-      return moment(String(date)).format("YYYY-MM-DD");
+      return utils.parseDate(date);
     }
   },
   created() {
@@ -102,3 +118,12 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.date-circle {
+  background: '#ff8080';
+}
+.date-text {
+  color: 'black';
+}
+</style>

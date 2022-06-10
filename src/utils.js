@@ -18,6 +18,15 @@ export default {
         return name;
     },
     formatDate(date) {
-        return moment(String(date)).format("DD/MM/YYYY");
+        return moment(date).format("DD/MM/YYYY");
+    },
+    formatDateTime(date) {
+        return moment(date).format("DD/MM/YYYY H:mm");
+    },
+    postgreDate(date) {
+        return moment(date).format('YYYY-MM-DDTHH:mm:ss');
+    },
+    parseDate(str) {
+        return moment(str).toDate();
     }
 }

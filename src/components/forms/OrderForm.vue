@@ -151,7 +151,7 @@ export default {
       idName: "idordine",
       emptyForm: {
         idordine: "",
-        dataordine: utils.formatDate(new Date()),
+        dataordine: utils.postgreDate(new Date()),
         fornitore: "",
         descrizione: "",
         terminiCons: "",

@@ -162,6 +162,7 @@
             <DatePicker
               :label="$t('headers.movements.dataRitiro')"
               v-model="form.dataRitiro"
+              mode="dateTime"
             ></DatePicker>
           </v-col>
           <v-col cols="4">
@@ -229,7 +230,7 @@ export default {
       emptyForm: {
         idMovimento: "",
         nMovimento: "",
-        dataMovimento: utils.formatDate(new Date()),
+        dataMovimento: utils.postgreDate(new Date()),
         idOrdine: "",
         datadocumento: "",
         tipoDocAcc: "",

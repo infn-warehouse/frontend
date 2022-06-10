@@ -9,7 +9,7 @@ Vue.filter("titleCase", value => voca.titleCase(value));
 Vue.filter("upperCase", value => voca.upperCase(value));
 Vue.filter("datetime", value => {
   if (value) {
-    return moment(String(value)).format("YYYY/MM/DD HH:mm");
+    return moment(String(value)).format("DD/MM/YYYY HH:mm");
   }
 });
 Vue.filter("fullDateTime", value => {

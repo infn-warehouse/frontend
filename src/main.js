@@ -8,6 +8,7 @@ import abilitiesPlugin from "./plugins/abilitiesPlugin";
 import FlagIcon from 'vue-flag-icon'
 import VueConfirmDialog from "vue-confirm-dialog";
 import i18n from "./i18n";
+import VCalendar from 'v-calendar';
 
 Vue.config.productionTip = false
 
@@ -22,6 +23,10 @@ Vue.component("vue-confirm-dialog", VueConfirmDialog.default);
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
+
+Vue.use(VCalendar, {
+  componentPrefix: 'vc',
+});
 
 import { extend } from 'vee-validate';
 extend('required', {
