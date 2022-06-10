@@ -47,6 +47,7 @@
             <div class="flex-container">
               <div><b>{{ $t("headers.movements.dataCollaudo") }}</b>: {{this.selectedItem.dataCollaudo | date}}</div>
               <div><b>{{ $t("headers.movements.tipoCollaudo") }}</b>: {{this.selectedItem.tipoCollaudo}}</div>
+              <div><b>{{ $t("headers.movements.collaudatore") }}</b>: {{this.selectedItem.collaudatore}}</div>
             </div>
           </v-tab-item>
         </v-tabs-items>

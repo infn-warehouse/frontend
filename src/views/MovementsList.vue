@@ -156,6 +156,12 @@ export default {
         show: 1
       });
       tableHeaders.push({
+        value: "collaudatore",
+        sortable: true,
+        align: "start",
+        show: 1
+      });
+      tableHeaders.push({
         value: "inUscita",
         sortable: true,
         align: "start"
@@ -187,6 +193,7 @@ export default {
           note: { data: item.note, dataType: "text" },
           codificaSpaziale: { data: item.codificaSpaziale, dataType: "text" },
           tipoCollaudo: { data: item.tipoCollaudo, dataType: "text" },
+          collaudatore: { data: item.collaudatore, dataType: "text" },
           inUscita: {
             data: item.inUscita ? this.$t("custom.outbound") : this.$t("custom.inbound"),
             dataType: "chip",

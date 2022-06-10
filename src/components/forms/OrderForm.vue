@@ -87,19 +87,13 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="4">
+          <v-col cols="6">
             <v-text-field
               :label="$t('headers.orders.responsabile')"
               v-model="form.responsabile"
             ></v-text-field>
           </v-col>
-          <v-col cols="4">
-            <v-text-field
-              :label="$t('headers.orders.collaudatore')"
-              v-model="form.collaudatore"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="4">
+          <v-col cols="6">
             <v-text-field
               :label="$t('headers.orders.rup')"
               v-model="form.rup"

@@ -128,6 +128,12 @@
             >
             </v-autocomplete>
           </v-col>
+          <v-col cols="4">
+            <v-text-field
+              :label="$t('headers.movements.collaudatore')"
+              v-model="form.collaudatore"
+            ></v-text-field>
+          </v-col>
         </v-row>
         <v-text-field
           :label="$t('headers.movements.codificaSpaziale')"
@@ -192,6 +198,7 @@ export default {
         note: "",
         codificaSpaziale: "",
         tipoCollaudo: "",
+        collaudatore: "",
         inUscita: "",
         tipoMovimento: "",
         fileGroup: uuidv4()

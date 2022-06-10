@@ -117,6 +117,7 @@
       "note": "Note",
       "codificaSpaziale": "Codifica spaziale",
       "tipoCollaudo": "Tipo collaudo",
+      "collaudatore": "Collaudatore",
       "inUscita": "Tipo",
       "tipoMovimento": "C / S"
     },
@@ -151,7 +152,6 @@
       "statOrdine": "Stato",
       "nConsegne": "Numero consegne",
       "dataconsegna": "Data consegna prevista",
-      "collaudatore": "Collaudatore",
       "note": "Note",
       "cig": "CIG",
       "rup": "RUP",

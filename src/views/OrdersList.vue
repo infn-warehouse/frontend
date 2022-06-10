@@ -144,12 +144,6 @@ export default {
         align: "start"
       });
       tableHeaders.push({
-        value: "collaudatore",
-        sortable: true,
-        align: "start",
-        show: 1
-      });
-      tableHeaders.push({
         value: "note",
         sortable: true,
         align: "start",
@@ -192,7 +186,6 @@ export default {
           ) : null },
           nConsegne: { data: item.nConsegne, dataType: "text" },
           dataconsegna: { data: item.dataconsegna, dataType: "date" },
-          collaudatore: { data: item.collaudatore, dataType: "text" },
           note: { data: item.note, dataType: "text" },
           cig: { data: item.cig, dataType: "text" },
           rup: { data: item.rup, dataType: "text" },
