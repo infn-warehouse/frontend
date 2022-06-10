@@ -237,7 +237,8 @@ export default {
         "idOrdine",
         "nDocAcc",
         "consegnatario",
-        "note"
+        "note",
+        "collaudatore",
       ]},paginationOpts);
     },
   },

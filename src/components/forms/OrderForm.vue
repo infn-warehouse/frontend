@@ -39,16 +39,22 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="6">
+          <v-col cols="4">
             <v-text-field
               :label="$t('headers.orders.fornitore')"
               v-model="form.fornitore"
             ></v-text-field>
           </v-col>
-          <v-col cols="6">
+          <v-col cols="4">
             <v-text-field
               :label="$t('headers.orders.descrizione')"
               v-model="form.descrizione"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="4">
+            <v-text-field
+              :label="$t('headers.orders.nColli')"
+              v-model="form.nColli"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -159,6 +165,7 @@ export default {
         note: "",
         cig: "",
         rup: "",
+        nColli: "",
         fileGroup: uuidv4()
       }
     };

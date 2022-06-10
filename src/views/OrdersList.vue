@@ -160,6 +160,11 @@ export default {
         align: "start"
       });
       tableHeaders.push({
+        value: "nColli",
+        sortable: true,
+        align: "start"
+      });
+      tableHeaders.push({
         value: "movimentiCount",
         sortable: true,
         align: "start"
@@ -189,6 +194,7 @@ export default {
           note: { data: item.note, dataType: "text" },
           cig: { data: item.cig, dataType: "text" },
           rup: { data: item.rup, dataType: "text" },
+          nColli: { data: item.nColli, dataType: "text" },
           movimentiCount: { data: item.movimentiCount, dataType: "text" },
         };
         tableItem.click_action = {
@@ -218,7 +224,6 @@ export default {
         "descrizione",
         "servizioRichi",
         "responsabile",
-        "collaudatore",
         "note",
         "cig",
         "rup"
