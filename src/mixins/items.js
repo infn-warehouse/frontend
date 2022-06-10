@@ -10,7 +10,7 @@ export default {
   },
 
   methods: {
-    mapValue(value,items,chip) {
+    mapValue(value,items,chip=false) {
       let a=_.filter(items, (v) => v.value==value);
       if (a.length==0)
         return {
