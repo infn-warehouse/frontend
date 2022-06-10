@@ -46,7 +46,7 @@
           content-class="edit-form-dialog"
         >
           <v-card>
-            <MovementForm
+            <OrderForm
               v-if="formDialog"
               :mode="mode"
               :selectedItem="editItem"
@@ -63,7 +63,7 @@
 <script>
 import enums from "@/enums";
 import helper from "@/mixins/helper";
-import MovementForm from "@/components/forms/MovementForm";
+import OrderForm from "@/components/forms/OrderForm";
 import Toolbar from "@/components/Toolbar";
 import formDialog from "@/mixins/formDialog";
 import detailsShared from "@/mixins/detailsShared";
@@ -111,7 +111,7 @@ export default {
     this.setOrdersFlag(true);
   },
   components: {
-    MovementForm,
+    OrderForm,
     Toolbar,
     MovementsList,
     FileUploader,
