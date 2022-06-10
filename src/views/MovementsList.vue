@@ -58,6 +58,7 @@ import Toolbar from "@/components/Toolbar";
 import BaseGrid from "@/components/BaseGrid";
 import _ from "lodash";
 import helper from "@/mixins/helper";
+import items from "@/mixins/items";
 import formDialog from "@/mixins/formDialog";
 import listShared from "@/mixins/listShared";
 import MovementForm from "@/components/forms/MovementForm";
@@ -75,7 +76,7 @@ export default {
     MovementsFilter
   },
 
-  mixins: [helper,formDialog,listShared],
+  mixins: [helper,items,formDialog,listShared],
 
   computed: {
     enums() {
@@ -172,6 +173,36 @@ export default {
         align: "start",
         show: 1
       });
+      tableHeaders.push({
+        value: "tipoUscita",
+        sortable: true,
+        align: "start",
+        show: 1
+      });
+      tableHeaders.push({
+        value: "tipoReso",
+        sortable: true,
+        align: "start",
+        show: 1
+      });
+      tableHeaders.push({
+        value: "dataRitiro",
+        sortable: true,
+        align: "start",
+        show: 1
+      });
+      tableHeaders.push({
+        value: "corriere",
+        sortable: true,
+        align: "start",
+        show: 1
+      });
+      tableHeaders.push({
+        value: "trackingNum",
+        sortable: true,
+        align: "start",
+        show: 1
+      });
       return tableHeaders;
     },
     mapItems() {
@@ -184,7 +215,7 @@ export default {
           dataMovimento: { data: item.dataMovimento, dataType: "date" },
           idOrdine: { data: item.idOrdine, dataType: "text" },
           datadocumento: { data: item.datadocumento, dataType: "date" },
-          tipoDocAcc: { data: item.documentoByTipoDocAcc ? item.documentoByTipoDocAcc.dicitura : this.$t("custom.?"), dataType: "chip" },
+          tipoDocAcc: { data: item.documentoByTipoDocAcc ? item.documentoByTipoDocAcc.dicitura : "?", dataType: "chip" },
           nDocAcc: { data: item.nDocAcc, dataType: "text" },
           dataConsegna: { data: item.dataConsegna, dataType: "date" },
           consegnatario: { data: item.consegnatario, dataType: "text" },
@@ -194,16 +225,13 @@ export default {
           codificaSpaziale: { data: item.codificaSpaziale, dataType: "text" },
           tipoCollaudo: { data: item.tipoCollaudo, dataType: "text" },
           collaudatore: { data: item.collaudatore, dataType: "text" },
-          inUscita: {
-            data: item.inUscita ? this.$t("custom.outbound") : this.$t("custom.inbound"),
-            dataType: "chip",
-            chipClass: item.inUscita ? "blue" : "green"
-          },
-          tipoMovimento: {
-            data: item.tipoMovimento ? (item.tipoMovimento=='C' ? this.$t("custom.c") : this.$t("custom.s")) : "",
-            dataType: "chip",
-            chipClass: item.tipoMovimento ? (item.tipoMovimento=='C' ? "blue" : "green") : null
-          },
+          inUscita: this.mapValue(item.inUscita,this.movementItems.inUscita,true),
+          tipoMovimento: this.mapValue(item.tipoMovimento,this.movementItems.tipoMovimento,true),
+          tipoUscita: this.mapValue(item.tipoUscita,this.movementItems.tipoUscita,true),
+          tipoReso: this.mapValue(item.tipoReso,this.movementItems.tipoReso,true),
+          dataRitiro: { data: item.dataRitiro, dataType: "datetime" },
+          corriere: { data: item.corriere, dataType: "text" },
+          trackingNum: { data: item.trackingNum, dataType: "text" },
         };
         /*{
           actionType: "custom",

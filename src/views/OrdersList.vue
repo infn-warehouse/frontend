@@ -57,6 +57,7 @@ import Toolbar from "@/components/Toolbar";
 import BaseGrid from "@/components/BaseGrid";
 import _ from "lodash";
 import helper from "@/mixins/helper";
+import items from "@/mixins/items";
 import formDialog from "@/mixins/formDialog";
 import listShared from "@/mixins/listShared";
 import OrderForm from "@/components/forms/OrderForm";
@@ -74,7 +75,7 @@ export default {
     OrdersFilter
   },
 
-  mixins: [helper,formDialog,listShared],
+  mixins: [helper,items,formDialog,listShared],
 
   computed: {
     enums() {
@@ -184,11 +185,7 @@ export default {
           servizioRichi: { data: item.servizioRichi, dataType: "text" },
           responsabile: { data: item.responsabile, dataType: "text" },
           importo: { data: item.importo, dataType: "currency" },
-          statOrdine: { data: item.statOrdine ? (
-            item.statOrdine=="S" ? this.$t("custom.s") : this.$t("custom.c")
-          ) : this.$t("custom.?"), dataType: "chip", chipClass: item.statOrdine ? (
-            item.statOrdine=="S" ? "green" : "yellow"
-          ) : null },
+          statOrdine: this.mapValue(item.statOrdine,this.orderItems.statOrdine,true),
           nConsegne: { data: item.nConsegne, dataType: "text" },
           dataconsegna: { data: item.dataconsegna, dataType: "date" },
           note: { data: item.note, dataType: "text" },

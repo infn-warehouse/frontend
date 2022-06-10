@@ -138,8 +138,8 @@ export default {
         dataMovimento: {},
         inUscita: [
           { name: this.$t("misc.all"), all: true, checked: true, default: true },
-          { name: this.$t("custom.inbound"), value: false, checked: false },
-          { name: this.$t("custom.outbound"), value: true, checked: false }
+          { name: this.$t("items.inbound"), value: false, checked: false },
+          { name: this.$t("items.outbound"), value: true, checked: false }
         ]
       },
       filterInfo: {

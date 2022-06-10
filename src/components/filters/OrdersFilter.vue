@@ -113,8 +113,8 @@ export default {
         dataordine: {},
         statOrdine: [
           { name: this.$t("misc.all"), all: true, checked: true, default: true },
-          { name: this.$t("custom.c"), value: "C", checked: false },
-          { name: this.$t("custom.s"), value: "S", checked: false }
+          { name: this.$t("items.conto"), value: "C", checked: false },
+          { name: this.$t("items.saldo"), value: "S", checked: false }
         ]
       },
       filterInfo: {

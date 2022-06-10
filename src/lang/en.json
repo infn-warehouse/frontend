@@ -22,15 +22,20 @@
     "fill_test": "Forms filling test",
     "role": "Role",
     "email": "Email",
+    "attachments": "Attachments"
+  },
+  "items": {
     "inbound": "Inbound",
     "outbound": "Outbound",
-    "c": "In conto",
-    "s": "In saldo",
-    "?": "?",
-    "attachments": "Attachments",
+    "conto": "In conto",
+    "saldo": "In saldo",
     "a_type": "A type",
     "b_type": "B type",
-    "f_type": "F type"
+    "f_type": "F type",
+    "temporary": "Temporary",
+    "permanent": "Permanent",
+    "total": "Total",
+    "partial": "Partial"
   },
   "date_picker": {
     "clear": "Clear",
@@ -119,7 +124,12 @@
       "tipoCollaudo": "Tipo collaudo",
       "collaudatore": "Collaudatore",
       "inUscita": "Tipo",
-      "tipoMovimento": "C / S"
+      "tipoMovimento": "C / S",
+      "tipoUscita": "Tipo uscita",
+      "tipoReso": "Tipo reso",
+      "dataRitiro": "Date e ora ritiro",
+      "corriere": "Corriere",
+      "trackingNum": "Tracking number"
     },
     "unloading_movs": {
       "articolo": "Codice articolo",

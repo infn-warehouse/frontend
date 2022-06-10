@@ -44,12 +44,11 @@
                 class="required"
                 :label="$t('headers.movements.inUscita')"
                 v-model="form.inUscita"
-                :items="inUscitaItems"
+                :items="movementItems.inUscita"
                 item-text="name"
                 item-value="value"
                 :return-object="false"
-              >
-              </v-autocomplete>
+              ></v-autocomplete>
               <span class="form-error">{{ errors[0] || "&nbsp;" }}</span>
             </ValidationProvider>
           </v-col>
@@ -101,7 +100,7 @@
             <v-autocomplete
               :label="$t('headers.movements.tipoMovimento')"
               v-model="form.tipoMovimento"
-              :items="tipoMovimentoItems"
+              :items="movementItems.tipoMovimento"
               item-text="name"
               item-value="value"
               :return-object="false"
@@ -120,18 +119,61 @@
             <v-autocomplete
               :label="$t('headers.movements.tipoCollaudo')"
               v-model="form.tipoCollaudo"
-              :items="tipoCollaudoItems"
+              :items="movementItems.tipoCollaudo"
               item-text="name"
               item-value="value"
               :return-object="false"
               clearable
-            >
-            </v-autocomplete>
+            ></v-autocomplete>
           </v-col>
           <v-col cols="4">
             <v-text-field
               :label="$t('headers.movements.collaudatore')"
               v-model="form.collaudatore"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="6">
+            <v-autocomplete
+              :label="$t('headers.movements.tipoUscita')"
+              v-model="form.tipoUscita"
+              :items="movementItems.tipoUscita"
+              item-text="name"
+              item-value="value"
+              :return-object="false"
+              clearable
+            ></v-autocomplete>
+          </v-col>
+          <v-col cols="6">
+            <v-autocomplete
+              :label="$t('headers.movements.tipoReso')"
+              v-model="form.tipoReso"
+              :items="movementItems.tipoReso"
+              item-text="name"
+              item-value="value"
+              :return-object="false"
+              clearable
+            ></v-autocomplete>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
+            <DatePicker
+              :label="$t('headers.movements.dataRitiro')"
+              v-model="form.dataRitiro"
+            ></DatePicker>
+          </v-col>
+          <v-col cols="4">
+            <v-text-field
+              :label="$t('headers.movements.corriere')"
+              v-model="form.corriere"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="4">
+            <v-text-field
+              :label="$t('headers.movements.trackingNum')"
+              v-model="form.trackingNum"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -167,6 +209,7 @@ import FormButtons from "@/components/FormButtons";
 import DatePicker from "@/components/DatePicker";
 import FetchAutocomplete from "@/components/FetchAutocomplete";
 import helper from "@/mixins/helper";
+import items from "@/mixins/items";
 import formShared from "@/mixins/formShared";
 import GraphileService from "@/services/graphile.service";
 import utils from "../../utils";
@@ -175,7 +218,7 @@ import { v4 as uuidv4 } from 'uuid';
 export default {
   name: "MovementForm",
 
-  mixins: [helper,formShared],
+  mixins: [helper,formShared,items],
 
   data() {
     return {
@@ -201,21 +244,13 @@ export default {
         collaudatore: "",
         inUscita: "",
         tipoMovimento: "",
+        tipoUscita: "",
+        tipoReso: "",
+        dataRitiro: "",
+        corriere: "",
+        trackingNum: "",
         fileGroup: uuidv4()
       },
-      inUscitaItems: [
-        { name: this.$t("custom.inbound"), value: false },
-        { name: this.$t("custom.outbound"), value: true }
-      ],
-      tipoMovimentoItems: [
-        { name: this.$t("custom.c"), value: 'C' },
-        { name: this.$t("custom.s"), value: 'S' }
-      ],
-      tipoCollaudoItems: [
-        { name: this.$t("custom.a_type"), value: "A" },
-        { name: this.$t("custom.b_type"), value: "B" },
-        { name: this.$t("custom.f_type"), value: "F" }
-      ]
     };
   },
   components: { FormButtons, DatePicker, FetchAutocomplete },

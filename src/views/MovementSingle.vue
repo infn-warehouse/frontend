@@ -5,7 +5,7 @@
         :title="resourceTypes"
       />
       <MovementForm
-        :mode="enums.FORM_MODE.UPDATE"
+        :mode="items.FORM_MODE.UPDATE"
         :selectedItem="item"
         v-if="item"
         @formCancel="handleCancel"

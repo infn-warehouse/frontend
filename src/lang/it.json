@@ -22,15 +22,20 @@
     "fill_test": "Test riempimento moduli",
     "role": "Ruolo",
     "email": "Email",
+    "attachments": "Allegati"
+  },
+  "items": {
     "inbound": "In ingresso",
     "outbound": "In uscita",
-    "c": "In conto",
-    "s": "In saldo",
-    "?": "?",
-    "attachments": "Allegati",
+    "conto": "In conto",
+    "saldo": "In saldo",
     "a_type": "Tipo A",
     "b_type": "Tipo B",
-    "f_type": "Tipo F"
+    "f_type": "Tipo F",
+    "temporary": "Temporanea",
+    "permanent": "Permanente",
+    "total": "Totale",
+    "partial": "Parziale"
   },
   "date_picker": {
     "clear": "Pulisci",
@@ -119,7 +124,12 @@
       "tipoCollaudo": "Tipo collaudo",
       "collaudatore": "Collaudatore",
       "inUscita": "Tipo",
-      "tipoMovimento": "C / S"
+      "tipoMovimento": "C / S",
+      "tipoUscita": "Tipo uscita",
+      "tipoReso": "Tipo reso",
+      "dataRitiro": "Date e ora ritiro",
+      "corriere": "Corriere",
+      "trackingNum": "Tracking number"
     },
     "unloading_movs": {
       "articolo": "Codice articolo",
