@@ -218,7 +218,7 @@ export default {
       );
     },
     fetch(paginationOpts=null,search,filter) {
-      return GraphileService.fetchAll("OrdiniWithCounters",[],[],filter,{search, on: [
+      return GraphileService.fetchAll("OrdiniView",[],[],filter,{search, on: [
         "idordine",
         "fornitore",
         "descrizione",
