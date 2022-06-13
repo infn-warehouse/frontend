@@ -73,7 +73,8 @@
     "cig": "CIG",
     "orderNotFound": "Ordine non trovato.",
     "complete": "Registrazione completa.",
-    "go": "Vai all'ordine",
+    "go1": "Vai all'ordine",
+    "go2": "Vai al movimento",
     "new": "Nuova registrazione"
   },
   "baseGrid": {

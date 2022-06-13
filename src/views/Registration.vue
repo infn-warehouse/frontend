@@ -128,8 +128,9 @@
             <v-card-text v-if="step>5">
               <v-icon x-large>{{ enums.ICONS.DONE }}</v-icon>
               <div class="inner-element">{{$t('registration.complete')}}</div>
-              <div class="bottom-element"><a @click="restart">{{$t('registration.new')}}</a></div>
-              <div class="inner-element"><a @click="go">{{$t('registration.go')}} {{orderItem.idordine}}</a></div>
+              <div class="inner-element"><a @click="restart">{{$t('registration.new')}}</a></div>
+              <div class="inner-element"><a @click="go1">{{$t('registration.go1')}} {{orderItem.idordine}}</a></div>
+              <div class="bottom-element"><a @click="go2">{{$t('registration.go2')}} {{movementItem.nMovimento}}</a></div>
             </v-card-text>
           </v-stepper-content>
         </v-stepper-items>
@@ -247,10 +248,16 @@ export default {
     handleMovementCancel() {
       this.movementItem={...this.movementItem};
     },
-    go() {
+    go1() {
       this.$router.push({
         name: "OrderDetails",
         params: { id: this.orderItem.idordine.toString() }
+      }).catch(()=>{});
+    },
+    go2() {
+      this.$router.push({
+        name: "MovementDetails",
+        params: { id: this.movementItem.idMovimento.toString() }
       }).catch(()=>{});
     },
     restart() {
