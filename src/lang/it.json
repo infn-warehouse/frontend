@@ -87,12 +87,10 @@
   "navigation": {
     "registration": "Registrazione",
     "movements": "Movimenti",
-    "items": "Articoli",
+    "items": "Inventario",
     "orders": "Ordini",
     "stats": "Statistiche",
     "profile": "Profilo",
-    "upload_test": "Upload",
-    "fill_test": "Riempi",
     "logout": "Logout"
   },
   "confirm": {

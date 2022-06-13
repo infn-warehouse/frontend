@@ -40,13 +40,11 @@
           </v-list-item-content>
         </template>
           <DatePicker
-            class="required"
             :label="$t('misc.from')"
             v-model="filterData.dataordine.from"
             @change="handleChange"
           ></DatePicker>
           <DatePicker
-            class="required"
             :label="$t('misc.to')"
             v-model="filterData.dataordine.to"
             @change="handleChange"

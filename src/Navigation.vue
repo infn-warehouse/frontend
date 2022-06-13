@@ -121,16 +121,6 @@ export default {
           text: this.$t('navigation.stats')
         },
         {
-          name: "UploadTest",
-          text: this.$t('navigation.upload_test'),
-          enabled: this.$can("route","UploadTest")
-        },
-        {
-          name: "FillTest",
-          text: this.$t('navigation.fill_test'),
-          enabled: this.$can("route","FillTest")
-        },
-        {
           name: "Profile",
           text: this.$t('navigation.profile'),
           enabled: this.$can("route","Profile")
