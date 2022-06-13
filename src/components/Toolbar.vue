@@ -17,6 +17,22 @@
         ></v-text-field>
       </v-col>
       <v-col :cols="mobile2(4)" align="right" v-if="withFilter || withAdd || withEdit || withDelete">
+        <template v-for="(b,i) in buttons">
+          <v-tooltip :key="i" top>
+            <template v-slot:activator="{ on }">
+              <v-btn
+                class="ml-2"
+                icon
+                large
+                @click="b.callback()"
+                v-on="on"
+              >
+                <v-icon>{{ b.icon }}</v-icon>
+              </v-btn>
+            </template>
+            <span>{{ b.text }}</span>
+          </v-tooltip>
+        </template>
         <v-btn
           v-if="withFilter"
           @click="onFilter"
@@ -78,6 +94,7 @@ export default {
       type: Boolean,
       default: true
     },
+    buttons: Array
   },
   mixins: [helper],
   data() {

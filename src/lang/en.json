@@ -212,7 +212,8 @@
   "details": {
     "movements": {
       "tabDelivery": "Delivery",
-      "tabTesting": "Testing"
+      "tabTesting": "Testing",
+      "fill": "Make Test certificate"
     },
     "items": {
       "tabLoading": "Loading",

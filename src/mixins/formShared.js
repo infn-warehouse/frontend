@@ -51,7 +51,10 @@ export default {
 
       if (res) {
         this.form[this.idName]=res.data[this.idName];
-        this.$emit("formSucceed",this.form);
+        this.$emit("formSucceed",{
+          ...this.form,
+          "_id": this.form[this.idName]
+        });
         this.$emit("formClose");
       }
     },

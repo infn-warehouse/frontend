@@ -35,8 +35,8 @@ export default {
     }
   },
   methods: {
-    fetch(id) {
-      return GraphileService.fetchOne("MovimentiTemp",["documento"],id,"idMovimento");
+    fetch() {
+      return GraphileService.fetchOne("MovimentiTemp",["documento"],this.editing_id,"idMovimento");
     },
   },
   data() {

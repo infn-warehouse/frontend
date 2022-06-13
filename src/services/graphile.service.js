@@ -172,7 +172,7 @@ const GraphileService = {
   // retrieve data type
   async formatSingle(type,field,value) {
     let dataType=await this.getDataType(type,field);
-    if (value!=null && dataType!="Int" && dataType!="Boolean")
+    if (value!=null && dataType!="Int" && dataType!="Float" && dataType!="Boolean")
       return "\""+value+"\"";
     return value;
   },
@@ -186,7 +186,7 @@ const GraphileService = {
       return await this.formatSingle(type,field,list);
 
     let dataType=await this.getDataType(type,field);
-    if (dataType!="Int" && dataType!="Boolean")
+    if (dataType!="Int" && dataType!="Float" && dataType!="Boolean")
       return "\""+list.join("\",\"")+"\"";
     return list.join(",");
   },

@@ -3,6 +3,7 @@ import enums from "@/enums";
 import GraphileService from "@/services/graphile.service";
 import ApiService from "@/services/api.service";
 import _ from "lodash";
+import { FillService } from "@/services/fill.service";
 
 export default {
   mixins: [],
@@ -106,6 +107,7 @@ export default {
         if (pcopy[key]==null || pcopy[key]==="")
           if (mode == enums.FORM_MODE.CREATE || payloadOld[key]==null || payloadOld[key]==="")
             delete pcopy[key];
+          else pcopy[key]=null;
       }
 
       let res;
@@ -212,5 +214,12 @@ export default {
     checkMobile() {
       return (this.$vuetify.breakpoint.sm || this.$vuetify.breakpoint.xs);
     },
+
+    async fillModuleAndOpen(template,payload,joinFileds,dataTypes) {
+      let data=await FillService.fill(template,payload,joinFileds,dataTypes);
+      var file = new Blob([data], {type: 'application/pdf'});
+      var fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    }
   }
 }

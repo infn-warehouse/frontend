@@ -42,7 +42,7 @@
               v-if="formDialog"
               :mode="mode"
               :selectedItem="editItem"
-              @formSucceed="fetch()"
+              @formSucceed="_fetch()"
               @formClose="close()"
             />
           </v-card>

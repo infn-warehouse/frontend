@@ -43,7 +43,7 @@
               v-if="formDialog"
               :mode="mode"
               :selectedItem="editItem"
-              @formSucceed="fetch()"
+              @formSucceed="handleSucceed"
               @formClose="close()"
             />
           </v-card>
@@ -75,8 +75,8 @@ export default {
   methods: {
     ...mapMutations("filters", ["setItemsFlag"]),
     
-    fetch(id) {
-      return GraphileService.fetchOne("Articoli",[],id,"codiceArticolo");
+    fetch() {
+      return GraphileService.fetchOne("Articoli",[],this.id,"codiceArticolo");
     },
     
     title(item) {

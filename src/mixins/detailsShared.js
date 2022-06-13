@@ -25,12 +25,25 @@ export default {
       }
     },
     async _fetch() {
-      let res=await this.operationWithCheck(async () => await this.fetch(this.id));
+      let res=await this.operationWithCheck(async () => await this.fetch());
       if (res) {
         this.selectedItem=res;
         this.detailsTitle=this.title(this.selectedItem);
       }
     },
+    handleSucceed(form) {
+      this.selectedItem=form;
+      this.detailsTitle=this.title(this.selectedItem);
+
+      if (form._id!=this.id) {
+        this.$router.replace({
+          name: this.name,
+          params: { id: form._id.toString() }
+        }).catch(()=>{});
+        
+        this.syncUrl();
+      }
+    }
   },
   created() {
     if (window.location.hash.includes("#")) {

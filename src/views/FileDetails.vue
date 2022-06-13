@@ -46,7 +46,7 @@
               v-if="formDialog"
               :mode="mode"
               :selectedItem="editItem"
-              @formSucceed="fetch()"
+              @formSucceed="handleSucceed"
               @formClose="close()"
             />
           </v-card>
@@ -79,8 +79,8 @@ export default {
   methods: {
     ...mapMutations("filters", ["setFilesFlag"]),
     
-    fetch(id) {
-      return GraphileService.fetchOne("Alfresco",[],id,"name");
+    fetch() {
+      return GraphileService.fetchOne("Alfresco",[],this.id,"name");
     },
     
     title(item) {

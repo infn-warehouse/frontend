@@ -8,7 +8,8 @@ export default {
     BACK: "arrow_back",
     EXPAND: "expand_more",
     FILE_BAN: "disabled_visible",
-    DONE: "check"
+    DONE: "check",
+    PRINT: "mdi-file-document"
   },
   TOAST_TYPE: {
     SUCCESS: "success",

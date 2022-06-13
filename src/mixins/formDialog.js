@@ -19,6 +19,7 @@ export default {
       this.formDialog=true;
     },
     openUpdate(item) {
+      console.log("OPENUPDATE")
       this.mode=enums.FORM_MODE.UPDATE;
       this.editItem=item;
       this.formDialog=true;

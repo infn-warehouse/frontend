@@ -20,7 +20,7 @@ export default {
   methods: {
     async _fetch() {
       this.loading=true;
-      let res=await this.operationWithCheck(async () => await this.fetch(this.editing_id));
+      let res=await this.operationWithCheck(async () => await this.fetch());
       this.loading=false;
       if (res) {
         this.item=res;

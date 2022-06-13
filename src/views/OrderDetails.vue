@@ -50,7 +50,7 @@
               v-if="formDialog"
               :mode="mode"
               :selectedItem="editItem"
-              @formSucceed="fetch()"
+              @formSucceed="handleSucceed"
               @formClose="close()"
             />
           </v-card>
@@ -84,8 +84,8 @@ export default {
   methods: {
     ...mapMutations("filters", ["setOrdersFlag"]),
     
-    fetch(id) {
-      return GraphileService.fetchOne("OrdiniView",[],id,"idordine");
+    fetch() {
+      return GraphileService.fetchOne("OrdiniView",[],this.id,"idordine");
     },
     
     title(item) {

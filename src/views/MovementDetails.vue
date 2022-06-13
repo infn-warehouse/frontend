@@ -6,6 +6,7 @@
         :withBack="true"
         :withEdit="true"
         :withDelete="true"
+        :buttons="buttons"
         @onEdit="openUpdate(selectedItem)"
         @onDelete="handleDelete"
       ></Toolbar>
@@ -60,7 +61,7 @@
               v-if="formDialog"
               :mode="mode"
               :selectedItem="editItem"
-              @formSucceed="fetch()"
+              @formSucceed="handleSucceed"
               @formClose="close()"
             />
           </v-card>
@@ -88,13 +89,29 @@ export default {
     return {
       home: "Movements",
       resourceType: this.$t("resource_types.movement"),
+      buttons: [
+        {
+          text: this.$t("details.movements.fill"),
+          callback: () => {
+            this.fillModuleAndOpen("LNS-1000-TES-IR_CIG",{
+              ...this.selectedItem,
+              dataRow1: new Date()
+            },["ordiniByIdOrdine","documentoByTipoDocAcc"],{
+              "dataRow1": "date",
+              "ordiniByIdOrdine.importo": "currency",
+              "datadocumento": "date",
+            });
+          },
+          icon: enums.ICONS.PRINT
+        }
+      ]
     };
   },
   methods: {
     ...mapMutations("filters", ["setMovementsFlag"]),
     
-    fetch(id) {
-      return GraphileService.fetchOne("MovimentiTemp",["documento"],id,"idMovimento");
+    fetch() {
+      return GraphileService.fetchOne("MovimentiTemp",["documento","ordini"],this.id,"idMovimento");
     },
     
     title(item) {
