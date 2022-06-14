@@ -1,12 +1,20 @@
 <template>
   <div>
     <div class="custom-header">
-      <div class="total full-shrink-2">
+      <div class="total full-shrink-2" v-show="totalLength>0 || !loading">
         {{totalLength}} 
         <span v-if="totalLength==1">{{$t('baseGrid.found')}}</span>
         <span v-if="totalLength!=1">{{$t('baseGrid.founds')}}</span>
       </div>
-      <div class="paginator full-shrink-2 center-shrink-2">
+      <div class="paginator paginator-full full-shrink-2 center-shrink-2" v-show="totalLength==0 && loading">
+        <v-progress-circular
+          class="mr-2 paginator-child"
+          v-if="loading"
+          indeterminate
+          size="32"
+        ></v-progress-circular>
+      </div>
+      <div class="paginator full-shrink-2 center-shrink-2" v-show="totalLength>0 || !loading">
         <div class="inline-nowrap">
           <v-progress-circular
             v-if="loading"
@@ -297,6 +305,12 @@ th {
   width: 50%;
   text-align: right;
   display: inline-block;
+}
+.paginator-child {
+  min-height: 66px;
+}
+.paginator-full {
+  width: 100%;
 }
 
 .per-page-selector {
