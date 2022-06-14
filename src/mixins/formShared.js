@@ -82,7 +82,9 @@ export default {
       this.formOld=_.cloneDeep(newForm);
     },
   },
-  created() {
+  async created() {
+    if (this.computeEmpty)
+      await this.computeEmpty();
     this.setForm();
     this.setTitle();
   },

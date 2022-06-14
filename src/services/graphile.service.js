@@ -286,7 +286,7 @@ const GraphileService = {
     return res.data[name].nodes[0];
   },
 
-  async fetchAll(type,include,accents,filter,search=null,paginationOpts=null) {
+  async fetchAll(type,include,accents,filter=null,search=null,paginationOpts=null) {
     console.log("------- fetchAll");
     console.log(filter);
     type=utils.makeSingular(type);

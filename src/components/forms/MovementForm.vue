@@ -220,7 +220,7 @@ export default {
   name: "MovementForm",
 
   mixins: [helper,formShared,items],
-
+  
   data() {
     return {
       resourceType: this.$t("resource_types.movement"),
@@ -279,6 +279,18 @@ export default {
     orderFetch(paginationOpts=null,search,filter) {
       return GraphileService.fetchAll("Ordini",[],[],filter,{search, on: ["idordine"]},paginationOpts);
     },
+    movementGetLast() {
+      return GraphileService.fetchAll("MovimentiTemp",[],[],null,null,{
+        sortBy: ["nMovimento"],
+        sortDesc: [true],
+        page: 1,
+        itemsPerPage: 1,
+      });
+    },
+    async computeEmpty() {
+      let res=await this.movementGetLast();
+      this.emptyForm.nMovimento=res[0][0].nMovimento+1;
+    }
   },
   
   computed: {
