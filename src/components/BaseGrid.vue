@@ -47,7 +47,7 @@
       </div>
     </div>
     <v-data-table
-      v-if="totalLength>0 || !loading"
+      v-show="totalLength>0 || !loading"
       ref="dTable"
       :headers="tableHeaders"
       :items="items"

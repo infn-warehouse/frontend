@@ -77,7 +77,7 @@
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row v-show="!form.inUscita">
           <v-col cols="3">
             <DatePicker
               :label="$t('headers.movements.dataConsegna')"
@@ -108,7 +108,7 @@
             ></v-autocomplete>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row v-show="!form.inUscita">
           <v-col cols="4">
             <DatePicker
               :label="$t('headers.movements.dataCollaudo')"
@@ -133,7 +133,7 @@
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row v-show="form.inUscita">
           <v-col cols="6">
             <v-autocomplete
               :label="$t('headers.movements.tipoUscita')"
@@ -157,7 +157,7 @@
             ></v-autocomplete>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row v-show="form.inUscita">
           <v-col cols="4">
             <DatePicker
               :label="$t('headers.movements.dataRitiro')"
