@@ -219,7 +219,8 @@
       "tabUnloading": "Scarico"
     },
     "orders": {
-      "tabMovements": "Movimenti"
+      "tabMovements": "Movimenti",
+      "change": "Cambia stato"
     },
     "files": {
       "tabView": "Visualizza",

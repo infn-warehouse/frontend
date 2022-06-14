@@ -219,7 +219,8 @@
       "tabUnloading": "Unloading"
     },
     "orders": {
-      "tabMovements": "Movements"
+      "tabMovements": "Movements",
+      "change": "Change state"
     },
     "files": {
       "tabView": "View",

@@ -29,11 +29,13 @@ export default {
       if (res) {
         this.selectedItem=res;
         this.detailsTitle=this.title(this.selectedItem);
+        if (this.handleUpdate) this.handleUpdate();
       }
     },
     handleSucceed(form) {
       this.selectedItem=form;
       this.detailsTitle=this.title(this.selectedItem);
+      if (this.handleUpdate) this.handleUpdate();
 
       if (form._id!=this.id) {
         this.$router.replace({

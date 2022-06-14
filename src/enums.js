@@ -9,7 +9,8 @@ export default {
     EXPAND: "expand_more",
     FILE_BAN: "disabled_visible",
     DONE: "check",
-    PRINT: "mdi-file-document"
+    PRINT: "mdi-file-document",
+    CHANGE: "change_circle"
   },
   TOAST_TYPE: {
     SUCCESS: "success",

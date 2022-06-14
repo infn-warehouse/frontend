@@ -27,7 +27,7 @@
                 @click="b.callback()"
                 v-on="on"
               >
-                <v-icon>{{ b.icon }}</v-icon>
+                <v-icon :color="b.color">{{ b.icon }}</v-icon>
               </v-btn>
             </template>
             <span>{{ b.text }}</span>

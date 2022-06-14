@@ -6,7 +6,7 @@
     <ValidationObserver v-slot="{ invalid }">
       <v-card-text>
         <v-row>
-          <v-col cols="4">
+          <v-col cols="3">
             <ValidationProvider :name="$t('headers.orders.idordine')" immediate rules="required" v-slot="{ errors }">
               <v-text-field
                 class="required"
@@ -16,7 +16,7 @@
               <span class="form-error">{{ errors[0] || "&nbsp;" }}</span>
             </ValidationProvider>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="3">
             <ValidationProvider :name="$t('headers.orders.cig')" immediate rules="required" v-slot="{ errors }">
               <FetchAutocomplete
                 class="required"
@@ -31,11 +31,21 @@
               <span class="form-error">{{ errors[0] || "&nbsp;" }}</span>
             </ValidationProvider>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="3">
             <DatePicker
               :label="$t('headers.orders.dataordine')"
               v-model="form.dataordine"
             ></DatePicker>
+          </v-col>
+          <v-col cols="3">
+            <v-autocomplete
+              :label="$t('headers.orders.statOrdine')"
+              v-model="form.statOrdine"
+              :items="orderItems.statOrdine"
+              item-text="name"
+              item-value="value"
+              :return-object="false"
+            ></v-autocomplete>
           </v-col>
         </v-row>
         <v-row>
@@ -138,11 +148,12 @@ import utils from "../../utils";
 import GraphileService from "@/services/graphile.service";
 import FetchAutocomplete from "@/components/FetchAutocomplete";
 import { v4 as uuidv4 } from 'uuid';
+import items from "@/mixins/items";
 
 export default {
   name: "OrderForm",
 
-  mixins: [helper,formShared],
+  mixins: [helper,items,formShared],
 
   data() {
     return {

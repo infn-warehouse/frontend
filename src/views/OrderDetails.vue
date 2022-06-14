@@ -6,6 +6,7 @@
         :withBack="true"
         :withEdit="true"
         :withDelete="true"
+        :buttons="buttons"
         @onEdit="openUpdate(selectedItem)"
         @onDelete="handleDelete"
       ></Toolbar>
@@ -79,13 +80,45 @@ export default {
     return {
       home: "Orders",
       resourceType: this.$t("resource_types.order"),
+      buttons: [
+        {
+          text: this.$t("details.orders.change"),
+          callback: async () => {
+            let newStatus=this.selectedItem.statOrdine=='C' ? 'S' : 'C';
+            let res=await this.createOrUpdateHelper(
+              this.mode,
+              this.resourceType,
+              "Ordini",
+              "idordine",
+              {
+                idordine: this.selectedItem.idordine,
+                statOrdine: newStatus
+              },
+              null,
+              this.selectedItem.idordine,
+              payload => payload.p.idordine,
+              payload => payload.p.idordine
+            );
+            if (res) {
+              this.selectedItem.statOrdine=newStatus;
+              this.computeButtonColor();
+            }
+          },
+          icon: enums.ICONS.CHANGE
+        }
+      ]
     };
   },
   methods: {
     ...mapMutations("filters", ["setOrdersFlag"]),
     
+    computeButtonColor() {
+      this.buttons[0].color=this.selectedItem.statOrdine=='C' ? 'yellow darken-2' : 'green';
+      this.buttons=[...this.buttons];
+    },
+
     fetch() {
-      return GraphileService.fetchOne("OrdiniView",[],this.id,"idordine");
+      return GraphileService.fetchOne("Ordini",[],this.id,"idordine");
     },
     
     title(item) {
@@ -106,6 +139,10 @@ export default {
     handleUpload(file) {
       this.$refs.filesList.refresh();
     },
+
+    handleUpdate() {
+      this.computeButtonColor();
+    }
   },
   created() {
     this.setOrdersFlag(true);
