@@ -150,3 +150,20 @@ $threshold2: 1263px
     width: 100% !important
   .center-shrink-2
     text-align: center !important
+
+
+.row-group
+  margin-top: -24px
+.row-group + .row-group
+  margin-top: 0px
+.row-group .row
+  margin-top: 12px
+@media screen and (min-width: $threshold2)
+  .big-container .row-group
+    margin: -12px
+  .big-container .row-group + .row-group
+    margin-top: 12px
+  .big-container .row-group .row
+    width: 50%
+    display: inline-flex
+    margin: 0px

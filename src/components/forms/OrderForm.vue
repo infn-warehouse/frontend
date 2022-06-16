@@ -1,121 +1,127 @@
 <template>
   <div>
-    <v-card-title class="form-title">{{
+    <v-card-title v-if="!hideTitle" class="form-title">{{
       this.formTitle | capitalize
     }}</v-card-title>
     <ValidationObserver v-slot="{ invalid }">
       <v-card-text>
-        <v-row>
-          <v-col cols="3">
-            <ValidationProvider :name="$t('headers.orders.idordine')" immediate rules="required" v-slot="{ errors }">
+        <div class="row-group">
+          <v-row>
+            <v-col cols="3">
+              <ValidationProvider :name="$t('headers.orders.idordine')" immediate rules="required" v-slot="{ errors }">
+                <v-text-field
+                  class="required"
+                  :label="$t('headers.orders.idordine')"
+                  v-model="form.idordine"
+                ></v-text-field>
+                <span class="form-error">{{ errors[0] || "&nbsp;" }}</span>
+              </ValidationProvider>
+            </v-col>
+            <v-col cols="3">
+              <ValidationProvider :name="$t('headers.orders.cig')" immediate rules="required" v-slot="{ errors }">
+                <FetchAutocomplete
+                  class="required"
+                  :label="$t('headers.orders.cig')"
+                  v-model="form.cig"
+                  :disabled="locked || mode==enums.FORM_MODE.UPDATE"
+                  :fetch="protoOrderFetch"
+                  itemText="cig"
+                  itemValue="cig"
+                  :returnObject="false"
+                ></FetchAutocomplete>
+                <span class="form-error">{{ errors[0] || "&nbsp;" }}</span>
+              </ValidationProvider>
+            </v-col>
+            <v-col cols="3">
+              <DatePicker
+                :label="$t('headers.orders.dataordine')"
+                v-model="form.dataordine"
+              ></DatePicker>
+            </v-col>
+            <v-col cols="3">
+              <v-autocomplete
+                :label="$t('headers.orders.statOrdine')"
+                v-model="form.statOrdine"
+                :items="orderItems.statOrdine"
+                item-text="name"
+                item-value="value"
+                :return-object="false"
+              ></v-autocomplete>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="4">
               <v-text-field
-                class="required"
-                :label="$t('headers.orders.idordine')"
-                v-model="form.idordine"
+                :label="$t('headers.orders.fornitore')"
+                v-model="form.fornitore"
               ></v-text-field>
-              <span class="form-error">{{ errors[0] || "&nbsp;" }}</span>
-            </ValidationProvider>
-          </v-col>
-          <v-col cols="3">
-            <ValidationProvider :name="$t('headers.orders.cig')" immediate rules="required" v-slot="{ errors }">
-              <FetchAutocomplete
-                class="required"
-                :label="$t('headers.orders.cig')"
-                v-model="form.cig"
-                :disabled="locked || mode==enums.FORM_MODE.UPDATE"
-                :fetch="protoOrderFetch"
-                itemText="cig"
-                itemValue="cig"
-                :returnObject="false"
-              ></FetchAutocomplete>
-              <span class="form-error">{{ errors[0] || "&nbsp;" }}</span>
-            </ValidationProvider>
-          </v-col>
-          <v-col cols="3">
-            <DatePicker
-              :label="$t('headers.orders.dataordine')"
-              v-model="form.dataordine"
-            ></DatePicker>
-          </v-col>
-          <v-col cols="3">
-            <v-autocomplete
-              :label="$t('headers.orders.statOrdine')"
-              v-model="form.statOrdine"
-              :items="orderItems.statOrdine"
-              item-text="name"
-              item-value="value"
-              :return-object="false"
-            ></v-autocomplete>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="4">
-            <v-text-field
-              :label="$t('headers.orders.fornitore')"
-              v-model="form.fornitore"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="4">
-            <v-text-field
-              :label="$t('headers.orders.descrizione')"
-              v-model="form.descrizione"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="4">
-            <v-text-field
-              :label="$t('headers.orders.nColli')"
-              v-model="form.nColli"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="6">
-            <v-text-field
-              :label="$t('headers.orders.servizioRichi')"
-              v-model="form.servizioRichi"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="6">
-            <v-text-field
-              :label="$t('headers.orders.importo')"
-              v-model="form.importo"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="4">
-            <v-text-field
-              :label="$t('headers.orders.terminiCons')"
-              v-model="form.terminiCons"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="4">
-            <v-text-field
-              :label="$t('headers.orders.nConsegne')"
-              v-model="form.nConsegne"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="4">
-            <DatePicker
-              :label="$t('headers.orders.dataconsegna')"
-              v-model="form.dataconsegna"
-            ></DatePicker>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="6">
-            <v-text-field
-              :label="$t('headers.orders.responsabile')"
-              v-model="form.responsabile"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="6">
-            <v-text-field
-              :label="$t('headers.orders.rup')"
-              v-model="form.rup"
-            ></v-text-field>
-          </v-col>
-        </v-row>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                :label="$t('headers.orders.descrizione')"
+                v-model="form.descrizione"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                :label="$t('headers.orders.nColli')"
+                v-model="form.nColli"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </div>
+        <div class="row-group">
+          <v-row>
+            <v-col cols="6">
+              <v-text-field
+                :label="$t('headers.orders.servizioRichi')"
+                v-model="form.servizioRichi"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field
+                :label="$t('headers.orders.importo')"
+                v-model="form.importo"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="4">
+              <v-text-field
+                :label="$t('headers.orders.terminiCons')"
+                v-model="form.terminiCons"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                :label="$t('headers.orders.nConsegne')"
+                v-model="form.nConsegne"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="4">
+              <DatePicker
+                :label="$t('headers.orders.dataconsegna')"
+                v-model="form.dataconsegna"
+              ></DatePicker>
+            </v-col>
+          </v-row>
+        </div>
+        <div class="row-group">
+          <v-row>
+            <v-col cols="6">
+              <v-text-field
+                :label="$t('headers.orders.responsabile')"
+                v-model="form.responsabile"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field
+                :label="$t('headers.orders.rup')"
+                v-model="form.rup"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </div>
         <v-textarea
           :label="$t('headers.orders.note')"
           v-model="form.note"

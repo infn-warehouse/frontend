@@ -1,183 +1,189 @@
 <template>
   <div>
-    <v-card-title class="form-title">{{
+    <v-card-title v-if="!hideTitle" class="form-title">{{
       this.formTitle | capitalize
     }}</v-card-title>
     <ValidationObserver v-slot="{ invalid }">
       <v-card-text>
-        <v-row>
-          <v-col cols="3">
-            <ValidationProvider :name="$t('headers.movements.nMovimento')" immediate rules="required" v-slot="{ errors }">
-              <v-text-field
-                class="required"
-                :label="$t('headers.movements.nMovimento')"
-                v-model="form.nMovimento"
-              ></v-text-field>
-              <span class="form-error">{{ errors[0] || "&nbsp;" }}</span>
-            </ValidationProvider>
-          </v-col>
-          <v-col cols="3">
-            <ValidationProvider :name="$t('headers.movements.idOrdine')" immediate rules="required" v-slot="{ errors }">
+        <div class="row-group">
+          <v-row>
+            <v-col cols="3">
+              <ValidationProvider :name="$t('headers.movements.nMovimento')" immediate rules="required" v-slot="{ errors }">
+                <v-text-field
+                  class="required"
+                  :label="$t('headers.movements.nMovimento')"
+                  v-model="form.nMovimento"
+                ></v-text-field>
+                <span class="form-error">{{ errors[0] || "&nbsp;" }}</span>
+              </ValidationProvider>
+            </v-col>
+            <v-col cols="3">
+              <ValidationProvider :name="$t('headers.movements.idOrdine')" immediate rules="required" v-slot="{ errors }">
+                <FetchAutocomplete
+                  class="required"
+                  :label="$t('headers.movements.idOrdine')"
+                  v-model="form.idOrdine"
+                  :fetch="orderFetch"
+                  itemText="idordine"
+                  itemValue="idordine"
+                  :returnObject="false"
+                  :model="model"
+                  :mode="mode"
+                ></FetchAutocomplete>
+                <span class="form-error">{{ errors[0] || "&nbsp;" }}</span>
+              </ValidationProvider>
+            </v-col>
+            <v-col cols="3">
+              <DatePicker
+                :label="$t('headers.movements.dataMovimento')"
+                v-model="form.dataMovimento"
+              ></DatePicker>
+            </v-col>
+            <v-col cols="3">
+              <ValidationProvider :name="$t('headers.movements.inUscita')" immediate rules="required" v-slot="{ errors }">
+                <v-autocomplete
+                  class="required"
+                  :label="$t('headers.movements.inUscita')"
+                  v-model="form.inUscita"
+                  :items="movementItems.inUscita"
+                  item-text="name"
+                  item-value="value"
+                  :return-object="false"
+                ></v-autocomplete>
+                <span class="form-error">{{ errors[0] || "&nbsp;" }}</span>
+              </ValidationProvider>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="4">
+              <DatePicker
+                :label="$t('headers.movements.datadocumento')"
+                v-model="form.datadocumento"
+              ></DatePicker>
+            </v-col>
+            <v-col cols="4">
               <FetchAutocomplete
-                class="required"
-                :label="$t('headers.movements.idOrdine')"
-                v-model="form.idOrdine"
-                :fetch="orderFetch"
-                itemText="idordine"
-                itemValue="idordine"
+                :label="$t('headers.movements.tipoDocAcc')"
+                v-model="form.tipoDocAcc"
+                :fetch="documentFetch"
+                itemText="dicitura"
+                itemValue="idocumento"
                 :returnObject="false"
-                :model="model"
-                :mode="mode"
               ></FetchAutocomplete>
-              <span class="form-error">{{ errors[0] || "&nbsp;" }}</span>
-            </ValidationProvider>
-          </v-col>
-          <v-col cols="3">
-            <DatePicker
-              :label="$t('headers.movements.dataMovimento')"
-              v-model="form.dataMovimento"
-            ></DatePicker>
-          </v-col>
-          <v-col cols="3">
-            <ValidationProvider :name="$t('headers.movements.inUscita')" immediate rules="required" v-slot="{ errors }">
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                :label="$t('headers.movements.nDocAcc')"
+                v-model="form.nDocAcc"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </div>
+        <div class="row-group">
+          <v-row v-show="!form.inUscita">
+            <v-col cols="3">
+              <DatePicker
+                :label="$t('headers.movements.dataConsegna')"
+                v-model="form.dataConsegna"
+              ></DatePicker>
+            </v-col>
+            <v-col cols="3">
+              <v-text-field
+                :label="$t('headers.movements.consegnatario')"
+                v-model="form.consegnatario"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="3">
+              <v-text-field
+                :label="$t('headers.movements.nColli')"
+                v-model="form.nColli"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="3">
               <v-autocomplete
-                class="required"
-                :label="$t('headers.movements.inUscita')"
-                v-model="form.inUscita"
-                :items="movementItems.inUscita"
+                :label="$t('headers.movements.tipoMovimento')"
+                v-model="form.tipoMovimento"
+                :items="movementItems.tipoMovimento"
                 item-text="name"
                 item-value="value"
                 :return-object="false"
+                clearable
               ></v-autocomplete>
-              <span class="form-error">{{ errors[0] || "&nbsp;" }}</span>
-            </ValidationProvider>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="4">
-            <DatePicker
-              :label="$t('headers.movements.datadocumento')"
-              v-model="form.datadocumento"
-            ></DatePicker>
-          </v-col>
-          <v-col cols="4">
-            <FetchAutocomplete
-              :label="$t('headers.movements.tipoDocAcc')"
-              v-model="form.tipoDocAcc"
-              :fetch="documentFetch"
-              itemText="dicitura"
-              itemValue="idocumento"
-              :returnObject="false"
-            ></FetchAutocomplete>
-          </v-col>
-          <v-col cols="4">
-            <v-text-field
-              :label="$t('headers.movements.nDocAcc')"
-              v-model="form.nDocAcc"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row v-show="!form.inUscita">
-          <v-col cols="3">
-            <DatePicker
-              :label="$t('headers.movements.dataConsegna')"
-              v-model="form.dataConsegna"
-            ></DatePicker>
-          </v-col>
-          <v-col cols="3">
-            <v-text-field
-              :label="$t('headers.movements.consegnatario')"
-              v-model="form.consegnatario"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="3">
-            <v-text-field
-              :label="$t('headers.movements.nColli')"
-              v-model="form.nColli"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="3">
-            <v-autocomplete
-              :label="$t('headers.movements.tipoMovimento')"
-              v-model="form.tipoMovimento"
-              :items="movementItems.tipoMovimento"
-              item-text="name"
-              item-value="value"
-              :return-object="false"
-              clearable
-            ></v-autocomplete>
-          </v-col>
-        </v-row>
-        <v-row v-show="!form.inUscita">
-          <v-col cols="4">
-            <DatePicker
-              :label="$t('headers.movements.dataCollaudo')"
-              v-model="form.dataCollaudo"
-            ></DatePicker>
-          </v-col>
-          <v-col cols="4">
-            <v-autocomplete
-              :label="$t('headers.movements.tipoCollaudo')"
-              v-model="form.tipoCollaudo"
-              :items="movementItems.tipoCollaudo"
-              item-text="name"
-              item-value="value"
-              :return-object="false"
-              clearable
-            ></v-autocomplete>
-          </v-col>
-          <v-col cols="4">
-            <v-text-field
-              :label="$t('headers.movements.collaudatore')"
-              v-model="form.collaudatore"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row v-show="form.inUscita">
-          <v-col cols="6">
-            <v-autocomplete
-              :label="$t('headers.movements.tipoUscita')"
-              v-model="form.tipoUscita"
-              :items="movementItems.tipoUscita"
-              item-text="name"
-              item-value="value"
-              :return-object="false"
-              clearable
-            ></v-autocomplete>
-          </v-col>
-          <v-col cols="6">
-            <v-autocomplete
-              :label="$t('headers.movements.tipoReso')"
-              v-model="form.tipoReso"
-              :items="movementItems.tipoReso"
-              item-text="name"
-              item-value="value"
-              :return-object="false"
-              clearable
-            ></v-autocomplete>
-          </v-col>
-        </v-row>
-        <v-row v-show="form.inUscita">
-          <v-col cols="4">
-            <DatePicker
-              :label="$t('headers.movements.dataRitiro')"
-              v-model="form.dataRitiro"
-              mode="dateTime"
-            ></DatePicker>
-          </v-col>
-          <v-col cols="4">
-            <v-text-field
-              :label="$t('headers.movements.corriere')"
-              v-model="form.corriere"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="4">
-            <v-text-field
-              :label="$t('headers.movements.trackingNum')"
-              v-model="form.trackingNum"
-            ></v-text-field>
-          </v-col>
-        </v-row>
+            </v-col>
+          </v-row>
+          <v-row v-show="!form.inUscita">
+            <v-col cols="4">
+              <DatePicker
+                :label="$t('headers.movements.dataCollaudo')"
+                v-model="form.dataCollaudo"
+              ></DatePicker>
+            </v-col>
+            <v-col cols="4">
+              <v-autocomplete
+                :label="$t('headers.movements.tipoCollaudo')"
+                v-model="form.tipoCollaudo"
+                :items="movementItems.tipoCollaudo"
+                item-text="name"
+                item-value="value"
+                :return-object="false"
+                clearable
+              ></v-autocomplete>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                :label="$t('headers.movements.collaudatore')"
+                v-model="form.collaudatore"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </div>
+        <div class="row-group">
+          <v-row v-show="form.inUscita">
+            <v-col cols="6">
+              <v-autocomplete
+                :label="$t('headers.movements.tipoUscita')"
+                v-model="form.tipoUscita"
+                :items="movementItems.tipoUscita"
+                item-text="name"
+                item-value="value"
+                :return-object="false"
+                clearable
+              ></v-autocomplete>
+            </v-col>
+            <v-col cols="6">
+              <v-autocomplete
+                :label="$t('headers.movements.tipoReso')"
+                v-model="form.tipoReso"
+                :items="movementItems.tipoReso"
+                item-text="name"
+                item-value="value"
+                :return-object="false"
+                clearable
+              ></v-autocomplete>
+            </v-col>
+          </v-row>
+          <v-row v-show="form.inUscita">
+            <v-col cols="4">
+              <DatePicker
+                :label="$t('headers.movements.dataRitiro')"
+                v-model="form.dataRitiro"
+                mode="dateTime"
+              ></DatePicker>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                :label="$t('headers.movements.corriere')"
+                v-model="form.corriere"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="4">
+              <v-text-field
+                :label="$t('headers.movements.trackingNum')"
+                v-model="form.trackingNum"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </div>
         <v-text-field
           :label="$t('headers.movements.codificaSpaziale')"
           v-model="form.codificaSpaziale"

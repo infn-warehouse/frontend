@@ -49,30 +49,36 @@
             />
           </v-stepper-content>
           <v-stepper-content step="2">
-            <OrderForm
-              v-if="step>1"
-              :mode="orderExists ? enums.FORM_MODE.UPDATE : enums.FORM_MODE.CREATE"
-              :selectedItem="orderItem"
-              :multiForm="true"
-              :multiLayout="1"
-              @formCancel="handleOrderCancel"
-              @formSucceed="handleOrderSave"
-              @formBack="handleBack"
-              :locked="true"
-            />
+            <div class="big-container">
+              <OrderForm
+                v-if="step>1"
+                :mode="orderExists ? enums.FORM_MODE.UPDATE : enums.FORM_MODE.CREATE"
+                :selectedItem="orderItem"
+                :multiForm="true"
+                :multiLayout="1"
+                @formCancel="handleOrderCancel"
+                @formSucceed="handleOrderSave"
+                @formBack="handleBack"
+                :locked="true"
+                :hideTitle="true"
+              />
+            </div>
           </v-stepper-content>
           <v-stepper-content step="3">
-            <MovementForm
-              v-if="step>2"
-              :mode="movementExists ? enums.FORM_MODE.UPDATE : enums.FORM_MODE.CREATE"
-              :selectedItem="movementItem"
-              :multiForm="true"
-              :multiLayout="1"
-              @formCancel="handleMovementCancel"
-              @formSucceed="handleMovementSave"
-              @formBack="handleBack"
-              :model="orderItem.idordine"
-            />
+            <div class="big-container">
+              <MovementForm
+                v-if="step>2"
+                :mode="movementExists ? enums.FORM_MODE.UPDATE : enums.FORM_MODE.CREATE"
+                :selectedItem="movementItem"
+                :multiForm="true"
+                :multiLayout="1"
+                @formCancel="handleMovementCancel"
+                @formSucceed="handleMovementSave"
+                @formBack="handleBack"
+                :model="orderItem.idordine"
+                :hideTitle="true"
+              />
+            </div>
           </v-stepper-content>
           <v-stepper-content step="4">
             <template v-if="step>3">

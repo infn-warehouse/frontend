@@ -67,7 +67,7 @@
   "registration": {
     "step1": "Enter CIG",
     "step2": "Enter order data",
-    "step3": "Lot registration",
+    "step3": "Enter movement data",
     "step4": "Upload order",
     "step5": "Upload delivery",
     "cig": "CIG",

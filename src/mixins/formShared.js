@@ -34,6 +34,10 @@ export default {
       type: Boolean,
       required: false
     },
+    hideTitle: {
+      type: Boolean,
+      required: false
+    },
     multiForm: {
       type: Boolean,
       required: false
