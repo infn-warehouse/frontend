@@ -25,7 +25,7 @@ Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
 
 Vue.use(VCalendar, {
-  componentPrefix: 'vc',
+  componentPrefix: 'vcal',
 });
 
 import { extend } from 'vee-validate';

@@ -1,5 +1,5 @@
 <template>
-  <vc-date-picker
+  <vcal-date-picker
     v-model="date"
     scrollable
     color="primary"
@@ -33,7 +33,7 @@
         {{ $t('date_picker.ok') }}
       </v-btn>
     </template>
-  </vc-date-picker>
+  </vcal-date-picker>
 </template>
 
 <script>
