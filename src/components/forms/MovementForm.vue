@@ -284,6 +284,7 @@ export default {
     async computeEmpty() {
       let res=await this.movementGetLast();
       this.emptyForm.nMovimento=res[0][0].nMovimento+1;
+      this.form.nMovimento=this.emptyForm.nMovimento;
     }
   },
   

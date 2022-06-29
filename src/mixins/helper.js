@@ -119,7 +119,6 @@ export default {
       updatedName,
       extra = null
     ) {
-      console.log("createOrUpdateHelper");
       let pcopy = _.cloneDeep(payload);
       for (let key in pcopy) {
         if (pcopy[key]==null || pcopy[key]==="")
