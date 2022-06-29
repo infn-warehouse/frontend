@@ -62,6 +62,7 @@ export default {
   },
   watch: {
     search: function (newVal,oldVal) {
+      console.log("FetchAutocomplete "+this.label+": search: "+oldVal+" "+newVal);
       if (this.model) return;
 
       let oldCheck=oldVal==null || oldVal=="";
@@ -73,6 +74,7 @@ export default {
   },
   methods: {
     updateSearch: _.debounce(async function () {
+      console.log("FetchAutocomplete "+this.label+": do search");
       this.searchComputed=this.search;
       this.filter=null;
       await this._fetch();
@@ -85,6 +87,7 @@ export default {
     },
     onInput(val) {
       this.$emit("input", val);
+      console.log("FetchAutocomplete "+this.label+": emit");
     }
   },
   async created() {
@@ -104,6 +107,7 @@ export default {
         this.$emit("input", this.items[0]);
       else
         this.$emit("input", this.items[0][this.itemValue]);
+      console.log("FetchAutocomplete: emit created");
     }
   }
 };
