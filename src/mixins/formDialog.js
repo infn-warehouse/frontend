@@ -16,10 +16,10 @@ export default {
   methods: {
     openCreate() {
       this.mode=enums.FORM_MODE.CREATE;
+      this.editItem=null;
       this.formDialog=true;
     },
     openUpdate(item) {
-      console.log("OPENUPDATE")
       this.mode=enums.FORM_MODE.UPDATE;
       this.editItem=item;
       this.formDialog=true;
