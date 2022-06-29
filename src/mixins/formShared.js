@@ -87,9 +87,9 @@ export default {
     },
   },
   async created() {
+    this.setTitle();
     if (this.computeEmpty)
       await this.computeEmpty();
     this.setForm();
-    this.setTitle();
   },
 }
