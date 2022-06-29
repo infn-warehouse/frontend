@@ -12,6 +12,24 @@ export default {
       return enums;
     }
   },
+  data: function() {
+    return {
+      options: {
+        html: false, // set to true if your message contains HTML tags. eg: "Delete <b>Foo</b> ?"
+        loader: false, // set to true if you want the dailog to show a loader after click on "proceed"
+        reverse: false, // switch the button positions (left to right, and vise versa)
+        okText: this.$t("confirm.yes"),
+        cancelText: this.$t("confirm.no"),
+        animation: 'zoom', // Available: "zoom", "bounce", "fade"
+        type: 'basic', // coming soon: 'soft', 'hard'
+        verification: 'continue', // for hard confirm, user will be prompted to type this to enable the proceed button
+        verificationHelp: 'Type "[+:verification]" below to confirm', // Verification help text. [+:verification] will be matched with 'options.verification' (i.e 'Type "continue" below to confirm')
+        clicksCount: 3, // for soft confirm, user will be asked to click on "proceed" btn 3 times before actually proceeding
+        backdropClose: false, // set to true to close the dialog when clicking outside of the dialog window, i.e. click landing on the mask
+        customClass: '' // Custom class to be injected into the parent node for the current dialog instance
+      }
+    };
+  },
   methods: {
     ...mapMutations("snackbar", ["showMessage","closeMessage"]),
 
@@ -154,18 +172,13 @@ export default {
     },
     async deleteConfirm(resName, resType, resOrig, idName, payload, deletedName) {
       return new Promise((resolve) => {
-        this.$confirm({
-          message:
-            this.$t("confirm.deleteMessage"),
-          button: {
-            no: this.$t("confirm.no"),
-            yes: this.$t("confirm.yes")
-          },
-          callback: async confirm => {
-            if (confirm)
-              resolve(await this.deleteHelper(resName, resType, resOrig, idName, payload, deletedName));
-            else resolve(false);
-          }
+        this.$dialog
+        .confirm(this.$t("confirm.deleteMessage"),this.options)
+        .then(async function(dialog) {
+          resolve(await this.deleteHelper(resName, resType, resOrig, idName, payload, deletedName));
+        })
+        .catch(async function() {
+          resolve(false);
         });
       });
     },

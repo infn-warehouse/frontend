@@ -1,6 +1,5 @@
 <template>
   <v-app>
-    <vue-confirm-dialog></vue-confirm-dialog>
     <v-app-bar
       app
       color="primary"
@@ -38,7 +37,7 @@ export default {
   components: {
     SnackBar,
     Navigation,
-    LocaleSwitch
+    LocaleSwitch,
   },
 
   computed: {

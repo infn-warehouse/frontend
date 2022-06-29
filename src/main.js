@@ -6,26 +6,25 @@ import "./filters"
 import vuetify from './plugins/vuetify';
 import abilitiesPlugin from "./plugins/abilitiesPlugin";
 import FlagIcon from 'vue-flag-icon'
-import VueConfirmDialog from "vue-confirm-dialog";
 import i18n from "./i18n";
 import VCalendar from 'v-calendar';
+import VuejsDialog from 'vuejs-dialog';
+import 'vuejs-dialog/dist/vuejs-dialog.min.css';
 
 Vue.config.productionTip = false
 
+Vue.use(VuejsDialog);
 
 Vue.use(abilitiesPlugin);
 
 Vue.use(FlagIcon);
-
-Vue.use(VueConfirmDialog);
-Vue.component("vue-confirm-dialog", VueConfirmDialog.default);
 
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
 
 Vue.use(VCalendar, {
-  componentPrefix: 'vcal',
+  componentPrefix: 'vc',
 });
 
 import { extend } from 'vee-validate';
