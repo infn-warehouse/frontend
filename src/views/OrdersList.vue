@@ -200,7 +200,6 @@ export default {
         "fornitore",
         "descrizione",
         "servizioRichi",
-        "responsabile",
         "note",
         "cig",
         "rup"

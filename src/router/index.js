@@ -45,8 +45,8 @@ const routes = [
   },
   {
     path: '/',
-    name: 'Orders',
-    component: OrdersList
+    name: 'Registration',
+    component: Registration
   },
   {
     path: '/orders/:id',

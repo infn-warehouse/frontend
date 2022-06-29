@@ -251,7 +251,6 @@ export default {
         "nMovimento",
         "idOrdine",
         "nDocAcc",
-        "consegnatario",
         "note",
         "collaudatore",
       ]},paginationOpts);
