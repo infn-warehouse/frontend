@@ -123,11 +123,6 @@ export default {
         align: "start"
       });
       tableHeaders.push({
-        value: "consegnatario",
-        sortable: true,
-        align: "start"
-      });
-      tableHeaders.push({
         value: "nColli",
         sortable: true,
         align: "start"
@@ -140,12 +135,6 @@ export default {
       });
       tableHeaders.push({
         value: "note",
-        sortable: true,
-        align: "start",
-        show: 1
-      });
-      tableHeaders.push({
-        value: "codificaSpaziale",
         sortable: true,
         align: "start",
         show: 1
@@ -218,11 +207,9 @@ export default {
           tipoDocAcc: { data: item.documentoByTipoDocAcc ? item.documentoByTipoDocAcc.dicitura : "?", dataType: "chip" },
           nDocAcc: { data: item.nDocAcc, dataType: "text" },
           dataConsegna: { data: item.dataConsegna, dataType: "date" },
-          consegnatario: { data: item.consegnatario, dataType: "text" },
           nColli: { data: item.nColli, dataType: "text" },
           dataCollaudo: { data: item.dataCollaudo, dataType: "date" },
           note: { data: item.note, dataType: "text" },
-          codificaSpaziale: { data: item.codificaSpaziale, dataType: "text" },
           tipoCollaudo: this.mapValue(item.tipoCollaudo,this.movementItems.tipoCollaudo),
           collaudatore: { data: item.collaudatore, dataType: "text" },
           inUscita: this.mapValue(item.inUscita,this.movementItems.inUscita,true),

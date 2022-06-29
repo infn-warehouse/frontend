@@ -56,12 +56,6 @@
           </v-row>
           <v-row>
             <v-col cols="4">
-              <DatePicker
-                :label="$t('headers.movements.datadocumento')"
-                v-model="form.datadocumento"
-              ></DatePicker>
-            </v-col>
-            <v-col cols="4">
               <FetchAutocomplete
                 :label="$t('headers.movements.tipoDocAcc')"
                 v-model="form.tipoDocAcc"
@@ -70,6 +64,12 @@
                 itemValue="idocumento"
                 :returnObject="false"
               ></FetchAutocomplete>
+            </v-col>
+            <v-col cols="4">
+              <DatePicker
+                :label="$t('headers.movements.datadocumento')"
+                v-model="form.datadocumento"
+              ></DatePicker>
             </v-col>
             <v-col cols="4">
               <v-text-field
@@ -81,25 +81,19 @@
         </div>
         <div class="row-group">
           <v-row v-show="!form.inUscita">
-            <v-col cols="3">
-              <DatePicker
-                :label="$t('headers.movements.dataConsegna')"
-                v-model="form.dataConsegna"
-              ></DatePicker>
-            </v-col>
-            <v-col cols="3">
-              <v-text-field
-                :label="$t('headers.movements.consegnatario')"
-                v-model="form.consegnatario"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="3">
+            <v-col cols="4">
               <v-text-field
                 :label="$t('headers.movements.nColli')"
                 v-model="form.nColli"
               ></v-text-field>
             </v-col>
-            <v-col cols="3">
+            <v-col cols="4">
+              <DatePicker
+                :label="$t('headers.movements.dataConsegna')"
+                v-model="form.dataConsegna"
+              ></DatePicker>
+            </v-col>
+            <v-col cols="4">
               <v-autocomplete
                 :label="$t('headers.movements.tipoMovimento')"
                 v-model="form.tipoMovimento"
@@ -184,10 +178,6 @@
             </v-col>
           </v-row>
         </div>
-        <v-text-field
-          :label="$t('headers.movements.codificaSpaziale')"
-          v-model="form.codificaSpaziale"
-        ></v-text-field>
         <v-textarea
           :label="$t('headers.orders.note')"
           v-model="form.note"
@@ -242,11 +232,9 @@ export default {
         tipoDocAcc: "",
         nDocAcc: "",
         dataConsegna: "",
-        consegnatario: "",
         nColli: "",
         dataCollaudo: "",
         note: "",
-        codificaSpaziale: "",
         tipoCollaudo: "",
         collaudatore: "",
         inUscita: "",

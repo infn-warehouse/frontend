@@ -86,33 +86,11 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="4">
-              <v-text-field
-                :label="$t('headers.orders.terminiCons')"
-                v-model="form.terminiCons"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="4">
-              <v-text-field
-                :label="$t('headers.orders.nConsegne')"
-                v-model="form.nConsegne"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="4">
+            <v-col cols="6">
               <DatePicker
                 :label="$t('headers.orders.dataconsegna')"
                 v-model="form.dataconsegna"
               ></DatePicker>
-            </v-col>
-          </v-row>
-        </div>
-        <div class="row-group">
-          <v-row>
-            <v-col cols="6">
-              <v-text-field
-                :label="$t('headers.orders.responsabile')"
-                v-model="form.responsabile"
-              ></v-text-field>
             </v-col>
             <v-col cols="6">
               <v-text-field
@@ -171,14 +149,10 @@ export default {
         dataordine: utils.postgreDate(new Date()),
         fornitore: "",
         descrizione: "",
-        terminiCons: "",
         servizioRichi: "",
-        responsabile: "",
         importo: "",
         statOrdine: "C",
-        nConsegne: "",
         dataconsegna: "",
-        collaudatore: "",
         note: "",
         cig: "",
         rup: "",

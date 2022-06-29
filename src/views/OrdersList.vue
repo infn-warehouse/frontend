@@ -107,21 +107,10 @@ export default {
         align: "start"
       });
       tableHeaders.push({
-        value: "terminiCons",
-        sortable: true,
-        align: "start",
-        show: 1
-      });
-      tableHeaders.push({
         value: "servizioRichi",
         sortable: true,
         align: "start",
         show: 1
-      });
-      tableHeaders.push({
-        value: "responsabile",
-        sortable: true,
-        align: "start"
       });
       tableHeaders.push({
         value: "importo",
@@ -132,12 +121,6 @@ export default {
         value: "statOrdine",
         sortable: true,
         align: "start"
-      });
-      tableHeaders.push({
-        value: "nConsegne",
-        sortable: true,
-        align: "start",
-        show: 1
       });
       tableHeaders.push({
         value: "dataconsegna",
@@ -181,12 +164,9 @@ export default {
           dataordine: { data: item.dataordine, dataType: "date" },
           fornitore: { data: item.fornitore, dataType: "text" },
           descrizione: { data: item.descrizione, dataType: "text" },
-          terminiCons: { data: item.terminiCons, dataType: "text" },
           servizioRichi: { data: item.servizioRichi, dataType: "text" },
-          responsabile: { data: item.responsabile, dataType: "text" },
           importo: { data: item.importo, dataType: "currency" },
           statOrdine: this.mapValue(item.statOrdine,this.orderItems.statOrdine,true),
-          nConsegne: { data: item.nConsegne, dataType: "text" },
           dataconsegna: { data: item.dataconsegna, dataType: "date" },
           note: { data: item.note, dataType: "text" },
           cig: { data: item.cig, dataType: "text" },
