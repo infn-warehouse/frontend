@@ -234,7 +234,7 @@ const GraphileService = {
           searchString+="{";
           searchString+=await this.getAssoc(type,oTemp[0])+": {"+oTemp[1]+": {";
           // filter changes according to the data type
-          searchString+=`${dataType=="Int"?"equalTo":"includesInsensitive"}: ${await this.formatSingle(oTemp[0],oTemp[1],search.search)}`;
+          searchString+=`${dataType=="Int"?"equalTo":"likeInsensitive"}: ${await this.formatSingle(oTemp[0],oTemp[1],search.search)}`;
           searchString+="}}";
           searchString+="}";
         }
@@ -244,7 +244,7 @@ const GraphileService = {
           searchString+="{";
           searchString+=o+": {";
           // filter changes according to the data type
-          searchString+=`${dataType=="Int"?"equalTo":"includesInsensitive"}: ${await this.formatSingle(type,o,search.search)}`;
+          searchString+=`${dataType=="Int"?"equalTo":"likeInsensitive"}: ${await this.formatSingle(type,o,search.search)}`;
           searchString+="}";
           searchString+="}";
         }

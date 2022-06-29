@@ -62,7 +62,6 @@ export default {
   },
   watch: {
     search: function (newVal,oldVal) {
-      console.log("FetchAutocomplete "+this.label+": search: "+oldVal+" "+newVal);
       if (this.model) return;
 
       let oldCheck=oldVal==null || oldVal=="";
@@ -74,11 +73,28 @@ export default {
   },
   methods: {
     updateSearch: _.debounce(async function () {
-      console.log("FetchAutocomplete "+this.label+": do search");
       this.searchComputed=this.search;
-      this.filter=null;
+      this.filter={};
       await this._fetch();
     }, process.env.VUE_APP_DEBOUNCE_TIME),
+    computeFilter() {
+      let check;
+      if (!this.returnObject)
+        check=this.value!=null && this.value!="";
+      else
+        check=this.itemValue in this.value;
+      
+      if (check) {
+        if (!this.returnObject) {
+          this.searchComputed="";
+          this.filter[this.itemValue]={value: this.value};
+        }
+        else {
+          this.searchComputed="";
+          this.filter[this.itemValue]={value: this.value[this.itemValue]};
+        }
+      }
+    },
     async _fetch() {
       let res=await this.operationWithCheck(async () => await this.fetch(this.paginationOpts,this.searchComputed,this.filter));
       if (res) {
@@ -87,18 +103,13 @@ export default {
     },
     onInput(val) {
       this.$emit("input", val);
-      console.log("FetchAutocomplete "+this.label+": emit");
     }
   },
   async created() {
     if (this.model)
       this.filter[this.itemValue]={value: this.model};
-    else if (this.value) {
-      if (!this.returnObject)
-        this.filter[this.itemValue]={value: this.value};
-      else if (this.itemValue in this.value)
-        this.filter[this.itemValue]={value: this.value[this.itemValue]};
-    }
+    else 
+      this.computeFilter();
 
     await this._fetch();
 
@@ -107,7 +118,6 @@ export default {
         this.$emit("input", this.items[0]);
       else
         this.$emit("input", this.items[0][this.itemValue]);
-      console.log("FetchAutocomplete: emit created");
     }
   }
 };
