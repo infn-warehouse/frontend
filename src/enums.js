@@ -10,7 +10,8 @@ export default {
     FILE_BAN: "disabled_visible",
     DONE: "check",
     PRINT: "mdi-file-document",
-    CHANGE: "change_circle"
+    CHANGE: "change_circle",
+    HOME: "home"
   },
   TOAST_TYPE: {
     SUCCESS: "success",

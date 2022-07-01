@@ -11,6 +11,7 @@ export default function defineAbilitiesFor() {
     switch (role) {
       case 'Administrator':
         can('route', 'Registration');
+        can('route', 'MainMenu');
         can('route', 'Orders');
         can('route', 'OrderDetails');
         can('route', 'Movements');
@@ -25,6 +26,7 @@ export default function defineAbilitiesFor() {
         break;
       case 'Manager':
         can('route', 'Registration');
+        can('route', 'MainMenu');
         can('route', 'Orders');
         can('route', 'OrderDetails');
         can('route', 'Movements');

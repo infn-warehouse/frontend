@@ -24,6 +24,14 @@
     "email": "Email",
     "attachments": "Attachments"
   },
+  "choose": {
+    "title": "Seleziona il tipo di merce",
+    "choice": [
+      "Merce a scorta",
+      "Merce a fabbisogno",
+      "Merce in transito"
+    ]
+  },
   "items": {
     "inbound": "Inbound",
     "outbound": "Outbound",

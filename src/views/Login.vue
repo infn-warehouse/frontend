@@ -71,17 +71,7 @@ export default {
     ...mapMutations("snackbar", ["showMessage","closeMessage"]),
     ...mapMutations("status", ["setExpiredFlag"]),
     goToNext() {
-      const startPages = ["Orders","Home"];
-
-      let found = false;
-      for (const r of startPages) {
-        if (this.$can("route", r)) {
-          this.$router.push({ name: r }).catch(()=>{});
-          found = true;
-          break;
-        }
-      }
-      if (!found) this.$router.push({ name: "default" }).catch(()=>{});
+      this.$router.push({ name: "MainMenu" }).catch(()=>{});
     },
     async submit() {
       if (this.username=="") {

@@ -14,10 +14,12 @@ import UploadTest from '../views/UploadTest.vue'
 import FillTest from '../views/FillTest.vue'
 import FileDetails from '../views/FileDetails.vue'
 import Restricted from '../views/Restricted.vue'
+import MainMenu from '../views/MainMenu.vue'
 import defineAbilitiesFor from '@/abilities'
 import store from "@/store";
 import ApiService from "@/services/api.service";
 import TokenService from "@/services/token.service";
+import StorageService from "@/services/storage.service";
 import i18n from "@/i18n";
 
 Vue.use(VueRouter)
@@ -32,6 +34,11 @@ const routes = [
     path: '/restricted',
     name: 'Restricted',
     component: Restricted
+  },
+  {
+    path: '/choose',
+    name: 'MainMenu',
+    component: MainMenu
   },
   {
     path: '/registration',
@@ -128,6 +135,11 @@ router.beforeEach(async (to, from, next) => {
 
   router.app.$ability(defineAbilitiesFor());
 
+  if (!loggedIn)
+    StorageService.removeMode();
+  let mode = StorageService.getMode();
+  store.commit("info/setAppMode", mode);
+
   const publicPages = ["Login","Restricted"];
   const authRequired = !publicPages.includes(to.name);
 
@@ -135,6 +147,8 @@ router.beforeEach(async (to, from, next) => {
     next();
   } else if (!loggedIn) {
     return next({ name: "Login" });
+  } else if (mode==null && to.name!="MainMenu") {
+    return next({ name: "MainMenu" });
   } else if (!router.app.$can("route", to.name)) {
     next("/restricted");
   } else {
