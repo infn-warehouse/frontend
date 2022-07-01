@@ -22,7 +22,9 @@
     "fill_test": "Test riempimento moduli",
     "role": "Ruolo",
     "email": "Email",
-    "attachments": "Allegati"
+    "attachments": "Allegati",
+    "columnsMovement": "Colonne (movimento)",
+    "columnsOrder": "Colonne (ordine)"
   },
   "choose": {
     "title": "Seleziona il tipo di merce",

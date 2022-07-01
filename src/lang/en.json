@@ -22,7 +22,9 @@
     "fill_test": "Forms filling test",
     "role": "Role",
     "email": "Email",
-    "attachments": "Attachments"
+    "attachments": "Attachments",
+    "columnsMovement": "Columns (movement)",
+    "columnsOrder": "Columns (order)"
   },
   "choose": {
     "title": "Seleziona il tipo di merce",

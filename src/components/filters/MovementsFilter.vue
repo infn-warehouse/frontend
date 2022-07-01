@@ -22,9 +22,9 @@
           :type="2"
           :save="true"
           matchAttribute="value"
-          v-model="filterData.columns"
+          v-model="filterData.columns0"
           @change="handleChange"
-          @save="handleSave"
+          @save="handleSave(0)"
         >
         </FilterList>
       </v-list-group>

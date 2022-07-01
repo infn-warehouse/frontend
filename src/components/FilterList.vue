@@ -42,11 +42,12 @@
           </v-list-item-content>
         </v-list-item>
       </template>
-      <v-col v-if="showButton">
+      <v-col v-if="showButton || !clear">
         <v-btn
           color="primary"
           x-small
           @click="showAll = false"
+           v-if="showButton"
           >{{ $t("buttons.hideAll") }}</v-btn
         >
         <v-btn

@@ -40,19 +40,24 @@ export default {
     try {
       this.load();
 
-      if (!this.filterData.columns) {
-        this.filterData.columns=[];
-        for (let item of this.headers) {
-          this.filterData.columns.push({
-            name: this.$i18n.t(`headers.${this.tableName}.${item.value}`),
-            value: item.value,
-            checked: item.show!=1,
-            default: item.show!=1,
-            hidden: item.hidden
-          });
+      for (let i=0;i<4;i++) {
+        if (!this.filterData[`columns${i}`]) {
+          this.filterData[`columns${i}`]=[];
+          this.filterInfo[`columns${i}`]=[];
+          for (let item of this.headers) {
+            let group='group' in item ? item.group : 0;
+            if (i==group)
+              this.filterData[`columns${i}`].push({
+                name: this.$i18n.t(`headers.${this.tableName}.${item.value}`),
+                value: item.value,
+                checked: item.show!=1,
+                default: item.show!=1,
+                hidden: item.hidden
+              });
+          }
+          this.filterInfo[`columns${i}`]={multiple: true};
+          await this.loadConf(i);
         }
-        this.filterInfo.columns={multiple: true};
-        await this.loadConf();
       }
 
       this.handleChange();
@@ -68,19 +73,19 @@ export default {
         filterInfo: this.filterInfo
       });
     },
-    async loadConf() {
-      let res=await this.getPref(this.prefName);
+    async loadConf(i) {
+      let res=await this.getPref(this.prefName+"_"+i);
       if (!res) return;
 
       let checkedCols=JSON.parse(atob(res));
-      this.filterData.columns.forEach((o) => {
-        o.default=checkedCols.includes(o.value);
+      this.filterData[`columns${i}`].forEach((o) => {
+        o.default=checkedCols[i].includes(o.value);
         o.checked=o.default;
       });
     },
-    async saveConf() {
-      let checkedCols=_.map(_.filter(this.filterData.columns, (o) => o.checked),(o) => o.value);
-      let res=await this.setPref(this.prefName,btoa(JSON.stringify(checkedCols)));
+    async saveConf(i) {
+      let checkedCols=_.map(_.filter(this.filterData[`columns${i}`], (o) => o.checked),(o) => o.value);
+      let res=await this.setPref(this.prefName+"_"+i,btoa(JSON.stringify(checkedCols)));
     },
 
     load() {
@@ -106,8 +111,8 @@ export default {
       this.$emit("onChange",clear,filters);
     },
 
-    handleSave() {
-      this.saveConf();
+    handleSave(i) {
+      this.saveConf(i);
     },
 
     clearFilters() {

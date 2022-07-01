@@ -51,8 +51,12 @@ export default {
         filter[this.immutableFilterField]={value: this.immutableFilter};
       
       // columns
-      let columns=filter.columns;
-      delete filter.columns;
+      let columns=[];
+      for (let i=0;i<4;i++) {
+        if (filter[`columns${i}`])
+          columns=[...columns,...filter[`columns${i}`].value];
+        delete filter[`columns${i}`];
+      }
 
       // items and headers
       this.loadingCount++;
@@ -67,7 +71,7 @@ export default {
         if (columns) {
           for (let i=this.tableData.headers2.length-1;i>=0;i--) {
             let item=this.tableData.headers2[i];
-            if (item.hidden || !columns.value.includes(item.value))
+            if (item.hidden || !columns.includes(item.value))
               this.tableData.headers2.splice(i, 1);
           }
         }
