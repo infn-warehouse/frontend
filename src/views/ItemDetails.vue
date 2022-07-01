@@ -6,7 +6,7 @@
         :withBack="true"
         :withEdit="true"
         :withDelete="true"
-        @onEdit="openUpdate(selectedItem)"
+        @onEdit="openUpdate(0,selectedItem)"
         @onDelete="handleDelete"
       ></Toolbar>
 
@@ -35,16 +35,16 @@
           </v-tab-item>
         </v-tabs-items>
         <v-dialog
-          v-model="formDialog"
+          v-model="formDialog[0]"
           content-class="edit-form-dialog"
         >
           <v-card>
             <MovementForm
-              v-if="formDialog"
-              :mode="mode"
-              :selectedItem="editItem"
+              v-if="formDialog[0]"
+              :mode="mode[0]"
+              :selectedItem="editItem[0]"
               @formSucceed="handleSucceed"
-              @formClose="close()"
+              @formClose="closeDialog(0)"
             />
           </v-card>
         </v-dialog>

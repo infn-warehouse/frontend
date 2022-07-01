@@ -87,8 +87,6 @@ export default {
       this.cancel=ApiService.upload("alfresco/"+encodeURI(this.selectedFile.name),bodyFormData,(progress) => {
         this.progress=Math.round(progress);
       }, (status) => {
-        console.log("STATUS")
-        console.log(status)
         if (status==200) {
           this.setLoading(false);
           this.uploadedFile=this.selectedFile;

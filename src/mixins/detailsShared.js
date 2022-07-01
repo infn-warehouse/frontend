@@ -32,12 +32,18 @@ export default {
         if (this.handleUpdate) this.handleUpdate();
       }
     },
-    handleSucceed(form) {
-      this.selectedItem=form;
-      this.detailsTitle=this.title(this.selectedItem);
+    handleSucceed(form,sub=null) {
+      if (sub==null)
+        this.selectedItem={...this.selectedItem,...form};
+      else {
+        this.selectedItem[sub]={...this.selectedItem[sub],...form};
+        this.selectedItem={...this.selectedItem};
+      }
+      
+      if (sub==null) this.detailsTitle=this.title(this.selectedItem);
       if (this.handleUpdate) this.handleUpdate();
 
-      if (form._id!=this.id) {
+      if (sub==null && form._id!=this.id) {
         this.$router.replace({
           name: this.name,
           params: { id: form._id.toString() }

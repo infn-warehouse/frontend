@@ -87,8 +87,6 @@ export default {
       showDropdown: false,
       mapping: {
         Registration: "Registration",
-        Orders: "Orders",
-        OrderDetails: "Orders",
         Movements: "Movements",
         MovementDetails: "Movements",
         Items: "Items",
@@ -103,10 +101,6 @@ export default {
         {
           name: "Registration",
           text: this.$t('navigation.registration')
-        },
-        {
-          name: "Orders",
-          text: this.$t('navigation.orders')
         },
         {
           name: "Movements",

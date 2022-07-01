@@ -8,20 +8,20 @@
         <div class="row-group">
           <v-row>
             <v-col cols="3">
-              <ValidationProvider :name="$t('headers.orders.idordine')" immediate rules="required" v-slot="{ errors }">
+              <ValidationProvider :name="$t('headers.movements.idordine')" immediate rules="required" v-slot="{ errors }">
                 <v-text-field
                   class="required"
-                  :label="$t('headers.orders.idordine')"
+                  :label="$t('headers.movements.idordine')"
                   v-model="form.idordine"
                 ></v-text-field>
                 <span class="form-error">{{ errors[0] || "&nbsp;" }}</span>
               </ValidationProvider>
             </v-col>
             <v-col cols="3">
-              <ValidationProvider :name="$t('headers.orders.cig')" immediate rules="required" v-slot="{ errors }">
+              <ValidationProvider :name="$t('headers.movements.cig')" immediate rules="required" v-slot="{ errors }">
                 <FetchAutocomplete
                   class="required"
-                  :label="$t('headers.orders.cig')"
+                  :label="$t('headers.movements.cig')"
                   v-model="form.cig"
                   :disabled="locked || mode==enums.FORM_MODE.UPDATE"
                   :fetch="protoOrderFetch"
@@ -34,13 +34,13 @@
             </v-col>
             <v-col cols="3">
               <DatePicker
-                :label="$t('headers.orders.dataordine')"
+                :label="$t('headers.movements.dataordine')"
                 v-model="form.dataordine"
               ></DatePicker>
             </v-col>
             <v-col cols="3">
               <v-autocomplete
-                :label="$t('headers.orders.statOrdine')"
+                :label="$t('headers.movements.statOrdine')"
                 v-model="form.statOrdine"
                 :items="orderItems.statOrdine"
                 item-text="name"
@@ -52,20 +52,20 @@
           <v-row>
             <v-col cols="4">
               <v-text-field
-                :label="$t('headers.orders.fornitore')"
+                :label="$t('headers.movements.fornitore')"
                 v-model="form.fornitore"
               ></v-text-field>
             </v-col>
             <v-col cols="4">
               <v-text-field
-                :label="$t('headers.orders.descrizione')"
+                :label="$t('headers.movements.descrizione')"
                 v-model="form.descrizione"
               ></v-text-field>
             </v-col>
             <v-col cols="4">
               <v-text-field
-                :label="$t('headers.orders.nColli')"
-                v-model="form.nColli"
+                :label="$t('headers.movements.nColliOrdine')"
+                v-model="form.nColliOrdine"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -74,13 +74,13 @@
           <v-row>
             <v-col cols="6">
               <v-text-field
-                :label="$t('headers.orders.servizioRichi')"
+                :label="$t('headers.movements.servizioRichi')"
                 v-model="form.servizioRichi"
               ></v-text-field>
             </v-col>
             <v-col cols="6">
               <v-text-field
-                :label="$t('headers.orders.importo')"
+                :label="$t('headers.movements.importo')"
                 v-model="form.importo"
               ></v-text-field>
             </v-col>
@@ -88,21 +88,21 @@
           <v-row>
             <v-col cols="6">
               <DatePicker
-                :label="$t('headers.orders.dataconsegna')"
+                :label="$t('headers.movements.dataconsegna')"
                 v-model="form.dataconsegna"
               ></DatePicker>
             </v-col>
             <v-col cols="6">
               <v-text-field
-                :label="$t('headers.orders.rup')"
+                :label="$t('headers.movements.rup')"
                 v-model="form.rup"
               ></v-text-field>
             </v-col>
           </v-row>
         </div>
         <v-textarea
-          :label="$t('headers.orders.note')"
-          v-model="form.note"
+          :label="$t('headers.movements.noteOrdine')"
+          v-model="form.noteOrdine"
           rows="1"
           auto-grow
           filled
@@ -153,10 +153,10 @@ export default {
         importo: "",
         statOrdine: "C",
         dataconsegna: "",
-        note: "",
+        noteOrdine: "",
         cig: "",
         rup: "",
-        nColli: "",
+        nColliOrdine: "",
         fileGroup: uuidv4()
       }
     };

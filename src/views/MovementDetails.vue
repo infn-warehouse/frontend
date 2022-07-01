@@ -4,10 +4,8 @@
       <Toolbar
         :title="detailsTitle"
         :withBack="true"
-        :withEdit="true"
         :withDelete="true"
         :buttons="buttons"
-        @onEdit="openUpdate(selectedItem)"
         @onDelete="handleDelete"
       ></Toolbar>
 
@@ -19,30 +17,36 @@
           slider-color="accent"
           dark
         >
-          <v-tab key="tabAttachments">{{ $t("custom.attachments") }}</v-tab>
-          <v-tab key="tabDelivery">{{ $t("details.movements.tabDelivery") }}</v-tab>
+          <v-tab key="tabAttachmentsMovement">{{ $t("details.movements.attachmentsMovement") }}</v-tab>
+          <v-tab key="tabAttachmentsOrder">{{ $t("details.movements.attachmentsOrder") }}</v-tab>
           <v-tab key="tabTesting">{{ $t("details.movements.tabTesting") }}</v-tab>
         </v-tabs>
         <v-tabs-items v-model="activeTab">
-          <v-tab-item key="tabAttachments">
+          <v-tab-item key="tabAttachmentsMovement">
             <div class="my-container">
               <FileUploader
-                @onUploadComplete="handleUpload"
+                @onUploadComplete="handleUpload1"
                 :fileGroup="this.selectedItem.fileGroup"
               />
             </div>
             <FilesList
-              ref="filesList"
+              ref="filesList1"
               :immutableFilter="this.selectedItem.fileGroup"
-              :title="$t('custom.attachments')"
+              :title="$t('details.movements.attachmentsMovement')"
             />
           </v-tab-item>
-          <v-tab-item key="tabDelivery">
-            <div class="flex-container">
-              <div><b>{{ $t("headers.movements.dataConsegna") }}</b>: {{this.selectedItem.dataConsegna | date}}</div>
-              <div><b>{{ $t("headers.movements.consegnatario") }}</b>: {{this.selectedItem.consegnatario}}</div>
-              <div><b>{{ $t("headers.movements.nColli") }}</b>: {{this.selectedItem.nColli}}</div>
+          <v-tab-item key="tabAttachmentsOrder">
+            <div class="my-container">
+              <FileUploader
+                @onUploadComplete="handleUpload2"
+                :fileGroup="this.selectedItem.ordiniByIdOrdine.fileGroup"
+              />
             </div>
+            <FilesList
+              ref="filesList2"
+              :immutableFilter="this.selectedItem.ordiniByIdOrdine.fileGroup"
+              :title="$t('details.movements.attachmentsOrder')"
+            />
           </v-tab-item>
           <v-tab-item key="tabTesting">
             <div class="flex-container">
@@ -53,16 +57,30 @@
           </v-tab-item>
         </v-tabs-items>
         <v-dialog
-          v-model="formDialog"
+          v-model="formDialog[0]"
           content-class="edit-form-dialog"
         >
           <v-card>
             <MovementForm
-              v-if="formDialog"
-              :mode="mode"
-              :selectedItem="editItem"
+              v-if="formDialog[0]"
+              :mode="mode[0]"
+              :selectedItem="editItem[0]"
               @formSucceed="handleSucceed"
-              @formClose="close()"
+              @formClose="closeDialog(0)"
+            />
+          </v-card>
+        </v-dialog>
+        <v-dialog
+          v-model="formDialog[1]"
+          content-class="edit-form-dialog"
+        >
+          <v-card>
+            <OrderForm
+              v-if="formDialog[1]"
+              :mode="mode[1]"
+              :selectedItem="editItem[1]"
+              @formSucceed="form => handleSucceed(form,'ordiniByIdOrdine')"
+              @formClose="closeDialog(1)"
             />
           </v-card>
         </v-dialog>
@@ -75,6 +93,7 @@
 import enums from "@/enums";
 import helper from "@/mixins/helper";
 import MovementForm from "@/components/forms/MovementForm";
+import OrderForm from "@/components/forms/OrderForm";
 import Toolbar from "@/components/Toolbar";
 import formDialog from "@/mixins/formDialog";
 import detailsShared from "@/mixins/detailsShared";
@@ -89,7 +108,33 @@ export default {
     return {
       home: "Movements",
       resourceType: this.$t("resource_types.movement"),
+      resourceType2: this.$t("resource_types.order"),
       buttons: [
+        {
+          text: this.$t("details.orders.change"),
+          callback: async () => {
+            let newStatus=this.selectedItem.ordiniByIdOrdine.statOrdine=='C' ? 'S' : 'C';
+            let res=await this.createOrUpdateHelper(
+              this.mode,
+              this.resourceType2,
+              "Ordini",
+              "idordine",
+              {
+                idordine: this.selectedItem.ordiniByIdOrdine.idordine,
+                statOrdine: newStatus
+              },
+              null,
+              this.selectedItem.ordiniByIdOrdine.idordine,
+              payload => payload.p.idordine,
+              payload => payload.p.idordine
+            );
+            if (res) {
+              this.selectedItem.ordiniByIdOrdine.statOrdine=newStatus;
+              this.computeButtonColor();
+            }
+          },
+          icon: enums.ICONS.CHANGE
+        },
         {
           text: this.$t("details.movements.fill"),
           callback: () => {
@@ -103,6 +148,20 @@ export default {
             });
           },
           icon: enums.ICONS.PRINT
+        },
+        {
+          text: this.$t("custom.editMovement"),
+          callback: () => {
+            this.openUpdate(0,this.selectedItem);
+          },
+          icon: enums.ICONS.EDIT
+        },
+        {
+          text: this.$t("custom.editOrder"),
+          callback: () => {
+            this.openUpdate(1,this.selectedItem.ordiniByIdOrdine);
+          },
+          icon: enums.ICONS.EDIT
         }
       ]
     };
@@ -129,15 +188,28 @@ export default {
       );
     },
 
-    handleUpload(file) {
-      this.$refs.filesList.refresh();
+    handleUpload1(file) {
+      this.$refs.filesList1.refresh();
     },
+    handleUpload2(file) {
+      this.$refs.filesList2.refresh();
+    },
+    
+    computeButtonColor() {
+      this.buttons[0].color=this.selectedItem.ordiniByIdOrdine.statOrdine=='C' ? 'yellow darken-2' : 'green';
+      this.buttons=[...this.buttons];
+    },
+
+    handleUpdate() {
+      this.computeButtonColor();
+    }
   },
   created() {
     this.setMovementsFlag(true);
   },
   components: {
     MovementForm,
+    OrderForm,
     Toolbar,
     FileUploader,
     FilesList

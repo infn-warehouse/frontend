@@ -6,7 +6,7 @@
           :title="resourceTypes"
           :withAdd="true"
           :allClear="allClear"
-          @onAdd="openCreate"
+          @onAdd="item => openCreate(0,item)"
         />
         <BaseGrid
           tableName="unloading_movs"
@@ -19,20 +19,20 @@
           :withEdit="true"
           :withDelete="true"
           @onPaginationChanged="handlePaginationChanged"
-          @onEdit="openUpdate"
+          @onEdit="item => openUpdate(0,item)"
           @onDelete="handleDelete"
         ></BaseGrid>
         <v-dialog
-          v-model="formDialog"
+          v-model="formDialog[0]"
           content-class="edit-form-dialog"
         >
           <v-card>
             <MovementForm
-              v-if="formDialog"
-              :mode="mode"
-              :selectedItem="editItem"
+              v-if="formDialog[0]"
+              :mode="mode[0]"
+              :selectedItem="editItem[0]"
               @formSucceed="_fetch()"
-              @formClose="close()"
+              @formClose="closeDialog(0)"
             />
           </v-card>
         </v-dialog>

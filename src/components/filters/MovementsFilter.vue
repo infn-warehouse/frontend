@@ -14,7 +14,7 @@
         <template v-slot:activator>
           <v-list-item-content>
             <v-list-item-title>
-              {{ $t("misc.columns") }}
+              {{ $t("custom.columnsMovement") }}
             </v-list-item-title>
           </v-list-item-content>
         </template>
@@ -25,6 +25,27 @@
           v-model="filterData.columns0"
           @change="handleChange"
           @save="handleSave(0)"
+        >
+        </FilterList>
+      </v-list-group>
+    </v-list>
+    <v-divider></v-divider>
+    <v-list dense>
+      <v-list-group>
+        <template v-slot:activator>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ $t("custom.columnsOrder") }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </template>
+        <FilterList
+          :type="2"
+          :save="true"
+          matchAttribute="value"
+          v-model="filterData.columns1"
+          @change="handleChange"
+          @save="handleSave(1)"
         >
         </FilterList>
       </v-list-group>
@@ -95,6 +116,48 @@
       </v-list-group>
     </v-list>
     <v-divider></v-divider>
+    <v-list dense>
+      <v-list-group>
+        <template v-slot:activator>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ $t("headers.movements.dataordine") }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </template>
+          <DatePicker
+            :label="$t('misc.from')"
+            v-model="filterData.dataordine.from"
+            @change="handleChange"
+          ></DatePicker>
+          <DatePicker
+            :label="$t('misc.to')"
+            v-model="filterData.dataordine.to"
+            @change="handleChange"
+          ></DatePicker>
+      </v-list-group>
+    </v-list>
+    <v-divider></v-divider>
+    <v-list dense>
+      <v-list-group>
+        <template v-slot:activator>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ $t("headers.movements.statOrdine") }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </template>
+        <FilterList
+          :type="3"
+          matchAttribute="value"
+          v-model="filterData.statOrdine"
+          :filterInfo="filterInfo.statOrdine"
+          @change="handleChange"
+        >
+        </FilterList>
+      </v-list-group>
+    </v-list>
+    <v-divider></v-divider>
     <div class="my-container align-right">
       <v-btn color="primary" @click="clearFilters">
         {{ $t("buttons.clear") }}
@@ -138,12 +201,20 @@ export default {
           { name: this.$t("misc.all"), all: true, checked: true, default: true },
           { name: this.$t("items.inbound"), value: false, checked: false },
           { name: this.$t("items.outbound"), value: true, checked: false }
+        ],
+        dataordine: {},
+        statOrdine: [
+          { name: this.$t("misc.all"), all: true, checked: true, default: true },
+          { name: this.$t("items.conto"), value: "C", checked: false },
+          { name: this.$t("items.saldo"), value: "S", checked: false }
         ]
       },
       filterInfo: {
         tipoDocAcc: { },
         dataMovimento: { type: "range" },
-        inUscita: { }
+        inUscita: { },
+        dataordine: { type: "range" },
+        statOrdine: { }
       },
       setFilter: this.setMovementsFilter,
       setFlag: this.setMovementsFlag,

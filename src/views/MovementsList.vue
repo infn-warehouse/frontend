@@ -5,7 +5,7 @@
       ref="drawer"
       :headers="tableData.headers"
       @drawerChanged="handleDrawer"
-      @onChange="handleChange"
+      @onChange="handleFilterChange"
     ></MovementsFilter>
     <div :class="{ 'hide-shrink': drawer_flag, 'list-container': true }">
       <v-card>
@@ -13,11 +13,11 @@
           :title="resourceTypes"
           :withFilter="true"
           :withSearch="true"
-          :withAdd="true"
+          :withAdd="false"
           :allClear="allClear"
           @onFilter="$refs.drawer.open()"
           @onSearch="handleSearch"
-          @onAdd="openCreate"
+          @onAdd="item => openCreate(0,item)"
         />
         <BaseGrid
           tableName="movements"
@@ -27,24 +27,36 @@
           :injectOpts="paginationOpts"
           :loading="loading"
           :withActions="true"
-          :withEdit="true"
           :withDelete="true"
           @onPaginationChanged="handlePaginationChanged"
-          @onEdit="openUpdate"
           @onDelete="handleDelete"
         ></BaseGrid>
         <v-dialog
-          v-model="formDialog"
+          v-model="formDialog[0]"
           content-class="edit-form-dialog"
         >
           <v-card>
             <MovementForm
-              v-if="formDialog"
-              :mode="mode"
-              :selectedItem="editItem"
+              v-if="formDialog[0]"
+              :mode="mode[0]"
+              :selectedItem="editItem[0]"
               @formSucceed="_fetch()"
-              @formClose="close()"
+              @formClose="closeDialog(0)"
               :model="immutableFilter"
+            />
+          </v-card>
+        </v-dialog>
+        <v-dialog
+          v-model="formDialog[1]"
+          content-class="edit-form-dialog"
+        >
+          <v-card>
+            <OrderForm
+              v-if="formDialog[1]"
+              :mode="mode[1]"
+              :selectedItem="editItem[1]"
+              @formSucceed="_fetch()"
+              @formClose="closeDialog(1)"
             />
           </v-card>
         </v-dialog>
@@ -62,6 +74,7 @@ import items from "@/mixins/items";
 import formDialog from "@/mixins/formDialog";
 import listShared from "@/mixins/listShared";
 import MovementForm from "@/components/forms/MovementForm";
+import OrderForm from "@/components/forms/OrderForm";
 import MovementsFilter from "@/components/filters/MovementsFilter";
 import GraphileService from "@/services/graphile.service";
 import enums from "@/enums";
@@ -72,6 +85,7 @@ export default {
   components: {
     BaseGrid,
     MovementForm,
+    OrderForm,
     Toolbar,
     MovementsFilter
   },
@@ -87,6 +101,7 @@ export default {
   methods: {
     mapHeaders() {
       let tableHeaders=[];
+
       tableHeaders.push({
         value: "nMovimento",
         sortable: true,
@@ -94,11 +109,6 @@ export default {
       });
       tableHeaders.push({
         value: "dataMovimento",
-        sortable: true,
-        align: "start"
-      });
-      tableHeaders.push({
-        value: "idOrdine",
         sortable: true,
         align: "start"
       });
@@ -192,6 +202,90 @@ export default {
         align: "start",
         show: 1
       });
+      tableHeaders.push({
+        value: "idOrdine",
+        sortable: true,
+        align: "start",
+        group: 1
+      });
+
+      tableHeaders.push({
+        value: "dataordine",
+        sortable: true,
+        align: "start",
+        group: 1,
+        show: 1
+      });
+      tableHeaders.push({
+        value: "fornitore",
+        sortable: true,
+        align: "start",
+        group: 1,
+        show: 1
+      });
+      tableHeaders.push({
+        value: "descrizione",
+        sortable: true,
+        align: "start",
+        group: 1,
+        show: 1
+      });
+      tableHeaders.push({
+        value: "servizioRichi",
+        sortable: true,
+        align: "start",
+        group: 1,
+        show: 1
+      });
+      tableHeaders.push({
+        value: "importo",
+        sortable: true,
+        align: "start",
+        group: 1,
+        show: 1
+      });
+      tableHeaders.push({
+        value: "statOrdine",
+        sortable: true,
+        align: "start",
+        group: 1,
+      });
+      tableHeaders.push({
+        value: "dataconsegna",
+        sortable: true,
+        align: "start",
+        group: 1,
+        show: 1
+      });
+      tableHeaders.push({
+        value: "noteOrdine",
+        sortable: true,
+        align: "start",
+        group: 1,
+        show: 1
+      });
+      tableHeaders.push({
+        value: "cig",
+        sortable: true,
+        align: "start",
+        group: 1,
+        show: 1
+      });
+      tableHeaders.push({
+        value: "rup",
+        sortable: true,
+        align: "start",
+        group: 1,
+        show: 1
+      });
+      tableHeaders.push({
+        value: "nColliOrdine",
+        sortable: true,
+        align: "start",
+        group: 1,
+        show: 1
+      });
+
       return tableHeaders;
     },
     mapItems() {
@@ -202,9 +296,8 @@ export default {
           idMovimento: { data: item.idMovimento, dataType: "text" },
           nMovimento: { data: item.nMovimento, dataType: "text" },
           dataMovimento: { data: item.dataMovimento, dataType: "date" },
-          idOrdine: { data: item.idOrdine, dataType: "text" },
           datadocumento: { data: item.datadocumento, dataType: "date" },
-          tipoDocAcc: { data: item.documentoByTipoDocAcc ? item.documentoByTipoDocAcc.dicitura : "?", dataType: "chip" },
+          tipoDocAcc: { data: item.dicitura!=null ? item.dicitura : "?", dataType: "chip" },
           nDocAcc: { data: item.nDocAcc, dataType: "text" },
           dataConsegna: { data: item.dataConsegna, dataType: "date" },
           nColli: { data: item.nColli, dataType: "text" },
@@ -219,19 +312,47 @@ export default {
           dataRitiro: { data: item.dataRitiro, dataType: "datetime" },
           corriere: { data: item.corriere, dataType: "text" },
           trackingNum: { data: item.trackingNum, dataType: "text" },
+          idOrdine: { data: item.idOrdine, dataType: "text" },
+
+          dataordine: { data: item.dataordine, dataType: "date" },
+          fornitore: { data: item.fornitore, dataType: "text" },
+          descrizione: { data: item.descrizione, dataType: "text" },
+          servizioRichi: { data: item.servizioRichi, dataType: "text" },
+          importo: { data: item.importo, dataType: "currency" },
+          statOrdine: this.mapValue(item.statOrdine,this.orderItems.statOrdine,true),
+          dataconsegna: { data: item.dataconsegna, dataType: "date" },
+          noteOrdine: { data: item.noteOrdine, dataType: "text" },
+          cig: { data: item.cig, dataType: "text" },
+          rup: { data: item.rup, dataType: "text" },
+          nColliOrdine: { data: item.nColliOrdine, dataType: "text" },
         };
-        /*{
-          actionType: "custom",
-          callback: () => {
-          },
-        }*/
+
         tableItem.click_action = {
           actionType: "router-link",
           namedRoot: "MovementDetails",
           namedRootId: item.idMovimento.toString(),
           icon: "gps_fixed"
         };
-        //tableItem.actions = [];
+
+        tableItem.actions = [
+          {
+            actionType: "custom",
+            icon: enums.ICONS.EDIT,
+            tooltip: this.$t("custom.editMovement"),
+            callback: (item) => {
+              this.openUpdate(0,item);
+            },
+          },
+          {
+            actionType: "custom",
+            icon: enums.ICONS.EDIT,
+            tooltip: this.$t("custom.editOrder"),
+            callback: (item) => {
+              this.openUpdate(1,item);
+            },
+          }
+        ];
+
         return tableItem;
       });
       return tableItems;
@@ -247,12 +368,20 @@ export default {
       );
     },
     fetch(paginationOpts=null,search,filter) {
-      return GraphileService.fetchAll("MovimentiTemp",["documento"],[],filter,{search, on: [
+      return GraphileService.fetchAll("MovimentiView",["documento","ordini"],[],filter,{search, on: [
         "nMovimento",
         "idOrdine",
         "nDocAcc",
         "note",
         "collaudatore",
+
+        "idordine",
+        "fornitore",
+        "descrizione",
+        "servizioRichi",
+        "noteOrdine",
+        "cig",
+        "rup"
       ]},paginationOpts);
     },
   },

@@ -24,7 +24,9 @@
     "email": "Email",
     "attachments": "Attachments",
     "columnsMovement": "Columns (movement)",
-    "columnsOrder": "Columns (order)"
+    "columnsOrder": "Columns (order)",
+    "editMovement": "Edit movement",
+    "editOrder": "Edit order data"
   },
   "choose": {
     "title": "Seleziona il tipo di merce",
@@ -83,8 +85,7 @@
     "cig": "CIG",
     "orderNotFound": "Order not found.",
     "complete": "Registration complete.",
-    "go1": "Go to the order",
-    "go2": "Go to the movement",
+    "go": "Go to the movement",
     "new": "New registration"
   },
   "baseGrid": {
@@ -99,7 +100,6 @@
     "registration": "Registration",
     "movements": "Movements",
     "items": "Warehousing",
-    "orders": "Orders",
     "stats": "Statistics",
     "profile": "Profile",
     "logout": "Logout"
@@ -120,7 +120,6 @@
     "movements": {
       "nMovimento": "N° registrazione",
       "dataMovimento": "Data registrazione",
-      "idOrdine": "Ordine associato",
       "datadocumento": "Data documento",
       "tipoDocAcc": "Tipo documento",
       "nDocAcc": "Numero documento",
@@ -136,7 +135,21 @@
       "tipoReso": "Tipo reso",
       "dataRitiro": "Date e ora ritiro",
       "corriere": "Corriere",
-      "trackingNum": "Tracking number"
+      "trackingNum": "Tracking number",
+      "idOrdine": "Ordine associato",
+
+      "idordine": "Ordine associato",
+      "dataordine": "Data ordine",
+      "fornitore": "Azienda",
+      "descrizione": "Categoria materiale",
+      "servizioRichi": "Richiedente",
+      "importo": "Importo",
+      "statOrdine": "Stato",
+      "dataconsegna": "Data consegna prevista",
+      "noteOrdine": "Note ordine",
+      "cig": "CIG",
+      "rup": "RUP",
+      "nColliOrdine": "N° colli (totali)"
     },
     "unloading_movs": {
       "articolo": "Codice articolo",
@@ -156,21 +169,6 @@
       "giacenza": "Giacenza",
       "scorta": "Scorta",
       "ubicazione": "Ubicazione"
-    },
-    "orders": {
-      "idordine": "Numero",
-      "dataordine": "Data",
-      "fornitore": "Azienda",
-      "descrizione": "Categoria materiale",
-      "servizioRichi": "Richiedente",
-      "importo": "Importo",
-      "statOrdine": "Stato",
-      "dataconsegna": "Data consegna prevista",
-      "note": "Note",
-      "cig": "CIG",
-      "rup": "RUP",
-      "nColli": "N° colli",
-      "movimentiCount": "# movimenti"
     },
     "monthly_costs": {
       "mese": "Mese",
@@ -217,8 +215,10 @@
     "movements": {
       "tabDelivery": "Delivery",
       "tabTesting": "Testing",
-      "fill": "Make Test certificate"
-    },
+      "fill": "Make Test certificate",
+      "attachmentsMovement": "Attachments (delivery)",
+      "attachmentsOrder": "Attachments (order)"
+      },
     "items": {
       "tabLoading": "Loading",
       "tabUnloading": "Unloading"

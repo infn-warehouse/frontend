@@ -8,24 +8,32 @@ export default {
   },
   data() {
     return {
-      formDialog: false,
-      mode: null,
-      editItem: null
+      formDialog: [false,false,false],
+      mode: [null,null,null],
+      editItem: [null,null,null]
     }
   },
   methods: {
-    openCreate() {
-      this.mode=enums.FORM_MODE.CREATE;
-      this.editItem=null;
-      this.formDialog=true;
+    openCreate(i) {
+      this.mode[i]=enums.FORM_MODE.CREATE;
+      this.editItem[i]=null;
+      this.formDialog[i]=true;
+      this.dialogUpdate();
     },
-    openUpdate(item) {
-      this.mode=enums.FORM_MODE.UPDATE;
-      this.editItem=item;
-      this.formDialog=true;
+    openUpdate(i,item) {
+      this.mode[i]=enums.FORM_MODE.UPDATE;
+      this.editItem[i]=item;
+      this.formDialog[i]=true;
+      this.dialogUpdate();
     },
-    close() {
-      this.formDialog=false;
+    closeDialog(i) {
+      this.formDialog[i]=false;
+      this.dialogUpdate();
+    },
+    dialogUpdate() {
+      this.formDialog=[...this.formDialog];
+      this.mode=[...this.mode];
+      this.editItem=[...this.editItem];
     }
   }
 }

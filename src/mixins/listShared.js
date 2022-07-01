@@ -108,6 +108,12 @@ export default {
       this.allClear=clear;
       this._fetch();
     },
+    handleFilterChange(clear,filters) {
+      this.inject({
+        page: 1
+      });
+      this.handleChange(clear,filters);
+    },
     async handleDelete(item) {
       if (await this.delete(item))
         this._fetch();

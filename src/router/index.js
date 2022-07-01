@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
-import OrdersList from '../views/OrdersList.vue'
-import OrderDetails from '../views/OrderDetails.vue'
 import MovementsList from '../views/MovementsList.vue'
 import MovementDetails from '../views/MovementDetails.vue'
 import ItemsList from '../views/ItemsList.vue'
@@ -46,20 +44,9 @@ const routes = [
     component: Registration
   },
   {
-    path: '/orders',
-    name: 'Orders',
-    component: OrdersList
-  },
-  {
     path: '/',
     name: 'Registration',
     component: Registration
-  },
-  {
-    path: '/orders/:id',
-    name: 'OrderDetails',
-    component: OrderDetails,
-    props: true
   },
   {
     path: '/movements',

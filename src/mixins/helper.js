@@ -122,7 +122,7 @@ export default {
       let pcopy = _.cloneDeep(payload);
       for (let key in pcopy) {
         if (pcopy[key]==null || pcopy[key]==="")
-          if (mode == enums.FORM_MODE.CREATE || payloadOld[key]==null || payloadOld[key]==="")
+          if (mode == enums.FORM_MODE.CREATE || payloadOld==null || payloadOld[key]==null || payloadOld[key]==="")
             delete pcopy[key];
           else pcopy[key]=null;
       }
@@ -175,10 +175,10 @@ export default {
         .confirm(this.$t("confirm.deleteMessage"),this.options)
         .then(async function(dialog) {
           resolve(await this.deleteHelper(resName, resType, resOrig, idName, payload, deletedName));
-        })
+        }.bind(this))
         .catch(async function() {
           resolve(false);
-        });
+        }.bind(this));
       });
     },
     async deleteHelper(resName, resType, resOrig, idName, payload, deletedName) {

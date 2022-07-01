@@ -179,7 +179,7 @@
           </v-row>
         </div>
         <v-textarea
-          :label="$t('headers.orders.note')"
+          :label="$t('headers.movements.note')"
           v-model="form.note"
           rows="1"
           auto-grow

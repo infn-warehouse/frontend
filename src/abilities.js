@@ -12,8 +12,6 @@ export default function defineAbilitiesFor() {
       case 'Administrator':
         can('route', 'Registration');
         can('route', 'MainMenu');
-        can('route', 'Orders');
-        can('route', 'OrderDetails');
         can('route', 'Movements');
         can('route', 'MovementDetails');
         can('route', 'Items');
@@ -27,8 +25,6 @@ export default function defineAbilitiesFor() {
       case 'Manager':
         can('route', 'Registration');
         can('route', 'MainMenu');
-        can('route', 'Orders');
-        can('route', 'OrderDetails');
         can('route', 'Movements');
         can('route', 'MovementDetails');
         can('route', 'Items');
