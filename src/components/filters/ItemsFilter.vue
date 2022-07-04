@@ -87,6 +87,7 @@ export default {
 
   data() {
     return {
+      headersCount: 1,
       filterData: {
         ubicazione: []
       },

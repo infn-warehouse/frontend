@@ -40,7 +40,7 @@ export default {
     try {
       this.load();
 
-      for (let i=0;i<4;i++) {
+      for (let i=0;i<this.headersCount;i++) {
         if (!this.filterData[`columns${i}`]) {
           this.filterData[`columns${i}`]=[];
           this.filterInfo[`columns${i}`]=[];
@@ -76,10 +76,10 @@ export default {
     async loadConf(i) {
       let res=await this.getPref(this.prefName+"_"+i);
       if (!res) return;
-
+      
       let checkedCols=JSON.parse(atob(res));
       this.filterData[`columns${i}`].forEach((o) => {
-        o.default=checkedCols[i].includes(o.value);
+        o.default=checkedCols.includes(o.value);
         o.checked=o.default;
       });
     },

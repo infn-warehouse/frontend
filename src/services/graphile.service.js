@@ -263,7 +263,29 @@ const GraphileService = {
     return s;
   },
 
+  async createCondition(type,id,idName) {
+    let s="";
+    for (let i=0;i<id.length;i++) {
+      s+=`${idName[i]}: ${await this.formatSingle(type,idName[i],id[i])}`;
+    }
+    return s;
+  },
+
+  createBy(idName) {
+    let s="By"+utils.firstToUpper(idName[0]);
+    for (let i=1;i<idName.length;i++) {
+      s+=`And${utils.firstToUpper(idName[i])}`;
+    }
+    return s;
+  },
+
   async fetchOne(type,include,id,idName) {
+    // turn id into array
+    if (!Array.isArray(idName)) {
+      id=[id];
+      idName=[idName];
+    }
+
     console.log("------- fetchOne");
     type=utils.makeSingular(type);
 
@@ -271,7 +293,7 @@ const GraphileService = {
     let name=`all${utils.makePlural(type)}`;
     let res=await this.sendQuery(`
     {
-      ${name} (condition: {${idName}: ${await this.formatSingle(type,idName,id)}}) {
+      ${name} (condition: {${await this.createCondition(type,id,idName)}}) {
           nodes {
             ${await this.joinFields(type)}
             ${await this.joinAssoc(type,include)}
@@ -346,14 +368,33 @@ const GraphileService = {
     return {data: res.data[op][utils.firstToLower(type)]};
   },
 
+  async replace(type,payload,idName) {
+    if (!Array.isArray(idName)) {
+      idName=[idName];
+    }
+    
+    let id=[];
+    for (let i=0;i<idName.length;i++)
+      id.push(payload[idName[i]]);
+
+    await this.delete(type,type,id,idName)
+    return await this.create(type,payload,idName);
+  },
+
   async update(type,payload,idName,currentId) {
+    // turn id into array
+    if (!Array.isArray(idName)) {
+      currentId=[currentId];
+      idName=[idName];
+    }
+
     let res;
     let op;
 
     // make update query
-    op=`update${type}By${utils.firstToUpper(idName)}`;
+    op=`update${type}${this.createBy(idName)}`;
     res=await this.sendQuery(`
-      mutation{${op} (input: {${idName}: ${await this.formatSingle(type,idName,currentId)} ${utils.firstToLower(type)}Patch:{
+      mutation{${op} (input: {${await this.createCondition(type,currentId,idName)}} ${utils.firstToLower(type)}Patch:{
         ${await this.formatPayload(type,payload)}
       }}){
         ${utils.firstToLower(type)} {
@@ -373,10 +414,16 @@ const GraphileService = {
     if (id == null)
       return null;
 
+    // turn id into array
+    if (!Array.isArray(idName)) {
+      id=[id];
+      idName=[idName];
+    }
+
     // make delete query
-    let op=`delete${type}By${utils.firstToUpper(idName)}`;
+    let op=`delete${type}${this.createBy(idName)}`;
     let res=await this.sendQuery(`
-      mutation{${op} (input: {${idName}: ${await this.formatSingle(type,idName,id)}}) {
+      mutation{${op} (input: {${await this.createCondition(type,id,idName)}}) {
         deleted${originalType}Id
       }}
     `);

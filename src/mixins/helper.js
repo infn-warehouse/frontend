@@ -41,7 +41,10 @@ export default {
     },
 
     checkResult(res,evaluate=null) {
+      if (!res) return null;
       if (res.error) {
+        console.log(res.error);
+
         if (res.error.jwtExpired) {
           this.$router.push({ name: "Login" }).catch(()=>{});
           return null;
@@ -197,17 +200,17 @@ export default {
       }
     },
     async getPref(name) {
-      let res=await this.operationWithCheck(async () => await ApiService.get("prefs/"+name));
+      let res=await this.operationWithCheck(async () => await GraphileService.fetchOne("Preference",[],["§uid",name],["user","pref"]));
       if (res)
-        return res.data;
+        return res.value;
       return null;
     },
     async setPref(name,value) {
-      let res=await this.operationWithCheck(async () => await ApiService.put("prefs/"+name,value,
-        {
-          headers: { 'Content-Type': 'text/plain' }
-        }
-      ));
+      let res=await this.operationWithCheck(async () => await GraphileService.replace("Preference",{
+        user: "§uid",
+        pref: name,
+        value: value
+      },["user","pref"]));
 
       if (res)
         return true;

@@ -194,6 +194,7 @@ export default {
 
   data() {
     return {
+      headersCount: 2,
       filterData: {
         tipoDocAcc: [],
         dataMovimento: {},
