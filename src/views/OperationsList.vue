@@ -124,7 +124,7 @@ export default {
           data: { data: item.data, dataType: "datetime" },
           risorsa: { data: item.risorsa, dataType: "text" },
           tipo: { data: this.$t("langEnums.tipo."+item.tipo), dataType: "text" },
-          dettagli: { data: this.doReplace(item.dettagli,this.$t("detailsString")), dataType: "text" },
+          dettagli: { data: this.doReplace(item.dettagli,this.$t("detailsString"),true), dataType: "text" },
           stato: { data: this.$t("langEnums.stato."+item.stato), dataType: "text" },
         };
         // tableItem.click_action = {

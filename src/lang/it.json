@@ -259,7 +259,7 @@
     "required": "Il campo {field} è richiesto."
   },
   "detailsString": {
-    "reason": "<b>Motivo della cancellazione</b>"
+    "reason": "Motivo della modifica"
   },
   "langEnums": {
     "tipo": {

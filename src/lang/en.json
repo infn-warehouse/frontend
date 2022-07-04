@@ -259,7 +259,7 @@
     "required": "Field {field} is required."
   },
   "detailsString": {
-    "reason": "<b>Reason for change</b>"
+    "reason": "Reason for change"
   },
   "langEnums": {
     "tipo": {

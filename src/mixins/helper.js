@@ -252,9 +252,13 @@ export default {
       window.open(fileURL);
     },
 
-    doReplace(s,lang) {
-      for (const key in lang)
-        s=s.replace("§"+key,lang[key]);
+    doReplace(s,lang,bold=false) {
+      if (!bold)
+        for (const key in lang)
+          s=s.replace("§"+key,lang[key]);
+      else
+        for (const key in lang)
+          s=s.replace("§"+key,"<b>"+lang[key]+"</b>");
       return s;
     }
   }
