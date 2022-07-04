@@ -4,6 +4,7 @@ import GraphileService from "@/services/graphile.service";
 import ApiService from "@/services/api.service";
 import _ from "lodash";
 import { FillService } from "@/services/fill.service";
+import utils from "../utils";
 
 export default {
   mixins: [],
@@ -186,7 +187,7 @@ export default {
     },
     async deleteHelper(resName, resType, resOrig, idName, payload, deletedName) {
       let pcopy = _.cloneDeep(payload);
-      const res = await this.operationWithCheck(async () => await GraphileService.delete(resType,resOrig,payload[idName],idName));
+      const res = await this.operationWithCheck(async () => await GraphileService.delete(resType,resOrig,payload,idName));
       if (res) {
         this.showMessage({
           context: enums.TOAST_TYPE.SUCCESS,
@@ -198,6 +199,20 @@ export default {
         });
         return true;
       }
+    },
+    async registerOp(risorsa,tipo,dettagli,stato) {
+      let res=await this.operationWithCheck(async () => await GraphileService.create("Operation",{
+        operatore: "§uid",
+        data: utils.postgreDate(new Date()),
+        risorsa: risorsa,
+        tipo: tipo,
+        dettagli: dettagli,
+        stato: stato
+      },["data","operatore"]));
+
+      if (res)
+        return true;
+      return false;
     },
     async getPref(name) {
       let res=await this.operationWithCheck(async () => await GraphileService.fetchOne("Preference",[],["§uid",name],["user","pref"]));
@@ -235,6 +250,12 @@ export default {
       var file = new Blob([data], {type: 'application/pdf'});
       var fileURL = URL.createObjectURL(file);
       window.open(fileURL);
+    },
+
+    doReplace(s,lang) {
+      for (const key in lang)
+        s=s.replace("§"+key,lang[key]);
+      return s;
     }
   }
 }

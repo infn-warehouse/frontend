@@ -100,6 +100,7 @@
     "registration": "Registrazione",
     "movements": "Movimenti",
     "items": "Giacenza",
+    "operations": "Operazioni",
     "stats": "Statistiche",
     "profile": "Profilo",
     "logout": "Logout"
@@ -178,6 +179,14 @@
       "user": "Utente",
       "name": "Nome",
       "size": "Dimensione"
+    },
+    "operations": {
+      "operatore": "Operatore",
+      "data": "Data e ora",
+      "risorsa": "Risorsa",
+      "tipo": "Tipo operazione",
+      "dettagli": "Dettagli",
+      "stato": "Stato"
     }
   },
   "resource_types": {
@@ -191,7 +200,9 @@
     "orders": "Ordini",
     "monthly_costs": "Costi per mese",
     "file": "file",
-    "files": "File"
+    "files": "File",
+    "operation": "operazione",
+    "operations": "Operazioni"
   },
   "buttons": {
     "login": "Login",
@@ -246,5 +257,17 @@
   },
   "vee": {
     "required": "Il campo {field} è richiesto."
+  },
+  "detailsString": {
+    "reason": "<b>Motivo della cancellazione</b>"
+  },
+  "langEnums": {
+    "tipo": {
+      "create": "Creazione",
+      "update": "Modifica"
+    },
+    "stato": {
+      "complete": "Completo"
+    }
   }
 }

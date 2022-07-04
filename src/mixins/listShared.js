@@ -68,7 +68,7 @@ export default {
         
       if (res) {
         this.tableData.headers2=_.cloneDeep(this.tableData.headers);
-        if (columns) {
+        if (columns.length>0) {
           for (let i=this.tableData.headers2.length-1;i>=0;i--) {
             let item=this.tableData.headers2[i];
             if (item.hidden || !columns.includes(item.value))

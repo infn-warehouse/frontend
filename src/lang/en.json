@@ -100,6 +100,7 @@
     "registration": "Registration",
     "movements": "Movements",
     "items": "Warehousing",
+    "operations": "Operations",
     "stats": "Statistics",
     "profile": "Profile",
     "logout": "Logout"
@@ -178,6 +179,14 @@
       "user": "User",
       "name": "Name",
       "size": "Size"
+    },
+    "operations": {
+      "operatore": "Operatore",
+      "data": "Data e ora",
+      "risorsa": "Risorsa",
+      "tipo": "Tipo operazione",
+      "dettagli": "Dettagli",
+      "stato": "Stato"
     }
   },
   "resource_types": {
@@ -191,7 +200,9 @@
     "orders": "Orders",
     "monthly_costs": "Monthly costs",
     "file": "file",
-    "files": "Files"
+    "files": "Files",
+    "operation": "operation",
+    "operations": "Operations"
   },
   "buttons": {
     "login": "Login",
@@ -246,5 +257,17 @@
   },
   "vee": {
     "required": "Field {field} is required."
+  },
+  "detailsString": {
+    "reason": "<b>Reason for change</b>"
+  },
+  "langEnums": {
+    "tipo": {
+      "create": "Create",
+      "update": "Update"
+    },
+    "stato": {
+      "complete": "Complete"
+    }
   }
 }

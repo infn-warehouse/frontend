@@ -78,27 +78,13 @@
                 <v-chip v-if="v.dataType == 'chip'" :class="v.chipClass">
                   {{ v.data }}
                 </v-chip>
-                <span v-if="v.dataType == 'text'">
-                  {{ v.data }}
-                </span>
-                <span v-if="v.dataType == 'size'">
-                  {{ v.data | size }}
-                </span>
-                <span v-if="v.dataType == 'datetime'">
-                  {{ v.data | datetime }}
-                </span>
-                <span v-if="v.dataType == 'date'">
-                  {{ v.data | date }}
-                </span>
-                <span v-if="v.dataType == 'month'">
-                  {{ v.data | month }}
-                </span>
-                <span v-if="v.dataType == 'currency'">
-                  {{ v.data | currency }}
-                </span>
-                <a v-if="v.dataType == 'link'" :href="v.data">
-                  {{ v.data }}
-                </a>
+                <span v-if="v.dataType == 'text'" :inner-html.prop="v.data" />
+                <span v-if="v.dataType == 'size'" :inner-html.prop="v.data | size" />
+                <span v-if="v.dataType == 'datetime'" :inner-html.prop="v.data | datetime" />
+                <span v-if="v.dataType == 'date'" :inner-html.prop="v.data | date" />
+                <span v-if="v.dataType == 'month'" :inner-html.prop="v.data | month" />
+                <span v-if="v.dataType == 'currency'" :inner-html.prop="v.data | currency" />
+                <a v-if="v.dataType == 'link'" :href="v.data" :inner-html.prop="v.data" />
               </td>
 
               <td class="text-center actions-td" v-if="withActions">

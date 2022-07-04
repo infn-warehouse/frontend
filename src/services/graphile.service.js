@@ -373,11 +373,7 @@ const GraphileService = {
       idName=[idName];
     }
     
-    let id=[];
-    for (let i=0;i<idName.length;i++)
-      id.push(payload[idName[i]]);
-
-    await this.delete(type,type,id,idName)
+    await this.delete(type,type,payload,idName)
     return await this.create(type,payload,idName);
   },
 
@@ -394,7 +390,7 @@ const GraphileService = {
     // make update query
     op=`update${type}${this.createBy(idName)}`;
     res=await this.sendQuery(`
-      mutation{${op} (input: {${await this.createCondition(type,currentId,idName)}} ${utils.firstToLower(type)}Patch:{
+      mutation{${op} (input: {${await this.createCondition(type,currentId,idName)} ${utils.firstToLower(type)}Patch:{
         ${await this.formatPayload(type,payload)}
       }}){
         ${utils.firstToLower(type)} {
@@ -410,15 +406,11 @@ const GraphileService = {
     return {data: res.data[op][utils.firstToLower(type)]};
   },
 
-  async delete(type,originalType,id,idName) {
-    if (id == null)
-      return null;
-
-    // turn id into array
-    if (!Array.isArray(idName)) {
-      id=[id];
-      idName=[idName];
-    }
+  async delete(type,originalType,payload,idName) {
+    // get id from payload
+    let id=[];
+    for (let i=0;i<idName.length;i++)
+      id.push(payload[idName[i]]);
 
     // make delete query
     let op=`delete${type}${this.createBy(idName)}`;

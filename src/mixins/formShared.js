@@ -1,7 +1,10 @@
 import enums from "@/enums";
 import _ from "lodash";
+import helper from "@/mixins/helper";
 
 export default {
+  mixins: [helper],
+
   computed: {
     enums() {
       return enums;
@@ -17,7 +20,8 @@ export default {
     return {
       loading: false,
       form: {},
-      formOld: {}
+      formOld: {},
+      reason: ""
     };
   },
   props: {
@@ -45,7 +49,11 @@ export default {
     multiLayout: {
       type: Number,
       required: false
-    }
+    },
+    showReason: {
+      type: Boolean,
+      required: false
+    },
   },
   methods: {
     async onSubmit() {
@@ -54,6 +62,10 @@ export default {
       this.loading=false;
 
       if (res) {
+        if (this.showReason) {
+          await this.registerOp(this.resourceTypes,this.mode,"§reason: "+this.reason,"complete");
+        }
+
         this.form[this.idName]=res.data[this.idName];
         this.$emit("formSucceed",{
           ...this.form,

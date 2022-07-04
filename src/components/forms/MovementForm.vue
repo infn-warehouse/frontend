@@ -185,6 +185,14 @@
           auto-grow
           filled
         ></v-textarea>
+        <v-textarea
+          v-if="showReason"
+          :label="$t('detailsString.reason')"
+          v-model="reason"
+          rows="1"
+          auto-grow
+          filled
+        ></v-textarea>
       </v-card-text>
       <FormButtons
         :loading="loading"
@@ -220,6 +228,7 @@ export default {
   data() {
     return {
       resourceType: this.$t("resource_types.movement"),
+      resourceTypes: this.$t("resource_types.movements"),
       formTitle: "",
       idName: "idMovimento",
       modelField: "idOrdine",

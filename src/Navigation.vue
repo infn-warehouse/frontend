@@ -86,11 +86,13 @@ export default {
     return {
       showDropdown: false,
       mapping: {
+        Root: "Registration",
         Registration: "Registration",
         Movements: "Movements",
         MovementDetails: "Movements",
         Items: "Items",
         ItemDetails: "Items",
+        Operations: "Operations",
         Login: "Login",
         Stats: "Stats",
         Profile: "Profile",
@@ -113,6 +115,10 @@ export default {
         {
           name: "Stats",
           text: this.$t('navigation.stats')
+        },
+        {
+          name: "Operations",
+          text: this.$t('navigation.operations')
         },
         {
           name: "Profile",

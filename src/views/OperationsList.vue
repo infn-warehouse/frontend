@@ -1,26 +1,24 @@
 <template>
   <div class="list-container-outer">
-    <ItemsFilter
-      tableName="items"
+    <OperationsFilter
+      tableName="operations"
       ref="drawer"
       :headers="tableData.headers"
       @drawerChanged="handleDrawer"
       @onChange="handleFilterChange"
-    ></ItemsFilter>
+    ></OperationsFilter>
     <div :class="{ 'hide-shrink': drawer_flag, 'list-container': true }">
       <v-card>
         <Toolbar
           :title="resourceTypes"
           :withFilter="true"
           :withSearch="true"
-          :withAdd="true"
           :allClear="allClear"
           @onFilter="$refs.drawer.open()"
           @onSearch="handleSearch"
-          @onAdd="item => openCreate(0,item)"
         />
         <BaseGrid
-          tableName="items"
+          tableName="operations"
           :headers="tableData.headers2"
           :items="tableData.items2"
           :totalLength="total"
@@ -60,18 +58,18 @@ import helper from "@/mixins/helper";
 import formDialog from "@/mixins/formDialog";
 import listShared from "@/mixins/listShared";
 import MovementForm from "@/components/forms/MovementForm";
-import ItemsFilter from "@/components/filters/ItemsFilter";
+import OperationsFilter from "@/components/filters/OperationsFilter";
 import GraphileService from "@/services/graphile.service";
 import enums from "@/enums";
 
 export default {
-  name: 'ItemsList',
+  name: 'OperationsList',
 
   components: {
     BaseGrid,
     MovementForm,
     Toolbar,
-    ItemsFilter
+    OperationsFilter
   },
 
   mixins: [helper,formDialog,listShared],
@@ -86,52 +84,32 @@ export default {
     mapHeaders() {
       let tableHeaders=[];
       tableHeaders.push({
-        value: "codiceArticolo",
+        value: "operatore",
         sortable: true,
         align: "start"
       });
       tableHeaders.push({
-        value: "descrizione",
+        value: "data",
         sortable: true,
         align: "start"
       });
       tableHeaders.push({
-        value: "specifica",
+        value: "risorsa",
         sortable: true,
         align: "start"
       });
       tableHeaders.push({
-        value: "misura",
+        value: "tipo",
         sortable: true,
         align: "start"
       });
       tableHeaders.push({
-        value: "coefficiente",
+        value: "dettagli",
         sortable: true,
         align: "start"
       });
       tableHeaders.push({
-        value: "carico",
-        sortable: true,
-        align: "start"
-      });
-      tableHeaders.push({
-        value: "scarico",
-        sortable: true,
-        align: "start"
-      });
-      tableHeaders.push({
-        value: "giacenza",
-        sortable: true,
-        align: "start"
-      });
-      tableHeaders.push({
-        value: "scorta",
-        sortable: true,
-        align: "start"
-      });
-      tableHeaders.push({
-        value: "ubicazione",
+        value: "stato",
         sortable: true,
         align: "start"
       });
@@ -142,23 +120,19 @@ export default {
         let tableItem={};
         tableItem.baseItem=item;
         tableItem.fields = {
-          codiceArticolo: { data: item.codiceArticolo, dataType: "text" },
-          descrizione: { data: item.descrizione, dataType: "text" },
-          specifica: { data: item.specifica, dataType: "text" },
-          misura: { data: item.misura, dataType: "text" },
-          coefficiente: { data: item.coefficiente, dataType: "text" },
-          carico: { data: item.carico, dataType: "text" },
-          scarico: { data: item.scarico, dataType: "text" },
-          giacenza: { data: item.giacenza, dataType: "text" },
-          scorta: { data: item.scorta, dataType: "text" },
-          ubicazione: { data: item.ubicazioniByUbicazione ? item.ubicazioniByUbicazione.descrizione : "", dataType: "text" },
+          operatore: { data: item.operatore, dataType: "text" },
+          data: { data: item.data, dataType: "datetime" },
+          risorsa: { data: item.risorsa, dataType: "text" },
+          tipo: { data: this.$t("langEnums.tipo."+item.tipo), dataType: "text" },
+          dettagli: { data: this.doReplace(item.dettagli,this.$t("detailsString")), dataType: "text" },
+          stato: { data: this.$t("langEnums.stato."+item.stato), dataType: "text" },
         };
-        tableItem.click_action = {
-          actionType: "router-link",
-          namedRoot: "ItemDetails",
-          namedRootId: item.codiceArticolo,
-          icon: "gps_fixed"
-        };
+        // tableItem.click_action = {
+        //   actionType: "router-link",
+        //   namedRoot: "ItemDetails",
+        //   namedRootId: item.codiceArticolo,
+        //   icon: "gps_fixed"
+        // };
         return tableItem;
       });
       return tableItems;
@@ -166,24 +140,24 @@ export default {
     delete(item) {
       return this.deleteConfirm(
         this.resourceType,
-        "Articoli",
-        "Articoli",
-        "codiceArticolo",
+        "Operation",
+        "Operation",
+        ["data","operatore"],
         item,
-        payload => payload.p.id
+        payload => this.$t("langEnums.tipo."+payload.p.tipo)+" "+payload.p.risorsa
       );
     },
     fetch(paginationOpts=null,search,filter) {
-      return GraphileService.fetchAll("Articoli",["ubicazioni"],[],filter,{search, on: ["codiceArticolo","descrizione","specifica"]},paginationOpts);
+      return GraphileService.fetchAll("Operation",[],[],filter,{search, on: []},paginationOpts);
     },
   },
 
   data() {
     return {
-      resourceType: this.$t("resource_types.item"),
-      resourceTypes: this.$t("resource_types.items"),
+      resourceType: this.$t("resource_types.operation"),
+      resourceTypes: this.$t("resource_types.operations"),
       mergeOpts: {
-        sortBy: ["codiceArticolo"],
+        sortBy: ["data"],
         sortDesc: [false],
       },
     };

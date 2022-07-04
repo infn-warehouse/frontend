@@ -67,6 +67,7 @@
               :selectedItem="editItem[0]"
               @formSucceed="handleSucceed"
               @formClose="closeDialog(0)"
+              :showReason="true"
             />
           </v-card>
         </v-dialog>
@@ -81,6 +82,7 @@
               :selectedItem="editItem[1]"
               @formSucceed="form => handleSucceed(form,'ordiniByIdOrdine')"
               @formClose="closeDialog(1)"
+              :showReason="true"
             />
           </v-card>
         </v-dialog>

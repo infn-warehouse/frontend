@@ -43,6 +43,7 @@
               @formSucceed="_fetch()"
               @formClose="closeDialog(0)"
               :model="immutableFilter"
+              :showReason="true"
             />
           </v-card>
         </v-dialog>
@@ -57,6 +58,7 @@
               :selectedItem="editItem[1]"
               @formSucceed="_fetch()"
               @formClose="closeDialog(1)"
+              :showReason="true"
             />
           </v-card>
         </v-dialog>

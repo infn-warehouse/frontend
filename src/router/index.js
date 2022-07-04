@@ -5,6 +5,7 @@ import MovementsList from '../views/MovementsList.vue'
 import MovementDetails from '../views/MovementDetails.vue'
 import ItemsList from '../views/ItemsList.vue'
 import ItemDetails from '../views/ItemDetails.vue'
+import OperationsList from '../views/OperationsList.vue'
 import MonthlyCostsList from '../views/MonthlyCostsList.vue'
 import Profile from '../views/Profile.vue'
 import Registration from '../views/Registration.vue'
@@ -45,7 +46,7 @@ const routes = [
   },
   {
     path: '/',
-    name: 'Registration',
+    name: 'Root',
     component: Registration
   },
   {
@@ -69,6 +70,11 @@ const routes = [
     name: 'ItemDetails',
     component: ItemDetails,
     props: true
+  },
+  {
+    path: '/operations',
+    name: 'Operations',
+    component: OperationsList
   },
   {
     path: '/stats',
