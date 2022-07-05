@@ -191,8 +191,8 @@ const GraphileService = {
     return list.join(",");
   },
 
-  // create the filter that will used in the GraphQL query
-  async createFilter(type,filter,search) {
+  // make the filter that will used in the GraphQL query
+  async makeFilter(type,filter,search) {
     let filterExists=false;
     let searchExists=false;
 
@@ -263,7 +263,7 @@ const GraphileService = {
     return s;
   },
 
-  async createCondition(type,id,idName) {
+  async makeCondition(type,id,idName) {
     let s="";
     for (let i=0;i<id.length;i++) {
       s+=`${idName[i]}: ${await this.formatSingle(type,idName[i],id[i])}`;
@@ -271,7 +271,7 @@ const GraphileService = {
     return s;
   },
 
-  createBy(idName) {
+  makeBy(idName) {
     let s="By"+utils.firstToUpper(idName[0]);
     for (let i=1;i<idName.length;i++) {
       s+=`And${utils.firstToUpper(idName[i])}`;
@@ -280,27 +280,33 @@ const GraphileService = {
   },
 
   async fetchOne(type,include,id,idName) {
+    console.log("< fetchOne on "+type+" >");
+    console.log("id:");
+    console.log(id);
+    console.log(" ");
+
     // turn id into array
     if (!Array.isArray(idName)) {
       id=[id];
       idName=[idName];
     }
 
-    console.log("------- fetchOne");
     type=utils.makeSingular(type);
 
-    // make the GraphQL query
+    // run the GraphQL query
     let name=`all${utils.makePlural(type)}`;
     let res=await this.sendQuery(`
-    {
-      ${name} (condition: {${await this.createCondition(type,id,idName)}}) {
-          nodes {
-            ${await this.joinFields(type)}
-            ${await this.joinAssoc(type,include)}
-          }
+      {
+        ${name} (condition: {${await this.makeCondition(type,id,idName)}}) {
+            nodes {
+              ${await this.joinFields(type)}
+              ${await this.joinAssoc(type,include)}
+            }
+        }
       }
-    }
     `);
+
+    // check result
     if (res && res.error) {
       console.log("fetchOne error from server: ", res.error);
       return {error: res.error};
@@ -309,33 +315,40 @@ const GraphileService = {
   },
 
   async fetchAll(type,include,accents,filter=null,search=null,paginationOpts=null) {
-    console.log("------- fetchAll");
+    console.log("< fetchAll on "+type+" >");
+    console.log("filter:");
     console.log(filter);
+    console.log("search:");
+    console.log(search);
+    console.log(" ");
+
     type=utils.makeSingular(type);
 
-    // make the GraphQL query
+    // run the GraphQL query
     // first and offset properties are related to pagination
-    // use the createFilter function for making the filter object
+    // use the makeFilter function for making the filter object
     // retrieve the total count of the records in the queried table
     let name=`all${utils.makePlural(type)}`;
     let res=await this.sendQuery(`
-    {
-      ${name} (
-        ${paginationOpts ? `
-          first:${paginationOpts.itemsPerPage}
-          offset:${(paginationOpts.page-1)*paginationOpts.itemsPerPage}
-          orderBy:${this.makeOrderList(paginationOpts.sortBy,paginationOpts.sortDesc,accents)}
-        ` : ""}
-        ${await this.createFilter(type,filter,search)}
-        ) {
-          totalCount
-          nodes {
-            ${await this.joinFields(type)}
-            ${await this.joinAssoc(type,include)}
-          }
+      {
+        ${name} (
+          ${paginationOpts ? `
+            first:${paginationOpts.itemsPerPage}
+            offset:${(paginationOpts.page-1)*paginationOpts.itemsPerPage}
+            orderBy:${this.makeOrderList(paginationOpts.sortBy,paginationOpts.sortDesc,accents)}
+          ` : ""}
+          ${await this.makeFilter(type,filter,search)}
+          ) {
+            totalCount
+            nodes {
+              ${await this.joinFields(type)}
+              ${await this.joinAssoc(type,include)}
+            }
+        }
       }
-    }
     `);
+
+    // check result
     if (res && res.error) {
       console.log("fetchAll error from server: ", res.error);
       return {error: res.error};
@@ -345,22 +358,77 @@ const GraphileService = {
     return [nodes,count];
   },
 
-  async create(type,payload,idName) {
-    let res;
-    let op;
-
+  async _create(type,payload,idName) {
     // make create query
-    op=`create${type}`;
-    res=await this.sendQuery(`
-      mutation{${op} (input:{${utils.firstToLower(type)}:{
-        ${await this.formatPayload(type,payload)}
-      }}){
-        ${utils.firstToLower(type)} {
-          ${idName}
+    let op=`create${type}`;
+    return {
+      query: `
+        ${op} (input:{${utils.firstToLower(type)}:{
+          ${await this.formatPayload(type,payload)}
+        }}){
+          ${utils.firstToLower(type)} {
+            ${idName}
+          }
         }
-      }}
-    `);
+      `,
+      op: op
+    };
+  },
 
+  async _update(type,payload,idName,currentId) {
+    // turn id into array
+    if (!Array.isArray(idName)) {
+      currentId=[currentId];
+      idName=[idName];
+    }
+
+    // make update query
+    let op=`update${type}${this.makeBy(idName)}`;
+    return {
+      query: `
+        ${op} (input: {${await this.makeCondition(type,currentId,idName)} ${utils.firstToLower(type)}Patch:{
+          ${await this.formatPayload(type,payload)}
+        }}){
+          ${utils.firstToLower(type)} {
+            ${idName}
+          }
+        }
+      `,
+      op: op
+    };
+  },
+
+  async _delete(type,originalType,payload,idName) {
+    // get id from payload
+    let id=[];
+    for (let i=0;i<idName.length;i++)
+      id.push(payload[idName[i]]);
+
+    // make delete query
+    let op=`delete${type}${this.makeBy(idName)}`;
+    return {
+      query: `
+        ${op} (input: {${await this.makeCondition(type,id,idName)}}) {
+          deleted${originalType}Id
+        }
+      `,
+      op: op
+    };
+  },
+
+  _mutation(a) {
+    let s="mutation {";
+    a.forEach(o => {
+      s+=o.query;
+    });
+    s+="}";
+
+    return s;
+  },
+
+  async create(type,payload,idName) {
+    let { query, op }=await this._create(type,payload,idName);
+    let res=await this.sendQuery(this._mutation([{ query, op }]));
     if (res && res.error) {
       console.log("create error from server: ", res.error);
       return {error: res.error};
@@ -368,37 +436,9 @@ const GraphileService = {
     return {data: res.data[op][utils.firstToLower(type)]};
   },
 
-  async replace(type,payload,idName) {
-    if (!Array.isArray(idName)) {
-      idName=[idName];
-    }
-    
-    await this.delete(type,type,payload,idName)
-    return await this.create(type,payload,idName);
-  },
-
   async update(type,payload,idName,currentId) {
-    // turn id into array
-    if (!Array.isArray(idName)) {
-      currentId=[currentId];
-      idName=[idName];
-    }
-
-    let res;
-    let op;
-
-    // make update query
-    op=`update${type}${this.createBy(idName)}`;
-    res=await this.sendQuery(`
-      mutation{${op} (input: {${await this.createCondition(type,currentId,idName)} ${utils.firstToLower(type)}Patch:{
-        ${await this.formatPayload(type,payload)}
-      }}){
-        ${utils.firstToLower(type)} {
-          ${idName}
-        }
-      }}
-    `);
-
+    let { query, op }=await this._update(type,payload,idName,currentId);
+    let res=await this.sendQuery(this._mutation([{ query, op }]));
     if (res && res.error) {
       console.log("update error from server: ", res.error);
       return {error: res.error};
@@ -407,23 +447,28 @@ const GraphileService = {
   },
 
   async delete(type,originalType,payload,idName) {
-    // get id from payload
-    let id=[];
-    for (let i=0;i<idName.length;i++)
-      id.push(payload[idName[i]]);
-
-    // make delete query
-    let op=`delete${type}${this.createBy(idName)}`;
-    let res=await this.sendQuery(`
-      mutation{${op} (input: {${await this.createCondition(type,id,idName)}}) {
-        deleted${originalType}Id
-      }}
-    `);
+    let { query, op }=await this._delete(type,originalType,payload,idName);
+    let res=await this.sendQuery(this._mutation([{ query, op }]));
     if (res && res.error) {
       console.log("delete error from server: ", res.error);
       return {error: res.error};
     }
     return {data: res.data[op]};
+  },
+
+  async replace(type,payload,idName) {
+    await this.delete(type,type,payload,idName);
+    return await this.create(type,payload,idName);
+  },
+
+  async mutation(a) {
+    let res=await this.sendQuery(this._mutation(a));
+    if (res && res.error) {
+      console.log("delete error from server: ", res.error);
+      return {error: res.error};
+    }
+    console.log(res);
+    return null;
   }
 };
 
