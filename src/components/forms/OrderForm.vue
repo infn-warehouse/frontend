@@ -174,8 +174,9 @@ export default {
   components: { FormButtons, DatePicker, FetchAutocomplete },
 
   methods: {
-    async submitToStore() {
+    async submitToStore(reason) {
       return await this.createOrUpdateHelper(
+        reason,
         this.mode,
         this.resourceType,
         "Ordini",

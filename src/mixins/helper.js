@@ -112,6 +112,7 @@ export default {
       });
     },
     async createOrUpdateHelper(
+      reason,
       mode,
       resName,
       resType,
@@ -133,10 +134,24 @@ export default {
 
       let res;
 
-      if (mode == enums.FORM_MODE.CREATE)
-        res=await this.operationWithCheck(async () => await GraphileService.create(resType,pcopy,idName));
-      else
-        res=await this.operationWithCheck(async () => await GraphileService.update(resType,pcopy,idName,currentId));
+      if (reason!=null) {
+        if (mode == enums.FORM_MODE.CREATE)
+          res=await this.operationWithCheck(async () => await GraphileService.mutation([
+            await GraphileService._create(resType,pcopy,idName),
+            await this.registerOp(this.resourceTypes,this.mode,"§reason: "+reason,"complete")
+          ]));
+        else
+          res=await this.operationWithCheck(async () => await GraphileService.mutation([
+            await GraphileService._update(resType,pcopy,idName,currentId),
+            await this.registerOp(this.resourceTypes,this.mode,"§reason: "+reason,"complete")
+          ]));
+      }
+      else {
+        if (mode == enums.FORM_MODE.CREATE)
+          res=await this.operationWithCheck(async () => await GraphileService.create(resType,pcopy,idName));
+        else
+          res=await this.operationWithCheck(async () => await GraphileService.update(resType,pcopy,idName,currentId));
+      }
 
       if (res) {
         if (extra) {
@@ -201,18 +216,14 @@ export default {
       }
     },
     async registerOp(risorsa,tipo,dettagli,stato) {
-      let res=await this.operationWithCheck(async () => await GraphileService.create("Operation",{
+      return await GraphileService._create("Operation",{
         operatore: "§uid",
         data: utils.postgreDate(new Date()),
         risorsa: risorsa,
         tipo: tipo,
         dettagli: dettagli,
         stato: stato
-      },["data","operatore"]));
-
-      if (res)
-        return true;
-      return false;
+      },["data","operatore"]);
     },
     async getPref(name) {
       let res=await this.operationWithCheck(async () => await GraphileService.fetchOne("Preference",[],["§uid",name],["user","pref"]));

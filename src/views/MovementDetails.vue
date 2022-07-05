@@ -117,6 +117,7 @@ export default {
           callback: async () => {
             let newStatus=this.selectedItem.ordiniByIdOrdine.statOrdine=='C' ? 'S' : 'C';
             let res=await this.createOrUpdateHelper(
+              null,
               this.mode,
               this.resourceType2,
               "Ordini",

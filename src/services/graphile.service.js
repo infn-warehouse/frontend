@@ -281,8 +281,7 @@ const GraphileService = {
 
   async fetchOne(type,include,id,idName) {
     console.log("< fetchOne on "+type+" >");
-    console.log("id:");
-    console.log(id);
+    console.log("id:",id);
     console.log(" ");
 
     // turn id into array
@@ -316,10 +315,8 @@ const GraphileService = {
 
   async fetchAll(type,include,accents,filter=null,search=null,paginationOpts=null) {
     console.log("< fetchAll on "+type+" >");
-    console.log("filter:");
-    console.log(filter);
-    console.log("search:");
-    console.log(search);
+    console.log("filter:",filter);
+    console.log("search:",search);
     console.log(" ");
 
     type=utils.makeSingular(type);
@@ -467,8 +464,7 @@ const GraphileService = {
       console.log("delete error from server: ", res.error);
       return {error: res.error};
     }
-    console.log(res);
-    return null;
+    return res;
   }
 };
 

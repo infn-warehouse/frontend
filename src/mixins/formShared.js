@@ -58,14 +58,10 @@ export default {
   methods: {
     async onSubmit() {
       this.loading=true;
-      let res=await this.submitToStore();
+      let res=await this.submitToStore(this.reason);
       this.loading=false;
 
       if (res) {
-        if (this.showReason) {
-          await this.registerOp(this.resourceTypes,this.mode,"§reason: "+this.reason,"complete");
-        }
-
         this.form[this.idName]=res.data[this.idName];
         this.$emit("formSucceed",{
           ...this.form,
