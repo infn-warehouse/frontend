@@ -187,9 +187,6 @@ export default {
 
   async created() {
     if (this.resumeOp) {
-      this.op=this.resumeOp;
-      this.step++;
-
       if (this.resumeOp.subList[0]) {
         let payload=await this.findHelper(this.orderFind,this.resumeOp.subList[0]);
         if (payload) {
@@ -204,6 +201,9 @@ export default {
           this.movementItem=payload;
         }
       }
+      
+      this.op=this.resumeOp;
+      this.step++;
     }
   },
 
