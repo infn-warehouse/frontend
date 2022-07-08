@@ -11,7 +11,9 @@ export default {
     DONE: "check",
     PRINT: "mdi-file-document",
     CHANGE: "change_circle",
-    HOME: "home"
+    HOME: "home",
+    PLAY: "mdi-play",
+    CHECK: "mdi-check"
   },
   TOAST_TYPE: {
     SUCCESS: "success",

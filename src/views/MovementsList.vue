@@ -396,7 +396,8 @@ export default {
         sortBy: ["dataMovimento"],
         sortDesc: [true],
       },
-      immutableFilterField: "idOrdine"
+      immutableFilterField: "idOrdine",
+      filterDraft: true
     };
   }
 };

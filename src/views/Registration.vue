@@ -61,6 +61,8 @@
                 @formBack="handleBack"
                 :locked="true"
                 :hideTitle="true"
+                :op="op"
+                :subIndex="0"
               />
             </div>
           </v-stepper-content>
@@ -77,6 +79,8 @@
                 @formBack="handleBack"
                 :model="orderItem.idordine"
                 :hideTitle="true"
+                :op="op"
+                :subIndex="1"
               />
             </div>
           </v-stepper-content>
@@ -92,12 +96,12 @@
               <FilesList
                 ref="filesList1"
                 :immutableFilter="orderItem.fileGroup"
-                :title="$t('custom.attachments')"
+                :title="$t('misc.attachments')"
                 :noDetails="true"
               />
               <FormButtons
                 :disabledAll="uploadIsLoading>0"
-                @onNext="handleUploadNext"
+                @onNext="handleUploadNext1"
                 @onBack="handleBack"
                 :multiForm="true"
                 :multiLayout="1"
@@ -117,12 +121,12 @@
               <FilesList
                 ref="filesList2"
                 :immutableFilter="movementItem.fileGroup"
-                :title="$t('custom.attachments')"
+                :title="$t('misc.attachments')"
                 :noDetails="true"
               />
               <FormButtons
                 :disabledAll="uploadIsLoading>0"
-                @onNext="handleUploadNext"
+                @onNext="handleUploadNext2"
                 @onBack="handleBack"
                 :multiForm="true"
                 :multiLayout="1"
@@ -169,12 +173,38 @@ export default {
     FilesList
   },
 
+  props: [
+    "resumeOp",
+  ],
+
   mixins: [helper],
 
   computed: {
     enums() {
       return enums;
     },
+  },
+
+  async created() {
+    if (this.resumeOp) {
+      this.op=this.resumeOp;
+      this.step++;
+
+      if (this.resumeOp.subList[0]) {
+        let payload=await this.findHelper(this.orderFind,this.resumeOp.subList[0]);
+        if (payload) {
+          this.orderExists=true;
+          this.orderItem=payload;
+        }
+      }
+      if (this.resumeOp.subList[1]) {
+        let payload=await this.findHelper(this.movementFind,this.resumeOp.subList[1]);
+        if (payload) {
+          this.movementExists=true;
+          this.movementItem=payload;
+        }
+      }
+    }
   },
 
   methods: {
@@ -184,11 +214,11 @@ export default {
     orderFind(filter) {
       return GraphileService.fetchAll("Ordini",[],[],filter);
     },
-    protoOrderFetch(paginationOpts=null,search) {
-      return GraphileService.fetchAll("OrdiniProto",[],[],null,{search, on: ["cig"]},paginationOpts);
+    movementFind(filter) {
+      return GraphileService.fetchAll("MovimentiTemp",["documento"],[],filter);
     },
-    movementFetch(id) {
-      return GraphileService.fetchOne("MovimentiTemp",["documento"],id,"idMovimento");
+    protoOrderFetch(paginationOpts=null,search,filter) {
+      return GraphileService.fetchAll("OrdiniProto",[],[],filter,{search, on: ["cig"]},paginationOpts);
     },
     async handleCigNext() {
       this.loading=true;
@@ -216,13 +246,13 @@ export default {
       if (total>0) {
         this.orderExists=true;
         this.orderItem=items[0];
-        this.step++;
+        if (await this.startOp()) this.step++;
       }
       else if (totalProto>0) {
         this.orderExists=false;
         this.orderItem=JSON.parse(itemsProto[0].orderData);
         this.orderItem.cig=this.cig;
-        this.step++;
+        if (await this.startOp()) this.step++;
       }
       else {
         this.showMessage({
@@ -231,18 +261,35 @@ export default {
         });
       }
     },
-    handleOrderSave(form) {
+    async startOp() {
+      this.op=await this.startOpHelper(this.resourceTypes,"",2,[
+        this.orderExists ? {
+          type: enums.FORM_MODE.UPDATE,
+          payload: this.orderItem
+        } : null,
+        null
+      ],[
+        this.orderItem,
+        null
+      ]);
+      return this.op!=null;
+    },
+    handleOrderSave(form,next) {
       this.orderExists=true;
       this.orderItem=form;
-      this.step++;
+      if (next) this.step++;
     },
-    handleMovementSave(form) {
+    handleMovementSave(form,next) {
       this.movementExists=true;
       this.movementItem=form;
+      if (next) this.step++;
+    },
+    handleUploadNext1() {
       this.step++;
     },
-    handleUploadNext() {
-      this.step++;
+    handleUploadNext2() {
+      let res=this.endOpHelper(this.op,"end","");
+      if (res) this.step++;
     },
     handleBack() {
       this.step--;
@@ -281,6 +328,8 @@ export default {
 
   data() {
     return {
+      resourceType: this.$t("resource_types.registration"),
+      resourceTypes: this.$t("resource_types.registrations"),
       title: this.$t("custom.registration"),
       step: 1,
       cig: "",
@@ -289,7 +338,8 @@ export default {
       orderExists: false,
       movementExists: false,
       loading: false,
-      uploadIsLoading: 0
+      uploadIsLoading: 0,
+      op: null
     };
   }
 };

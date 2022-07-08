@@ -61,7 +61,10 @@ export default {
       // items and headers
       this.loadingCount++;
       this.loading=true;
-      let res=await this.operationWithCheck(async () => await this.fetch(this.paginationOpts,this.search,filter));
+      let res=await this.operationWithCheck(async () => await this.fetch(this.paginationOpts,this.search,{
+        ...filter,
+        draft: this.filterDraft ? {value: null} : null
+      }));
       this.loadingCount--;
       if (this.loadingCount==0)
         this.loading=false;

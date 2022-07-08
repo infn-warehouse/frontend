@@ -10,6 +10,7 @@
             <v-col cols="3">
               <ValidationProvider :name="$t('headers.movements.nMovimento')" immediate rules="required" v-slot="{ errors }">
                 <v-text-field
+                  @input="handleEdit"
                   class="required"
                   :label="$t('headers.movements.nMovimento')"
                   v-model="form.nMovimento"
@@ -20,6 +21,7 @@
             <v-col cols="3">
               <ValidationProvider :name="$t('headers.movements.idOrdine')" immediate rules="required" v-slot="{ errors }">
                 <FetchAutocomplete
+                  @change="handleEdit"
                   class="required"
                   :label="$t('headers.movements.idOrdine')"
                   v-model="form.idOrdine"
@@ -35,6 +37,7 @@
             </v-col>
             <v-col cols="3">
               <DatePicker
+                @change="handleEdit"
                 :label="$t('headers.movements.dataMovimento')"
                 v-model="form.dataMovimento"
               ></DatePicker>
@@ -42,6 +45,7 @@
             <v-col cols="3">
               <ValidationProvider :name="$t('headers.movements.inUscita')" immediate rules="required" v-slot="{ errors }">
                 <v-autocomplete
+                  @change="handleEdit"
                   class="required"
                   :label="$t('headers.movements.inUscita')"
                   v-model="form.inUscita"
@@ -57,6 +61,7 @@
           <v-row>
             <v-col cols="4">
               <FetchAutocomplete
+                @change="handleEdit"
                 :label="$t('headers.movements.tipoDocAcc')"
                 v-model="form.tipoDocAcc"
                 :fetch="documentFetch"
@@ -67,12 +72,14 @@
             </v-col>
             <v-col cols="4">
               <DatePicker
+                @change="handleEdit"
                 :label="$t('headers.movements.datadocumento')"
                 v-model="form.datadocumento"
               ></DatePicker>
             </v-col>
             <v-col cols="4">
               <v-text-field
+                @input="handleEdit"
                 :label="$t('headers.movements.nDocAcc')"
                 v-model="form.nDocAcc"
               ></v-text-field>
@@ -83,18 +90,21 @@
           <v-row v-show="!form.inUscita">
             <v-col cols="4">
               <v-text-field
+                @input="handleEdit"
                 :label="$t('headers.movements.nColli')"
                 v-model="form.nColli"
               ></v-text-field>
             </v-col>
             <v-col cols="4">
               <DatePicker
+                @change="handleEdit"
                 :label="$t('headers.movements.dataConsegna')"
                 v-model="form.dataConsegna"
               ></DatePicker>
             </v-col>
             <v-col cols="4">
               <v-autocomplete
+                @change="handleEdit"
                 :label="$t('headers.movements.tipoMovimento')"
                 v-model="form.tipoMovimento"
                 :items="movementItems.tipoMovimento"
@@ -108,12 +118,14 @@
           <v-row v-show="!form.inUscita">
             <v-col cols="4">
               <DatePicker
+                @change="handleEdit"
                 :label="$t('headers.movements.dataCollaudo')"
                 v-model="form.dataCollaudo"
               ></DatePicker>
             </v-col>
             <v-col cols="4">
               <v-autocomplete
+                @change="handleEdit"
                 :label="$t('headers.movements.tipoCollaudo')"
                 v-model="form.tipoCollaudo"
                 :items="movementItems.tipoCollaudo"
@@ -125,6 +137,7 @@
             </v-col>
             <v-col cols="4">
               <v-text-field
+                @input="handleEdit"
                 :label="$t('headers.movements.collaudatore')"
                 v-model="form.collaudatore"
               ></v-text-field>
@@ -135,6 +148,7 @@
           <v-row v-show="form.inUscita">
             <v-col cols="6">
               <v-autocomplete
+                @change="handleEdit"
                 :label="$t('headers.movements.tipoUscita')"
                 v-model="form.tipoUscita"
                 :items="movementItems.tipoUscita"
@@ -146,6 +160,7 @@
             </v-col>
             <v-col cols="6">
               <v-autocomplete
+                @change="handleEdit"
                 :label="$t('headers.movements.tipoReso')"
                 v-model="form.tipoReso"
                 :items="movementItems.tipoReso"
@@ -159,6 +174,7 @@
           <v-row v-show="form.inUscita">
             <v-col cols="4">
               <DatePicker
+                @change="handleEdit"
                 :label="$t('headers.movements.dataRitiro')"
                 v-model="form.dataRitiro"
                 mode="dateTime"
@@ -166,12 +182,14 @@
             </v-col>
             <v-col cols="4">
               <v-text-field
+                @input="handleEdit"
                 :label="$t('headers.movements.corriere')"
                 v-model="form.corriere"
               ></v-text-field>
             </v-col>
             <v-col cols="4">
               <v-text-field
+                @input="handleEdit"
                 :label="$t('headers.movements.trackingNum')"
                 v-model="form.trackingNum"
               ></v-text-field>
@@ -179,6 +197,7 @@
           </v-row>
         </div>
         <v-textarea
+          @change="handleEdit"
           :label="$t('headers.movements.note')"
           v-model="form.note"
           rows="1"
@@ -186,6 +205,7 @@
           filled
         ></v-textarea>
         <v-textarea
+          @change="handleEdit"
           v-if="showReason"
           :label="$t('detailsString.reason')"
           v-model="reason"
@@ -203,6 +223,7 @@
         :disabled="invalid"
         :multiForm="multiForm"
         :multiLayout="multiLayout"
+        :saved="saved"
       />
     </ValidationObserver>
   </div>
@@ -253,16 +274,19 @@ export default {
         dataRitiro: "",
         corriere: "",
         trackingNum: "",
-        fileGroup: uuidv4()
+        fileGroup: uuidv4(),
+        draft: ""
       },
     };
   },
   components: { FormButtons, DatePicker, FetchAutocomplete },
 
   methods: {
-    async submitToStore(reason) {
+    async submitToStore(reason,op,subIndex) {
       return await this.createOrUpdateHelper(
         reason,
+        op,
+        subIndex,
         this.mode,
         this.resourceType,
         "MovimentiTemp",

@@ -8,6 +8,18 @@ const GraphileService = {
   assoc: null,
   dataTypes: null,
 
+  escape(s) {
+    if (Array.isArray(s)) {
+      let a=[];
+      for (let i=0;i<s.length;i++)
+        a.push(this.escape(s[i]));
+      return a;
+    }
+    if (typeof(s) === "string")
+      return s.replaceAll("\"","\\\"");
+    return s;
+  },
+
   // try to perform a query by sending it to GraphQL endpoint
   // return the error object if it fails
   async sendQuery(query) {
@@ -173,7 +185,7 @@ const GraphileService = {
   async formatSingle(type,field,value) {
     let dataType=await this.getDataType(type,field);
     if (value!=null && dataType!="Int" && dataType!="Float" && dataType!="Boolean")
-      return "\""+value+"\"";
+      return "\""+this.escape(value)+"\"";
     return value;
   },
 
@@ -182,13 +194,20 @@ const GraphileService = {
   // if it is not a list, pass it to formatSingle function
   // retrieve data type
   async formatList(type,field,list) {
-    if (!Array.isArray(list))
-      return await this.formatSingle(type,field,list);
-
     let dataType=await this.getDataType(type,field);
     if (dataType!="Int" && dataType!="Float" && dataType!="Boolean")
-      return "\""+list.join("\",\"")+"\"";
+      return "\""+this.escape(list).join("\",\"")+"\"";
     return list.join(",");
+  },
+
+  async formatIn(type,field,list) {
+    if (Array.isArray(list))
+      return `in: [${await this.formatList(type,field,list)}]`;
+    
+    if (list==null)
+      return `isNull: true`;
+
+    return `in: [${await this.formatSingle(type,field,list)}]`;
   },
 
   // make the filter that will used in the GraphQL query
@@ -203,6 +222,8 @@ const GraphileService = {
     if (filter) {
       for (let key in filter) {
         let item = filter[key];
+        if (item==null) continue;
+
         // check filter type
         if (item.type=="range") {
           filterString+=key+": {";
@@ -214,7 +235,7 @@ const GraphileService = {
         }
         else {
           filterString+=key+": {";
-          filterString+=`in: [${await this.formatList(type,key,item.value)}]`;
+          filterString+=await this.formatIn(type,key,item.value);
           filterString+="}";
           filterExists=true;
         }
@@ -333,7 +354,7 @@ const GraphileService = {
             first:${paginationOpts.itemsPerPage}
             offset:${(paginationOpts.page-1)*paginationOpts.itemsPerPage}
             orderBy:${this.makeOrderList(paginationOpts.sortBy,paginationOpts.sortDesc,accents)}
-          ` : ""}
+          ` : `first:1 offset:0`}
           ${await this.makeFilter(type,filter,search)}
           ) {
             totalCount
@@ -356,6 +377,10 @@ const GraphileService = {
   },
 
   async _create(type,payload,idName) {
+    // turn id into array
+    if (!Array.isArray(idName))
+      idName=[idName];
+
     // make create query
     let op=`create${type}`;
     return {
@@ -364,11 +389,12 @@ const GraphileService = {
           ${await this.formatPayload(type,payload)}
         }}){
           ${utils.firstToLower(type)} {
-            ${idName}
+            ${idName.join(",")}
           }
         }
       `,
-      op: op
+      op: op,
+      type
     };
   },
 
@@ -387,19 +413,22 @@ const GraphileService = {
           ${await this.formatPayload(type,payload)}
         }}){
           ${utils.firstToLower(type)} {
-            ${idName}
+            ${idName.join(",")}
           }
         }
       `,
-      op: op
+      op: op,
+      type
     };
   },
 
   async _delete(type,originalType,payload,idName) {
+    // turn id into array
+    if (!Array.isArray(idName))
+      idName=[idName];
+
     // get id from payload
-    let id=[];
-    for (let i=0;i<idName.length;i++)
-      id.push(payload[idName[i]]);
+    let id=utils.extractId(idName,payload); 
 
     // make delete query
     let op=`delete${type}${this.makeBy(idName)}`;
@@ -409,7 +438,8 @@ const GraphileService = {
           deleted${originalType}Id
         }
       `,
-      op: op
+      op: op,
+      type
     };
   },
 
@@ -464,7 +494,11 @@ const GraphileService = {
       console.log("delete error from server: ", res.error);
       return {error: res.error};
     }
-    return res;
+
+    let first=a[0];
+    return {
+      data: res.data[first.op][utils.firstToLower(first.type)]
+    };
   }
 };
 

@@ -42,7 +42,10 @@ const routes = [
   {
     path: '/registration',
     name: 'Registration',
-    component: Registration
+    component: Registration,
+    props: (route) => ({
+      ...route.params
+    })    
   },
   {
     path: '/',

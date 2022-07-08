@@ -12,17 +12,16 @@
     "columns": "Colonne",
     "menu": "Menù",
     "close": "Chiudi",
-    "all": "Tutti"
+    "all": "Tutti",
+    "attachments": "Allegati",
+    "saved": "Salvato"
   },
   "custom": {
     "appname": "Gestione Magazzino",
     "profile": "Profilo",
     "registration": "Registrazione",
-    "upload_test": "Test di upload",
-    "fill_test": "Test riempimento moduli",
     "role": "Ruolo",
     "email": "Email",
-    "attachments": "Allegati",
     "columnsMovement": "Colonne (movimento)",
     "columnsOrder": "Colonne (ordine)",
     "editMovement": "Modifica movimento",
@@ -202,7 +201,9 @@
     "file": "file",
     "files": "File",
     "operation": "operazione",
-    "operations": "Operazioni"
+    "operations": "Operazioni",
+    "registration": "registrazione",
+    "registrations": "Registrazioni"
   },
   "buttons": {
     "login": "Login",
@@ -253,7 +254,10 @@
     "NO_USER": "Utente non trovato.",
     "BIND_ERROR": "Password errata. Riprovare.",
     "LOGIN_ERROR": "Errore nel login. Contattare l'amministratore.<br>Codice errore: {extra}.",
-    "TOKEN_EXPIRED": "Sessione scaduta. Fare di nuovo il login."
+    "TOKEN_EXPIRED": "Sessione scaduta. Fare di nuovo il login.",
+    "OP_START": "Impossibile avviare operazione su {extra}.",
+    "OP_UPDATE": "Impossibile aggiornare operazione su {extra}.",
+    "OP_END": "Impossibile chiudere operazione su {extra}."
   },
   "vee": {
     "required": "Il campo {field} è richiesto."
@@ -264,10 +268,12 @@
   "langEnums": {
     "tipo": {
       "create": "Creazione",
-      "update": "Modifica"
+      "update": "Modifica",
+      "wizard": "Multipla"
     },
     "stato": {
-      "complete": "Completo"
+      "complete": "Completa",
+      "draft": "Bozza"
     }
   }
 }

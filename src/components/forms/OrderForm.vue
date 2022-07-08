@@ -10,6 +10,7 @@
             <v-col cols="3">
               <ValidationProvider :name="$t('headers.movements.idordine')" immediate rules="required" v-slot="{ errors }">
                 <v-text-field
+                  @input="handleEdit"
                   class="required"
                   :label="$t('headers.movements.idordine')"
                   v-model="form.idordine"
@@ -20,6 +21,7 @@
             <v-col cols="3">
               <ValidationProvider :name="$t('headers.movements.cig')" immediate rules="required" v-slot="{ errors }">
                 <FetchAutocomplete
+                  @change="handleEdit"
                   class="required"
                   :label="$t('headers.movements.cig')"
                   v-model="form.cig"
@@ -34,12 +36,14 @@
             </v-col>
             <v-col cols="3">
               <DatePicker
+                @change="handleEdit"
                 :label="$t('headers.movements.dataordine')"
                 v-model="form.dataordine"
               ></DatePicker>
             </v-col>
             <v-col cols="3">
               <v-autocomplete
+                @change="handleEdit"
                 :label="$t('headers.movements.statOrdine')"
                 v-model="form.statOrdine"
                 :items="orderItems.statOrdine"
@@ -52,18 +56,21 @@
           <v-row>
             <v-col cols="4">
               <v-text-field
+                @input="handleEdit"
                 :label="$t('headers.movements.fornitore')"
                 v-model="form.fornitore"
               ></v-text-field>
             </v-col>
             <v-col cols="4">
               <v-text-field
+                @input="handleEdit"
                 :label="$t('headers.movements.descrizione')"
                 v-model="form.descrizione"
               ></v-text-field>
             </v-col>
             <v-col cols="4">
               <v-text-field
+                @input="handleEdit"
                 :label="$t('headers.movements.nColliOrdine')"
                 v-model="form.nColliOrdine"
               ></v-text-field>
@@ -74,12 +81,14 @@
           <v-row>
             <v-col cols="6">
               <v-text-field
+                @input="handleEdit"
                 :label="$t('headers.movements.servizioRichi')"
                 v-model="form.servizioRichi"
               ></v-text-field>
             </v-col>
             <v-col cols="6">
               <v-text-field
+                @input="handleEdit"
                 :label="$t('headers.movements.importo')"
                 v-model="form.importo"
               ></v-text-field>
@@ -88,12 +97,14 @@
           <v-row>
             <v-col cols="6">
               <DatePicker
+                @change="handleEdit"
                 :label="$t('headers.movements.dataconsegna')"
                 v-model="form.dataconsegna"
               ></DatePicker>
             </v-col>
             <v-col cols="6">
               <v-text-field
+                @input="handleEdit"
                 :label="$t('headers.movements.rup')"
                 v-model="form.rup"
               ></v-text-field>
@@ -101,6 +112,7 @@
           </v-row>
         </div>
         <v-textarea
+          @change="handleEdit"
           :label="$t('headers.movements.noteOrdine')"
           v-model="form.noteOrdine"
           rows="1"
@@ -125,6 +137,7 @@
         :disabled="invalid"
         :multiForm="multiForm"
         :multiLayout="multiLayout"
+        :saved="saved"
       />
     </ValidationObserver>
   </div>
@@ -174,9 +187,11 @@ export default {
   components: { FormButtons, DatePicker, FetchAutocomplete },
 
   methods: {
-    async submitToStore(reason) {
+    async submitToStore(reason,op,subIndex) {
       return await this.createOrUpdateHelper(
         reason,
+        op,
+        subIndex,
         this.mode,
         this.resourceType,
         "Ordini",
@@ -191,8 +206,8 @@ export default {
     setTitle() {
       this.formTitle=this.makeTitle(this.resourceType,this.mode,this.form.idordine);
     },
-    protoOrderFetch(paginationOpts=null,search) {
-      return GraphileService.fetchAll("OrdiniProto",[],[],null,{search, on: ["cig"]},paginationOpts);
+    protoOrderFetch(paginationOpts=null,search,filter) {
+      return GraphileService.fetchAll("OrdiniProto",[],[],filter,{search, on: ["cig"]},paginationOpts);
     },
   },
   

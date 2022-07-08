@@ -12,17 +12,16 @@
     "columns": "Columns",
     "menu": "Menu",
     "close": "Close",
-    "all": "All"
+    "all": "All",
+    "attachments": "Attachments",
+    "saved": "Saved"
   },
   "custom": {
     "appname": "Warehouse Management",
     "profile": "Profile",
     "registration": "Registration",
-    "upload_test": "Upload test",
-    "fill_test": "Forms filling test",
     "role": "Role",
     "email": "Email",
-    "attachments": "Attachments",
     "columnsMovement": "Columns (movement)",
     "columnsOrder": "Columns (order)",
     "editMovement": "Edit movement",
@@ -202,7 +201,9 @@
     "file": "file",
     "files": "Files",
     "operation": "operation",
-    "operations": "Operations"
+    "operations": "Operations",
+    "registration": "registration",
+    "registrations": "Registrations"
   },
   "buttons": {
     "login": "Login",
@@ -253,7 +254,10 @@
     "NO_USER": "User not found.",
     "BIND_ERROR": "Wrong password. Please retry.",
     "LOGIN_ERROR": "Login error. Please contact the administrator.<br>Error code: {extra}.",
-    "TOKEN_EXPIRED": "Session expired. You need to login again."
+    "TOKEN_EXPIRED": "Session expired. You need to login again.",
+    "OP_START": "Cannot start operation on {extra}.",
+    "OP_UPDATE": "Cannot update operation on {extra}.",
+    "OP_END": "Cannot end operation on {extra}."
   },
   "vee": {
     "required": "Field {field} is required."
@@ -264,10 +268,12 @@
   "langEnums": {
     "tipo": {
       "create": "Create",
-      "update": "Update"
+      "update": "Update",
+      "wizard": "Multiple"
     },
     "stato": {
-      "complete": "Complete"
+      "complete": "Complete",
+      "draft": "Draft"
     }
   }
 }

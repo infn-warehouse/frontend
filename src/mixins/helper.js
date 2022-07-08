@@ -5,6 +5,7 @@ import ApiService from "@/services/api.service";
 import _ from "lodash";
 import { FillService } from "@/services/fill.service";
 import utils from "../utils";
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
   mixins: [],
@@ -34,11 +35,17 @@ export default {
   methods: {
     ...mapMutations("snackbar", ["showMessage","closeMessage"]),
 
-    showError(code,extra=null) {
+    showError(code,extra=null,append=null) {
       this.showMessage({
         context: enums.TOAST_TYPE.ERROR,
-        text: this.$t("errors."+code,{extra})
+        text: this.$t("errors."+code,{extra})+(append ? "<br>"+append : "")
       });
+    },
+
+    stringifyError(error) {
+      if (error instanceof Error)
+        return error+this.$t("errors.GENERIC");
+      return JSON.stringify(error)+this.$t("errors.GENERIC")
     },
 
     checkResult(res,evaluate=null) {
@@ -52,26 +59,24 @@ export default {
         }
 
         if (evaluate) {
-          let temp=evaluate(res.error);
+          let temp;
+          if (typeof evaluate === 'function')
+            temp=evaluate(res.error);
+          else temp=evaluate;
+
           if (temp) {
             if (typeof temp === 'object')
-              this.showError(temp.code,temp.extra);
+              this.showError(temp.code,temp.extra,temp.stringify ? this.stringifyError(res.error) : null);
             else
               this.showError(temp);
             return null;
           }
         }
         
-        if (res.error instanceof Error)
-          this.showMessage({
-            context: enums.TOAST_TYPE.ERROR,
-            text: res.error+this.$t("errors.GENERIC")
-          });
-        else
-          this.showMessage({
-            context: enums.TOAST_TYPE.ERROR,
-            text: JSON.stringify(res.error)+this.$t("errors.GENERIC")
-          });
+        this.showMessage({
+          context: enums.TOAST_TYPE.ERROR,
+          text: this.stringifyError(res.error)
+        });
         return null;
       }
       else {
@@ -113,6 +118,8 @@ export default {
     },
     async createOrUpdateHelper(
       reason,
+      op,
+      subIndex,
       mode,
       resName,
       resType,
@@ -138,13 +145,48 @@ export default {
         if (mode == enums.FORM_MODE.CREATE)
           res=await this.operationWithCheck(async () => await GraphileService.mutation([
             await GraphileService._create(resType,pcopy,idName),
-            await this.registerOp(this.resourceTypes,this.mode,"§reason: "+reason,"complete")
+            await this.makeRegisterOp(this.resourceTypes,this.mode,"§reason: "+reason,"complete")
           ]));
         else
           res=await this.operationWithCheck(async () => await GraphileService.mutation([
             await GraphileService._update(resType,pcopy,idName,currentId),
-            await this.registerOp(this.resourceTypes,this.mode,"§reason: "+reason,"complete")
+            await this.makeRegisterOp(this.resourceTypes,this.mode,"§reason: "+reason,"complete")
           ]));
+      }
+      else if (op!=null) {
+        // create
+        if (mode == enums.FORM_MODE.CREATE) {
+          let uuid=uuidv4();
+          res=await this.operationWithCheck(async () => await GraphileService.mutation([
+            await GraphileService._create(resType,{
+              ...pcopy,
+              draft: uuid
+            },idName),
+            await this.makeProgressOp(op,subIndex,{
+              type: mode,
+              draft: uuid
+            },pcopy)
+          ]));
+        }
+        // update of a draft record
+        else if (pcopy.draft) {
+          res=await this.operationWithCheck(async () => await GraphileService.mutation([
+            await GraphileService._update(resType,pcopy,idName,currentId),
+            await this.makeProgressOp(op,subIndex,{
+              type: mode,
+              draft: pcopy.draft
+            },pcopy)
+          ]));
+        }
+        // update of an existing record
+        else {
+          res=await this.operationWithCheck(async () => await GraphileService.mutation([
+            await this.makeProgressOp(op,subIndex,{
+              type: mode,
+              payload: pcopy
+            },pcopy)
+          ]));
+        }
       }
       else {
         if (mode == enums.FORM_MODE.CREATE)
@@ -215,7 +257,7 @@ export default {
         return true;
       }
     },
-    async registerOp(risorsa,tipo,dettagli,stato) {
+    async makeRegisterOp(risorsa,tipo,dettagli,stato) {
       return await GraphileService._create("Operation",{
         operatore: "§uid",
         data: utils.postgreDate(new Date()),
@@ -224,6 +266,93 @@ export default {
         dettagli: dettagli,
         stato: stato
       },["data","operatore"]);
+    },
+    async makeProgressOp(op,subIndex,sub,data) {
+      op.subList[subIndex]=sub;
+      op.savedData[subIndex]=data;
+      let r={
+        subList: JSON.stringify(op.subList),
+        savedData: JSON.stringify(op.savedData)
+      };
+
+      return await GraphileService._update("Operation",r,["data","operatore"],op.id);
+    },
+    async startOpHelper(risorsa,dettagli,subCount,subList=null,savedData=null) {
+      if (subList==null) subList=new Array(subCount).fill(null);
+      if (savedData==null) savedData=new Array(subCount).fill(null);
+
+      // clear list
+      for (let i=0;i<subList.length;i++)
+        if (subList[i] && subList[i].payload==null)
+          subList[i]=null;
+
+      let r={
+        operatore: "§uid",
+        data: utils.postgreDate(new Date()),
+        risorsa: risorsa,
+        tipo: "wizard",
+        dettagli,
+        stato: "draft",
+        subList: JSON.stringify(subList),
+        savedData: JSON.stringify(savedData)
+      };
+
+      let res=await this.operationWithCheck(async () => await GraphileService.create("Operation",r,["data","operatore"]),
+        {code: "OP_START", extra: this.resourceTypes, stringify: true}
+      );
+      if (!res)
+        return null;
+      return {
+        id: [ res.data.data, res.data.operatore ],
+        subList,
+        savedData
+      };
+    },
+    async progressOpHelper(op,subIndex,sub,data) {
+      let query=await this.makeProgressOp(op,subIndex,sub,data);
+      let res=await this.operationWithCheck(async () => await GraphileService.mutation([query]),
+        {code: "OP_UPDATE", extra: this.resourceTypes, stringify: true}
+      );
+      if (!res)
+        return false;
+      return true;
+    },
+    async saveOpHelper(op,subIndex,data) {
+      op.savedData[subIndex]=data;
+      let r={
+        savedData: JSON.stringify(op.savedData)
+      };
+
+      let res=await this.operationWithCheck(async () => await GraphileService.update("Operation",r,["data","operatore"],op.id),
+        {code: "OP_UPDATE", extra: this.resourceTypes, stringify: true}
+      );
+      if (!res)
+        return false;
+      return true;
+    },
+    async endOpHelper(op,dettagli) {
+      let r={
+        dettagli,
+        stato: "complete"
+      };
+
+      let res=await this.operationWithCheck(async () => await GraphileService.update("Operation",r,["data","operatore"],op.id),
+        {code: "OP_END", extra: this.resourceTypes, stringify: true}
+      );
+      if (!res)
+        return false;
+      return true;
+    },
+    async findHelper(find,sub) {
+      if (sub.payload)
+        return sub.payload;
+      
+      let res=await find({
+        draft: {value: sub.draft}
+      });
+      if (res)
+        return res[0][0];
+      return null;
     },
     async getPref(name) {
       let res=await this.operationWithCheck(async () => await GraphileService.fetchOne("Preference",[],["§uid",name],["user","pref"]));

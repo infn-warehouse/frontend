@@ -28,5 +28,25 @@ export default {
     },
     parseDate(str) {
         return moment(str).toDate();
+    },
+    extractId(idName,payload) {
+        if (!Array.isArray(idName))
+            idName=[idName];
+        
+        let id=[];
+        idName.forEach(o => {
+            id.push(payload[o])
+        });
+
+        for (let i=0;i<idName.length;i++)
+            if (id[i]==null)
+                return null;
+
+        return id;
+    },
+    updateObject(obj,data) {
+        for (let key in data)
+          if (key in obj)
+              obj[key]=data[key];
     }
 }

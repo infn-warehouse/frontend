@@ -118,6 +118,8 @@ export default {
             let newStatus=this.selectedItem.ordiniByIdOrdine.statOrdine=='C' ? 'S' : 'C';
             let res=await this.createOrUpdateHelper(
               null,
+              null,
+              null,
               this.mode,
               this.resourceType2,
               "Ordini",

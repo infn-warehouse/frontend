@@ -225,8 +225,8 @@ export default {
   methods: {
     ...mapMutations("filters", ["setMovementsFilter", "setMovementsFlag"]),
 
-    documentFetch(paginationOpts=null,search) {
-      return GraphileService.fetchAll("Documento",[],[],null,{search, on: ["dicitura"]},paginationOpts);
+    documentFetch(paginationOpts=null,search,filter) {
+      return GraphileService.fetchAll("Documento",[],[],filter,{search, on: ["dicitura"]},paginationOpts);
     },
   },
 };

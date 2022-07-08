@@ -11,22 +11,26 @@ Vue.filter("datetime", value => {
   if (value) {
     return moment(String(value)).format("DD/MM/YYYY HH:mm");
   }
+  return "";
 });
 Vue.filter("fullDateTime", value => {
   if (value) {
     moment.locale("it");
     return moment(String(value)).format("LLLL");
   }
+  return "";
 });
 Vue.filter("date", value => {
   if (value) {
     return moment(String(value)).format("DD/MM/YYYY");
   }
+  return "";
 });
 Vue.filter("month", value => {
   if (value) {
     return moment(String(value)).format("MM/YYYY");
   }
+  return "";
 });
 Vue.filter("size", value => {
   value=parseInt(value);

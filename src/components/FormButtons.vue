@@ -2,7 +2,10 @@
   <v-container fluid>
     <v-row>
       <v-col cols="3">
-        <v-btn
+        <div class="saved" v-if="saved">
+          <v-icon>{{enums.ICONS.CHECK}}</v-icon> <span>{{ $t("misc.saved") }}</span>
+        </div>
+        <!-- <v-btn
           v-if="withDelete"
           color="warning"
           text
@@ -10,7 +13,7 @@
           :disabled="disabledAll || loading"
         >
           <v-icon>delete</v-icon>
-        </v-btn>
+        </v-btn> -->
       </v-col>
       <v-col cols="9" class="text-right">
         <v-progress-circular indeterminate class="ml-3" v-if="loading" />
@@ -51,15 +54,24 @@
 </template>
 
 <script>
+import enums from "@/enums";
+
 export default {
+  computed: {
+    enums() {
+      return enums;
+    }
+  },
+  
   props: [
-    "withDelete",
+    // "withDelete",
     "disabled",
     "disabledAll",
     "multiForm",
     "multiLayout",
     "loading",
-    "noCancel"
+    "noCancel",
+    "saved"
   ],
   methods: {
     onDelete() {
@@ -80,3 +92,15 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.saved {
+  line-height: 36px;
+}
+.saved .v-icon {
+  vertical-align: middle;
+}
+.saved span {
+  vertical-align: middle;
+}
+</style>

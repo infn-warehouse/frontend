@@ -102,8 +102,8 @@ export default {
   methods: {
     ...mapMutations("filters", ["setItemsFilter", "setItemsFlag"]),
 
-    locationFetch(paginationOpts=null,search) {
-      return GraphileService.fetchAll("Ubicazioni",[],[],null,{search, on: ["descrizione"]},paginationOpts);
+    locationFetch(paginationOpts=null,search,filter) {
+      return GraphileService.fetchAll("Ubicazioni",[],[],filter,{search, on: ["descrizione"]},paginationOpts);
     },
   },
 };

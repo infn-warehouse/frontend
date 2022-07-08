@@ -103,6 +103,7 @@ export default {
     },
     onInput(val) {
       this.$emit("input", val);
+      this.$emit("change");
     }
   },
   async created() {

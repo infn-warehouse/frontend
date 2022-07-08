@@ -25,7 +25,6 @@
           :injectOpts="paginationOpts"
           :loading="loading"
           :withActions="true"
-          :withEdit="true"
           :withDelete="true"
           @onPaginationChanged="handlePaginationChanged"
           @onEdit="item => openUpdate(0,item)"
@@ -127,6 +126,22 @@ export default {
           dettagli: { data: this.doReplace(item.dettagli,this.$t("detailsString"),true), dataType: "text" },
           stato: { data: this.$t("langEnums.stato."+item.stato), dataType: "text" },
         };
+        tableItem.disableDelete = item.stato!="draft";
+        tableItem.actions = [
+          {
+            actionType: "custom",
+            icon: enums.ICONS.PLAY,
+            disabled: item.stato!="draft",
+            callback: (item) => {
+              this.$router.push({
+                name: "Registration",
+                params: {
+                  resumeOp: this.formatOp(item)
+                }
+              }).catch(()=>{});
+            },
+          },
+        ];
         // tableItem.click_action = {
         //   actionType: "router-link",
         //   namedRoot: "ItemDetails",
@@ -136,6 +151,14 @@ export default {
         return tableItem;
       });
       return tableItems;
+    },
+    formatOp(item) {
+      return {
+        ...item,
+        subList: JSON.parse(item.subList),
+        savedData: JSON.parse(item.savedData),
+        id: [ item.data, item.operatore ]
+      };
     },
     delete(item) {
       return this.deleteConfirm(
@@ -158,7 +181,7 @@ export default {
       resourceTypes: this.$t("resource_types.operations"),
       mergeOpts: {
         sortBy: ["data"],
-        sortDesc: [false],
+        sortDesc: [true],
       },
     };
   }

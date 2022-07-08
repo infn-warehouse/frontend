@@ -131,6 +131,7 @@
                   v-if="withDelete"
                   icon
                   color="primary"
+                  :disabled="item.disableDelete"
                   @click.stop="onDelete(item.baseItem)"
                 >
                   <v-icon dark>{{enums.ICONS.DELETE}}</v-icon>
