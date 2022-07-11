@@ -28,6 +28,8 @@
           :loading="loading"
           :withActions="true"
           :withDelete="true"
+          :disableList="disableList"
+          :idName="idName"
           @onPaginationChanged="handlePaginationChanged"
           @onDelete="handleDelete"
         ></BaseGrid>
@@ -359,8 +361,10 @@ export default {
       });
       return tableItems;
     },
-    delete(item) {
+    delete(item,op,subIndex) {
       return this.deleteConfirm(
+        op,
+        subIndex,
         this.resourceType,
         "MovimentiTemp",
         "Movimenti",
@@ -397,7 +401,8 @@ export default {
         sortDesc: [true],
       },
       immutableFilterField: "idOrdine",
-      filterDraft: true
+      filterDraft: true,
+      idName: "",
     };
   }
 };

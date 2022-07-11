@@ -64,10 +64,6 @@ export default {
       type: Number,
       required: false
     },
-    makeDraft: {
-      type: Number,
-      required: false
-    },
   },
   methods: {
     async onSubmit() {

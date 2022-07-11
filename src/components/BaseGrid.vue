@@ -69,7 +69,10 @@
       <template v-slot:body="{ items }">
         <tbody>
           <template v-for="(item, i) in items">
-            <tr :key="i" @click="handleClick(item.baseItem,item.click_action)" :class="{'cursor-pointer': 'click_action' in item && !item.click_action.hide}">
+            <tr :key="i" @click="handleClick(item.baseItem,item.click_action)" :class="{
+              'cursor-pointer': 'click_action' in item && !item.click_action.hide && !checkDisabled(item.baseItem),
+              'disabledRow': checkDisabled(item.baseItem)
+            }">
               <td
                 v-for="(v, fieldName, j) in item.fields"
                 :key="fieldName"
@@ -87,7 +90,9 @@
                 <a v-if="v.dataType == 'link'" :href="v.data" :inner-html.prop="v.data" />
               </td>
 
-              <td class="text-center actions-td" v-if="withActions">
+              <td class="text-center actions-td" v-if="withActions && checkDisabled(item.baseItem)">
+              </td>
+              <td class="text-center actions-td" v-if="withActions && !checkDisabled(item.baseItem)">
                 <slot :item="item" name="actions"></slot>
                 <template v-for="(v, index) in item.actions">
                   <v-btn
@@ -95,7 +100,7 @@
                     v-if="v.actionType == 'router-link'"
                     v-show="!v.hide"
                     :title="v.tooltip"
-                    :disabled="v.disable"
+                    :disabled="v.disabled"
                     icon
                     color="primary"
                     @click.stop="goto({ name: v.namedRoot, params: { id: v.namedRootId } })"
@@ -170,7 +175,9 @@ export default {
     tableName: {
       default: "noname",
       type: String
-    }
+    },
+    disableList: {},
+    idName: {}
   },
 
   mixins: [helper],
@@ -216,6 +223,9 @@ export default {
 
   components: {  },
   methods: {
+    checkDisabled(baseItem) {
+      return this.disableList.includes(baseItem[this.idName]);
+    },
     debounceEmit: _.debounce(function() {
       this.$emit("onPaginationChanged", this.paginationOpts);
     }, process.env.VUE_APP_DEBOUNCE_TIME),
@@ -242,6 +252,7 @@ export default {
       this.debounceEmit();
     },
     handleClick: function(item,v) {
+      if (this.checkDisabled(item)) return;
       if (!v) return;
       if (v.hide) return;
       if (v.actionType == 'router-link')
@@ -311,5 +322,9 @@ th {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.disabledRow {
+  color: #C0C0C0;
 }
 </style>

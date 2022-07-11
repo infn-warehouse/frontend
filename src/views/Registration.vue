@@ -91,6 +91,7 @@
                   @onLoading="handleLoading"
                   @onUploadComplete="handleUpload1"
                   :fileGroup="orderItem.fileGroup"
+                  :draft="op.draft"
                 />
               </div>
               <FilesList
@@ -98,6 +99,8 @@
                 :immutableFilter="orderItem.fileGroup"
                 :title="$t('misc.attachments')"
                 :noDetails="true"
+                :op="op"
+                :subIndex="2"
               />
               <FormButtons
                 :disabledAll="uploadIsLoading>0"
@@ -116,6 +119,7 @@
                   @onLoading="handleLoading"
                   @onUploadComplete="handleUpload2"
                   :fileGroup="movementItem.fileGroup"
+                  :draft="op.draft"
                 />
               </div>
               <FilesList
@@ -123,6 +127,8 @@
                 :immutableFilter="movementItem.fileGroup"
                 :title="$t('misc.attachments')"
                 :noDetails="true"
+                :op="op"
+                :subIndex="3"
               />
               <FormButtons
                 :disabledAll="uploadIsLoading>0"
@@ -188,20 +194,20 @@ export default {
   async created() {
     if (this.resumeOp) {
       if (this.resumeOp.subList[0]) {
-        let payload=await this.findHelper(this.orderFind,this.resumeOp.subList[0]);
+        let payload=await this.findHelper(this.orderFind,this.resumeOp,0);
         if (payload) {
           this.orderExists=true;
           this.orderItem=payload;
         }
       }
       if (this.resumeOp.subList[1]) {
-        let payload=await this.findHelper(this.movementFind,this.resumeOp.subList[1]);
+        let payload=await this.findHelper(this.movementFind,this.resumeOp,1);
         if (payload) {
           this.movementExists=true;
           this.movementItem=payload;
         }
       }
-      
+
       this.op=this.resumeOp;
       this.step++;
     }
@@ -262,15 +268,19 @@ export default {
       }
     },
     async startOp() {
-      this.op=await this.startOpHelper(this.resourceTypes,"",2,[
+      this.op=await this.startOpHelper("Registration",this.resourceTypes,"",2,[
         this.orderExists ? {
           type: enums.FORM_MODE.UPDATE,
           payload: this.orderItem
         } : null,
-        null
+        null,
+        null,
+        null,
       ],[
         this.orderItem,
-        null
+        null,
+        null,
+        null,
       ]);
       return this.op!=null;
     },
@@ -287,8 +297,8 @@ export default {
     handleUploadNext1() {
       this.step++;
     },
-    handleUploadNext2() {
-      let res=this.endOpHelper(this.op,"end","");
+    async handleUploadNext2() {
+      let res=await this.endOpHelper(this.op,"end","");
       if (res) this.step++;
     },
     handleBack() {

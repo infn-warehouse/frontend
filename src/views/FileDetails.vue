@@ -87,8 +87,10 @@ export default {
       return this.makeTitleDetails(this.resourceType,item.name);
     },
 
-    delete(item) {
+    delete(item,op,subIndex) {
       return this.deleteConfirm(
+        op,
+        subIndex,
         this.resourceType,
         "Alfresco",
         "Alfresco",

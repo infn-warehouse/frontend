@@ -83,8 +83,10 @@ export default {
       return this.makeTitleDetails(this.resourceType,item.codiceArticolo+" ("+item.descrizione+" | "+item.specifica+")");
     },
 
-    delete(item) {
+    delete(item,op,subIndex) {
       return this.deleteConfirm(
+        op,
+        subIndex,
         this.resourceType,
         "Articoli",
         "Articoli",

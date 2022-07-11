@@ -106,6 +106,7 @@
   },
   "confirm": {
     "deleteMessage": "Do you really want to delete selected object?",
+    "abortMessage": "Do you really want to cancel this operation?",
     "yes": "Yes",
     "no": "No"
   },
@@ -273,7 +274,8 @@
     },
     "stato": {
       "complete": "Complete",
-      "draft": "Draft"
+      "draft": "Draft",
+      "abort": "Canceled"
     }
   }
 }

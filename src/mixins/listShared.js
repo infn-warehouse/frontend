@@ -1,6 +1,7 @@
 import enums from "@/enums";
 import helper from "@/mixins/helper";
 import _ from "lodash";
+import utils from "../utils";
 
 export default {
   mixins: [helper],
@@ -26,10 +27,19 @@ export default {
         sortDesc: [false],
       },
       drawer_flag: false,
+      disableList: []
     }
   },
   props: {
     immutableFilter: {
+      required: false
+    },
+    op: {
+      type: Object,
+      required: false
+    },
+    subIndex: {
+      type: Number,
       required: false
     },
   },
@@ -45,6 +55,10 @@ export default {
   },
   methods: {
     async _fetch() {
+      // disableList
+      if (this.op && this.op.subList[this.subIndex])
+        this.disableList=utils.joinIdList(this.op.subList[this.subIndex].deleteList);
+      
       // filter
       let filter={...this.filter};
       if (this.immutableFilter && this.immutableFilterField)
@@ -63,7 +77,9 @@ export default {
       this.loading=true;
       let res=await this.operationWithCheck(async () => await this.fetch(this.paginationOpts,this.search,{
         ...filter,
-        draft: this.filterDraft ? {value: null} : null
+        draft: this.filterDraft ? (
+          this.op ? {value: [null,this.op.draft]} : {value: null}
+        ) : null
       }));
       this.loadingCount--;
       if (this.loadingCount==0)
@@ -118,8 +134,9 @@ export default {
       this.handleChange(clear,filters);
     },
     async handleDelete(item) {
-      if (await this.delete(item))
+      if (await this.delete(item,this.op,this.subIndex)) {
         this._fetch();
+      }
     },
     handlePaginationChanged(paginationOpts) {
       this.paginationOpts=paginationOpts;

@@ -18,6 +18,8 @@
           :withActions="true"
           :withEdit="true"
           :withDelete="true"
+          :disableList="disableList"
+          :idName="idName"
           @onPaginationChanged="handlePaginationChanged"
           @onEdit="item => openUpdate(0,item)"
           @onDelete="handleDelete"
@@ -114,8 +116,10 @@ export default {
       });
       return tableItems;
     },
-    delete(item) {
+    delete(item,op,subIndex) {
       return this.deleteConfirm(
+        op,
+        subIndex,
         this.resourceType,
         "MovimentiScarico",
         "MovimentiS",
@@ -138,7 +142,8 @@ export default {
         sortDesc: [false,false],
       },
       noFilter: true,
-      immutableFilterField: "articolo"
+      immutableFilterField: "articolo",
+      idName: "",
     };
   }
 };

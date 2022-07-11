@@ -16,6 +16,8 @@
           :loading="loading"
           :withActions="true"
           :withDelete="true"
+          :disableList="disableList"
+          :idName="idName"
           @onPaginationChanged="handlePaginationChanged"
           @onEdit="item => openUpdate(0,item)"
           @onDelete="handleDelete"
@@ -122,8 +124,10 @@ export default {
       });
       return tableItems;
     },
-    delete(item) {
+    delete(item,op,subIndex) {
       return this.deleteConfirm(
+        op,
+        subIndex,
         this.resourceType,
         "Alfresco",
         "Alfresco",
@@ -146,7 +150,9 @@ export default {
         sortDesc: [],
       },
       noFilter: true,
-      immutableFilterField: "fileGroup"
+      immutableFilterField: "fileGroup",
+      filterDraft: true,
+      idName: "name"
     };
   }
 };

@@ -156,15 +156,13 @@ export default {
       else if (op!=null) {
         // create
         if (mode == enums.FORM_MODE.CREATE) {
-          let uuid=uuidv4();
           res=await this.operationWithCheck(async () => await GraphileService.mutation([
             await GraphileService._create(resType,{
               ...pcopy,
-              draft: uuid
+              draft: op.draft
             },idName),
             await this.makeProgressOp(op,subIndex,{
               type: mode,
-              draft: uuid
             },pcopy)
           ]));
         }
@@ -174,7 +172,6 @@ export default {
             await GraphileService._update(resType,pcopy,idName,currentId),
             await this.makeProgressOp(op,subIndex,{
               type: mode,
-              draft: pcopy.draft
             },pcopy)
           ]));
         }
@@ -230,21 +227,37 @@ export default {
       }
       return null;
     },
-    async deleteConfirm(resName, resType, resOrig, idName, payload, deletedName) {
+    async deleteConfirm(op,subIndex,resName, resType, resOrig, idName, payload, deletedName) {
       return new Promise((resolve) => {
         this.$dialog
         .confirm(this.$t("confirm.deleteMessage"),this.options)
         .then(async function(dialog) {
-          resolve(await this.deleteHelper(resName, resType, resOrig, idName, payload, deletedName));
+          resolve(await this.deleteHelper(op,subIndex,resName, resType, resOrig, idName, payload, deletedName));
         }.bind(this))
         .catch(async function() {
           resolve(false);
         }.bind(this));
       });
     },
-    async deleteHelper(resName, resType, resOrig, idName, payload, deletedName) {
+    async deleteHelper(op,subIndex,resName,resType,resOrig,idName,payload,deletedName) {
       let pcopy = _.cloneDeep(payload);
-      const res = await this.operationWithCheck(async () => await GraphileService.delete(resType,resOrig,payload,idName));
+      
+      let res;
+      if (op==null)
+        res=await this.operationWithCheck(async () => await GraphileService.delete(resType,resOrig,payload,idName));
+      else {
+        let id=utils.extractId(idName,payload);
+        //let sub=op.subList[subIndex] ?? {};
+        let deleteList=op.subList[subIndex] ? op.subList[subIndex].deleteList : {};
+
+        res=await this.operationWithCheck(async () => await GraphileService.mutation([
+          await this.makeProgressOp(op,subIndex,{
+            type: enums.OP_TYPE.LIST,
+            deleteList: [...deleteList,id],
+          })
+        ]));
+      }
+      
       if (res) {
         this.showMessage({
           context: enums.TOAST_TYPE.SUCCESS,
@@ -274,12 +287,12 @@ export default {
         subList: JSON.stringify(op.subList),
         savedData: JSON.stringify(op.savedData)
       };
-
       return await GraphileService._update("Operation",r,["data","operatore"],op.id);
     },
-    async startOpHelper(risorsa,dettagli,subCount,subList=null,savedData=null) {
+    async startOpHelper(opName,risorsa,dettagli,subCount,subList=null,savedData=null) {
       if (subList==null) subList=new Array(subCount).fill(null);
       if (savedData==null) savedData=new Array(subCount).fill(null);
+      let draft=uuidv4();
 
       // clear list
       for (let i=0;i<subList.length;i++)
@@ -293,8 +306,10 @@ export default {
         tipo: "wizard",
         dettagli,
         stato: "draft",
+        draft: draft,
         subList: JSON.stringify(subList),
-        savedData: JSON.stringify(savedData)
+        savedData: JSON.stringify(savedData),
+        opName
       };
 
       let res=await this.operationWithCheck(async () => await GraphileService.create("Operation",r,["data","operatore"]),
@@ -305,7 +320,9 @@ export default {
       return {
         id: [ res.data.data, res.data.operatore ],
         subList,
-        savedData
+        savedData,
+        draft,
+        opName
       };
     },
     async progressOpHelper(op,subIndex,sub,data) {
@@ -336,19 +353,64 @@ export default {
         stato: "complete"
       };
 
-      let res=await this.operationWithCheck(async () => await GraphileService.update("Operation",r,["data","operatore"],op.id),
+      let mlist=[];
+      mlist.push(await GraphileService._functionCall("opCommit"+op.opName,[
+        {
+          name: "draft",
+          value: op.draft
+        }
+      ]));
+      mlist.push(await GraphileService._update("Operation",r,["data","operatore"],op.id));
+
+      let res=await this.operationWithCheck(async () => await GraphileService.mutation(mlist),
         {code: "OP_END", extra: this.resourceTypes, stringify: true}
       );
       if (!res)
         return false;
       return true;
     },
-    async findHelper(find,sub) {
+    async abortOpHelper(op,dettagli) {
+      let r={
+        dettagli,
+        stato: "abort"
+      };
+
+      let mlist=[];
+      mlist.push(await GraphileService._functionCall("opAbort"+op.opName,[
+        {
+          name: "draft",
+          value: op.draft
+        }
+      ]));
+      mlist.push(await GraphileService._update("Operation",r,["data","operatore"],op.id));
+
+      let res=await this.operationWithCheck(async () => await GraphileService.mutation(mlist),
+        {code: "OP_END", extra: this.resourceTypes, stringify: true}
+      );
+      if (!res)
+        return false;
+      return true;
+    },
+    async abortConfirm(op,dettagli) {
+      return new Promise((resolve) => {
+        this.$dialog
+        .confirm(this.$t("confirm.abortMessage"),this.options)
+        .then(async function(dialog) {
+          resolve(await this.abortOpHelper(op,dettagli));
+        }.bind(this))
+        .catch(async function() {
+          resolve(false);
+        }.bind(this));
+      });
+    },
+    async findHelper(find,op,subIndex) {
+      let sub=op.subList[subIndex];
+
       if (sub.payload)
         return sub.payload;
       
       let res=await find({
-        draft: {value: sub.draft}
+        draft: {value: op.draft}
       });
       if (res)
         return res[0][0];

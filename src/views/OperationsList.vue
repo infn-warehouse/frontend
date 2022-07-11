@@ -26,6 +26,8 @@
           :loading="loading"
           :withActions="true"
           :withDelete="true"
+          :disableList="disableList"
+          :idName="idName"
           @onPaginationChanged="handlePaginationChanged"
           @onEdit="item => openUpdate(0,item)"
           @onDelete="handleDelete"
@@ -160,15 +162,20 @@ export default {
         id: [ item.data, item.operatore ]
       };
     },
-    delete(item) {
-      return this.deleteConfirm(
-        this.resourceType,
-        "Operation",
-        "Operation",
-        ["data","operatore"],
-        item,
-        payload => this.$t("langEnums.tipo."+payload.p.tipo)+" "+payload.p.risorsa
+    delete(item,op,subIndex) {
+      return this.abortConfirm(
+        this.formatOp(item),""
       );
+      // return this.deleteConfirm(
+      //   op,
+      //   subIndex,
+      //   this.resourceType,
+      //   "Operation",
+      //   "Operation",
+      //   ["data","operatore"],
+      //   item,
+      //   payload => this.$t("langEnums.tipo."+payload.p.tipo)+" "+payload.p.risorsa
+      // );
     },
     fetch(paginationOpts=null,search,filter) {
       return GraphileService.fetchAll("Operation",[],[],filter,{search, on: []},paginationOpts);
@@ -183,6 +190,7 @@ export default {
         sortBy: ["data"],
         sortDesc: [true],
       },
+      idName: "",
     };
   }
 };

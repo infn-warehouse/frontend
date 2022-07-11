@@ -44,6 +44,13 @@ export default {
 
         return id;
     },
+    joinIdList(list) {
+        let l=[];
+        list.forEach(o => {
+            l.push(o.join("§"));
+        });
+        return l;
+    },
     updateObject(obj,data) {
         for (let key in data)
           if (key in obj)

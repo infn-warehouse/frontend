@@ -60,6 +60,9 @@ export default {
     fileGroup: {
       required: false
     },
+    draft: {
+      required: false
+    },
   },
   data() {
     return {
@@ -80,8 +83,13 @@ export default {
       this.progress=0;
       this.status=0;
 
+      let payload={
+        fileGroup: this.fileGroup,
+        draft: this.draft
+      }
+
       let bodyFormData = new FormData();
-      bodyFormData.append('fileGroup', this.fileGroup);
+      bodyFormData.append('payload', JSON.stringify(payload));
       bodyFormData.append('data', this.selectedFile);
 
       this.cancel=ApiService.upload("alfresco/"+encodeURI(this.selectedFile.name),bodyFormData,(progress) => {

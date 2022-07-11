@@ -182,8 +182,10 @@ export default {
       return this.makeTitleDetails(this.resourceType,item.nMovimento+" ("+item.idOrdine+")");
     },
 
-    delete(item) {
+    delete(item,op,subIndex) {
       return this.deleteConfirm(
+        op,
+        subIndex,
         this.resourceType,
         "MovimentiTemp",
         "Movimenti",

@@ -25,4 +25,9 @@ export default {
     CREATE: "create",
     UPDATE: "update",
   },
+  OP_TYPE: {
+    CREATE: "create",
+    UPDATE: "update",
+    LIST: "list"
+  }
 };

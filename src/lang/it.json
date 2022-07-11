@@ -106,6 +106,7 @@
   },
   "confirm": {
     "deleteMessage": "Vuoi davvero cancellare l'oggetto selezionato?",
+    "abortMessage": "Vuoi davvero annullare questa operazione?",
     "yes": "Sì",
     "no": "No"
   },
@@ -273,7 +274,8 @@
     },
     "stato": {
       "complete": "Completa",
-      "draft": "Bozza"
+      "draft": "Bozza",
+      "abort": "Annullata"
     }
   }
 }

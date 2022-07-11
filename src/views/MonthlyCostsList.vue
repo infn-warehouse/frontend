@@ -12,6 +12,8 @@
           :totalLength="total"
           :injectOpts="paginationOpts"
           :loading="loading"
+          :disableList="disableList"
+          :idName="idName"
           @onPaginationChanged="handlePaginationChanged"
         ></BaseGrid>
       </v-card>
@@ -84,7 +86,8 @@ export default {
         sortBy: ["mese"],
         sortDesc: [true],
       },
-      noFilter: true
+      noFilter: true,
+      idName: "",
     };
   }
 };

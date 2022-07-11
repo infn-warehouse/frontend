@@ -20,6 +20,14 @@ const GraphileService = {
     return s;
   },
 
+  formatArgsList(args) {
+    let s="";
+    args.forEach(o => {
+      s+=o.name+": \""+o.value+"\" ";
+    });
+    return s;
+  },
+
   // try to perform a query by sending it to GraphQL endpoint
   // return the error object if it fails
   async sendQuery(query) {
@@ -234,10 +242,32 @@ const GraphileService = {
           filterExists=true;
         }
         else {
-          filterString+=key+": {";
-          filterString+=await this.formatIn(type,key,item.value);
-          filterString+="}";
-          filterExists=true;
+          let list=item.value;
+
+          let includesNull=Array.isArray(list) ? list.some(el => el === null) : false;
+          if (includesNull)
+            list=list.filter(el => {
+              return el !== null;
+            });
+          
+          if (includesNull) {
+            filterString+="or: [{";
+            filterString+=key+": {";
+            filterString+=await this.formatIn(type,key,list);
+            filterString+="}";
+            filterString+="},{";
+            filterString+=key+": {";
+            filterString+=await this.formatIn(type,key,null);
+            filterString+="}";
+            filterString+="}]";
+            filterExists=true;
+          }
+          else {
+            filterString+=key+": {";
+            filterString+=await this.formatIn(type,key,item.value);
+            filterString+="}";
+            filterExists=true;
+          }
         }
       }
     }
@@ -440,6 +470,19 @@ const GraphileService = {
       `,
       op: op,
       type
+    };
+  },
+
+  async _functionCall(fname,args) {
+    // make function query
+    return {
+      query: `
+        ${fname} (input:{${this.formatArgsList(args)}}){
+          string
+        }
+      `,
+      op: fname,
+      type: "string"
     };
   },
 
