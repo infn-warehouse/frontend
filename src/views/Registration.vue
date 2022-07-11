@@ -268,7 +268,7 @@ export default {
       }
     },
     async startOp() {
-      this.op=await this.startOpHelper("Registration",this.resourceTypes,"",2,[
+      this.op=await this.startOpHelper("Registration","registrations","",2,[
         this.orderExists ? {
           type: enums.FORM_MODE.UPDATE,
           payload: this.orderItem

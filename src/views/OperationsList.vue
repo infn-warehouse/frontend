@@ -123,7 +123,7 @@ export default {
         tableItem.fields = {
           operatore: { data: item.operatore, dataType: "text" },
           data: { data: item.data, dataType: "datetime" },
-          risorsa: { data: item.risorsa, dataType: "text" },
+          risorsa: { data: this.$t("resource_types."+item.risorsa), dataType: "text" },
           tipo: { data: this.$t("langEnums.tipo."+item.tipo), dataType: "text" },
           dettagli: { data: this.doReplace(item.dettagli,this.$t("detailsString"),true), dataType: "text" },
           stato: { data: this.$t("langEnums.stato."+item.stato), dataType: "text" },
