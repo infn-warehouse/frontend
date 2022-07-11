@@ -8,6 +8,7 @@ const GraphileService = {
   assoc: null,
   dataTypes: null,
 
+  // escape strings and list of strings (recursively)
   escape(s) {
     if (Array.isArray(s)) {
       let a=[];
@@ -20,6 +21,7 @@ const GraphileService = {
     return s;
   },
 
+  // format arguments lists (for function calls)
   formatArgsList(args) {
     let s="";
     args.forEach(o => {
@@ -208,6 +210,8 @@ const GraphileService = {
     return list.join(",");
   },
 
+  // format in list (for the graphile filter)
+  // return isNull condition if the list is null
   async formatIn(type,field,list) {
     if (Array.isArray(list))
       return `in: [${await this.formatList(type,field,list)}]`;
@@ -314,6 +318,8 @@ const GraphileService = {
     return s;
   },
 
+  // make condition (useful for various query)
+  // condition is based on id
   async makeCondition(type,id,idName) {
     let s="";
     for (let i=0;i<id.length;i++) {
@@ -322,6 +328,7 @@ const GraphileService = {
     return s;
   },
 
+  // make part of the query name (update and delete)
   makeBy(idName) {
     let s="By"+utils.firstToUpper(idName[0]);
     for (let i=1;i<idName.length;i++) {
@@ -406,6 +413,54 @@ const GraphileService = {
     return [nodes,count];
   },
 
+  async create(type,payload,idName) {
+    let { query, op }=await this._create(type,payload,idName);
+    let res=await this.sendQuery(await this._mutation([{ query, op }]));
+    if (res && res.error) {
+      console.log("create error from server: ", res.error);
+      return {error: res.error};
+    }
+    return {data: res.data[op][utils.firstToLower(type)]};
+  },
+
+  async update(type,payload,idName,currentId) {
+    let { query, op }=await this._update(type,payload,idName,currentId);
+    let res=await this.sendQuery(await this._mutation([{ query, op }]));
+    if (res && res.error) {
+      console.log("update error from server: ", res.error);
+      return {error: res.error};
+    }
+    return {data: res.data[op][utils.firstToLower(type)]};
+  },
+
+  async delete(type,originalType,payload,idName) {
+    let { query, op }=await this._delete(type,originalType,payload,idName);
+    let res=await this.sendQuery(await this._mutation([{ query, op }]));
+    if (res && res.error) {
+      console.log("delete error from server: ", res.error);
+      return {error: res.error};
+    }
+    return {data: res.data[op]};
+  },
+
+  async mutation(a) {
+    let res=await this.sendQuery(await this._mutation(a));
+    if (res && res.error) {
+      console.log("delete error from server: ", res.error);
+      return {error: res.error};
+    }
+
+    let first=a[0];
+    return {
+      data: res.data[first.op][utils.firstToLower(first.type)]
+    };
+  },
+
+  async replace(type,payload,idName) {
+    await this.delete(type,type,payload,idName);
+    return await this.create(type,payload,idName);
+  },
+
   async _create(type,payload,idName) {
     // turn id into array
     if (!Array.isArray(idName))
@@ -473,6 +528,16 @@ const GraphileService = {
     };
   },
 
+  async _mutation(a) {
+    let s="mutation {";
+    a.forEach(o => {
+      s+=o.query;
+    });
+    s+="}";
+
+    return s;
+  },
+  
   async _functionCall(fname,args) {
     // make function query
     return {
@@ -485,64 +550,6 @@ const GraphileService = {
       type: "string"
     };
   },
-
-  _mutation(a) {
-    let s="mutation {";
-    a.forEach(o => {
-      s+=o.query;
-    });
-    s+="}";
-
-    return s;
-  },
-
-  async create(type,payload,idName) {
-    let { query, op }=await this._create(type,payload,idName);
-    let res=await this.sendQuery(this._mutation([{ query, op }]));
-    if (res && res.error) {
-      console.log("create error from server: ", res.error);
-      return {error: res.error};
-    }
-    return {data: res.data[op][utils.firstToLower(type)]};
-  },
-
-  async update(type,payload,idName,currentId) {
-    let { query, op }=await this._update(type,payload,idName,currentId);
-    let res=await this.sendQuery(this._mutation([{ query, op }]));
-    if (res && res.error) {
-      console.log("update error from server: ", res.error);
-      return {error: res.error};
-    }
-    return {data: res.data[op][utils.firstToLower(type)]};
-  },
-
-  async delete(type,originalType,payload,idName) {
-    let { query, op }=await this._delete(type,originalType,payload,idName);
-    let res=await this.sendQuery(this._mutation([{ query, op }]));
-    if (res && res.error) {
-      console.log("delete error from server: ", res.error);
-      return {error: res.error};
-    }
-    return {data: res.data[op]};
-  },
-
-  async replace(type,payload,idName) {
-    await this.delete(type,type,payload,idName);
-    return await this.create(type,payload,idName);
-  },
-
-  async mutation(a) {
-    let res=await this.sendQuery(this._mutation(a));
-    if (res && res.error) {
-      console.log("delete error from server: ", res.error);
-      return {error: res.error};
-    }
-
-    let first=a[0];
-    return {
-      data: res.data[first.op][utils.firstToLower(first.type)]
-    };
-  }
 };
 
 export default GraphileService;
