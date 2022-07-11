@@ -203,6 +203,8 @@ export default {
             return null;
           }
         }
+        if (op!=null)
+          return res;
         if (mode == enums.FORM_MODE.CREATE) {
           this.showMessage({
             context: enums.TOAST_TYPE.SUCCESS,
