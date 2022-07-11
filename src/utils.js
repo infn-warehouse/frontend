@@ -44,6 +44,17 @@ export default {
 
         return id;
     },
+    formatId(idName,id) {
+        let o={};
+        if (!id) return o;
+
+        if (!Array.isArray(idName))
+            idName=[idName];
+        
+        for (let i=0;i<idName.length;i++)
+            o[idName[i]]=id[i];
+        return o;
+    },
     joinIdList(list) {
         let l=[];
         list.forEach(o => {

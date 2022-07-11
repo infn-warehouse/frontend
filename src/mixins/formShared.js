@@ -80,8 +80,9 @@ export default {
 
       if (res) {
         let id=utils.extractId(this.idName,res.data);
-        this.form={...this.form, id};
-
+        let idFormatted=utils.formatId(this.idName,id);
+        this.form={...this.form, ...idFormatted};
+        
         this.$emit("formSucceed",{
           ...this.form,
           "_id": this.form.id
