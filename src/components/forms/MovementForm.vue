@@ -250,6 +250,7 @@ export default {
     return {
       resourceType: this.$t("resource_types.movement"),
       resourceTypes: this.$t("resource_types.movements"),
+      typeName: "movements",
       formTitle: "",
       idName: "idMovimento",
       modelField: "idOrdine",
@@ -289,6 +290,7 @@ export default {
         subIndex,
         this.mode,
         this.resourceType,
+        this.typeName,
         "MovimentiTemp",
         "idMovimento",
         this.form,

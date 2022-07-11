@@ -111,6 +111,8 @@ export default {
       home: "Movements",
       resourceType: this.$t("resource_types.movement"),
       resourceType2: this.$t("resource_types.order"),
+      typeName: "movements",
+      typeName2: "orders",
       buttons: [
         {
           text: this.$t("details.orders.change"),
@@ -122,6 +124,7 @@ export default {
               null,
               this.mode,
               this.resourceType2,
+              this.typeName2,
               "Ordini",
               "idordine",
               {

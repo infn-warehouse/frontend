@@ -52,6 +52,8 @@ export default {
       if (!res) return null;
       if (res.error) {
         console.log(res.error);
+        if (res.error.stack)
+          console.log(res.error.stack);
 
         if (res.error.jwtExpired) {
           this.$router.push({ name: "Login" }).catch(()=>{});
@@ -122,6 +124,7 @@ export default {
       subIndex,
       mode,
       resName,
+      typeName,
       resType,
       idName,
       payload,
@@ -145,12 +148,12 @@ export default {
         if (mode == enums.FORM_MODE.CREATE)
           res=await this.operationWithCheck(async () => await GraphileService.mutation([
             await GraphileService._create(resType,pcopy,idName),
-            await this.makeRegisterOp(this.resourceTypes,this.mode,"§reason: "+reason,"complete")
+            await this.makeRegisterOp(typeName,mode,"§reason: "+reason,"complete")
           ]));
         else
           res=await this.operationWithCheck(async () => await GraphileService.mutation([
             await GraphileService._update(resType,pcopy,idName,currentId),
-            await this.makeRegisterOp(this.resourceTypes,this.mode,"§reason: "+reason,"complete")
+            await this.makeRegisterOp(typeName,mode,"§reason: "+reason,"complete")
           ]));
       }
       else if (op!=null) {

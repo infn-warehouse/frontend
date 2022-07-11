@@ -164,6 +164,7 @@ export default {
     return {
       resourceType: this.$t("resource_types.order"),
       resourceTypes: this.$t("resource_types.orders"),
+      typeName: "orders",
       formTitle: "",
       idName: "idordine",
       emptyForm: {
@@ -194,6 +195,7 @@ export default {
         subIndex,
         this.mode,
         this.resourceType,
+        this.typeName,
         "Ordini",
         "idordine",
         this.form,
