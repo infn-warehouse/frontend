@@ -318,6 +318,7 @@ export default {
       if (!res)
         return null;
       return {
+        ...r,
         id: [ res.data.data, res.data.operatore ],
         subList,
         savedData,
@@ -367,6 +368,12 @@ export default {
       );
       if (!res)
         return false;
+      this.showMessage({
+        context: enums.TOAST_TYPE.SUCCESS,
+        text:  this.$i18n.t("toasts.endOp",{
+          resourceType: this.$i18n.t("resource_types."+op.risorsa)
+        })
+      });
       return true;
     },
     async abortOpHelper(op,dettagli) {
@@ -389,6 +396,12 @@ export default {
       );
       if (!res)
         return false;
+      this.showMessage({
+        context: enums.TOAST_TYPE.SUCCESS,
+        text:  this.$i18n.t("toasts.abortOp",{
+          resourceType: this.$i18n.t("resource_types."+op.risorsa)
+        })
+      });
       return true;
     },
     async abortConfirm(op,dettagli) {

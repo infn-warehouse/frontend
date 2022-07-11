@@ -115,7 +115,9 @@
     "logout_ok": "Logout effettuato con successo.",
     "created": "Creato",
     "updated": "Aggiornato",
-    "deleted": "Eliminato"
+    "deleted": "Eliminato",
+    "endOp": "Operazione su {resourceType} completata.",
+    "abortOp": "Operazione su {resourceType} annullata."
   },
   "headers": {
     "movements": {
