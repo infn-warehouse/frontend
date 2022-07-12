@@ -174,7 +174,7 @@ export default {
           res=await this.operationWithCheck(async () => await GraphileService.mutation([
             await GraphileService._update(resType,pcopy,idName,currentId),
             await this.makeProgressOp(op,subIndex,{
-              type: mode,
+              type: enums.OP_TYPE.CREATE,
             },pcopy)
           ]));
         }
@@ -183,7 +183,10 @@ export default {
           res=await this.operationWithCheck(async () => await GraphileService.mutation([
             await this.makeProgressOp(op,subIndex,{
               type: mode,
-              payload: pcopy
+              payload: pcopy,
+              resType,
+              idName,
+              currentId,
             },pcopy)
           ]));
         }
@@ -245,20 +248,20 @@ export default {
       });
     },
     async deleteHelper(op,subIndex,resName,resType,resOrig,idName,payload,deletedName) {
-      let pcopy = _.cloneDeep(payload);
-      
       let res;
       if (op==null)
         res=await this.operationWithCheck(async () => await GraphileService.delete(resType,resOrig,payload,idName));
       else {
         let id=utils.extractId(idName,payload);
         //let sub=op.subList[subIndex] ?? {};
-        let deleteList=op.subList[subIndex] ? op.subList[subIndex].deleteList : {};
-
+        let deleteList=op.subList[subIndex] ? op.subList[subIndex].deleteList : [];
+        let deleteListPayload=op.subList[subIndex] ? op.subList[subIndex].deleteListPayload : [];
         res=await this.operationWithCheck(async () => await GraphileService.mutation([
           await this.makeProgressOp(op,subIndex,{
             type: enums.OP_TYPE.LIST,
             deleteList: [...deleteList,id],
+            deleteListPayload: [...deleteListPayload,payload],
+            resType,resOrig,payload,idName
           })
         ]));
       }
@@ -270,7 +273,7 @@ export default {
             " " +
             resName +
             " " +
-            deletedName({ v: res ? res.data : {}, p: pcopy })
+            deletedName({ v: res ? res.data : {}, p: payload })
         });
         return true;
       }
@@ -360,6 +363,17 @@ export default {
       };
 
       let mlist=[];
+      let deleteIndex=1;
+      for (let o of op.subList) {
+        if (o==null) continue;
+        if (o.type==enums.OP_TYPE.UPDATE)
+          mlist.push(await GraphileService._update(o.resType,o.payload,o.idName,o.currentId));
+        else if (o.type==enums.OP_TYPE.LIST) {
+          for (let p of o.deleteListPayload) {
+            mlist.push(await GraphileService._delete(o.resType,o.resOrig,p,o.idName,"delete"+deleteIndex++));
+          }
+        }
+      }
       mlist.push(await GraphileService._functionCall("opCommit"+op.opName,[
         {
           name: "draft",

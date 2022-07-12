@@ -343,10 +343,10 @@ const GraphileService = {
     console.log(" ");
 
     // turn id into array
-    if (!Array.isArray(idName)) {
+    if (!Array.isArray(id))
       id=[id];
+    if (!Array.isArray(idName))
       idName=[idName];
-    }
 
     type=utils.makeSingular(type);
 
@@ -461,7 +461,7 @@ const GraphileService = {
     return await this.create(type,payload,idName);
   },
 
-  async _create(type,payload,idName) {
+  async _create(type,payload,idName,alias=null) {
     // turn id into array
     if (!Array.isArray(idName))
       idName=[idName];
@@ -470,6 +470,7 @@ const GraphileService = {
     let op=`create${type}`;
     return {
       query: `
+        ${alias?alias+": ":""}
         ${op} (input:{${utils.firstToLower(type)}:{
           ${await this.formatPayload(type,payload)}
         }}){
@@ -483,17 +484,18 @@ const GraphileService = {
     };
   },
 
-  async _update(type,payload,idName,currentId) {
+  async _update(type,payload,idName,currentId,alias=null) {
     // turn id into array
-    if (!Array.isArray(idName)) {
-      currentId=[currentId];
+    if (!Array.isArray(idName))
       idName=[idName];
-    }
+    if (!Array.isArray(currentId))
+      currentId=[currentId];
 
     // make update query
     let op=`update${type}${this.makeBy(idName)}`;
     return {
       query: `
+        ${alias?alias+": ":""}
         ${op} (input: {${await this.makeCondition(type,currentId,idName)} ${utils.firstToLower(type)}Patch:{
           ${await this.formatPayload(type,payload)}
         }}){
@@ -507,18 +509,19 @@ const GraphileService = {
     };
   },
 
-  async _delete(type,originalType,payload,idName) {
+  async _delete(type,originalType,payload,idName,alias=null) {
     // turn id into array
     if (!Array.isArray(idName))
       idName=[idName];
 
     // get id from payload
-    let id=utils.extractId(idName,payload); 
+    let id=utils.extractId(idName,payload);
 
     // make delete query
     let op=`delete${type}${this.makeBy(idName)}`;
     return {
       query: `
+        ${alias?alias+": ":""}
         ${op} (input: {${await this.makeCondition(type,id,idName)}}) {
           deleted${originalType}Id
         }
