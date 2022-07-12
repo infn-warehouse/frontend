@@ -363,14 +363,13 @@ export default {
       };
 
       let mlist=[];
-      let deleteIndex=1;
       for (let o of op.subList) {
         if (o==null) continue;
         if (o.type==enums.OP_TYPE.UPDATE)
           mlist.push(await GraphileService._update(o.resType,o.payload,o.idName,o.currentId));
         else if (o.type==enums.OP_TYPE.LIST) {
           for (let p of o.deleteListPayload) {
-            mlist.push(await GraphileService._delete(o.resType,o.resOrig,p,o.idName,"delete"+deleteIndex++));
+            mlist.push(await GraphileService._delete(o.resType,o.resOrig,p,o.idName));
           }
         }
       }

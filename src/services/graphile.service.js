@@ -461,7 +461,7 @@ const GraphileService = {
     return await this.create(type,payload,idName);
   },
 
-  async _create(type,payload,idName,alias=null) {
+  async _create(type,payload,idName) {
     // turn id into array
     if (!Array.isArray(idName))
       idName=[idName];
@@ -470,7 +470,6 @@ const GraphileService = {
     let op=`create${type}`;
     return {
       query: `
-        ${alias?alias+": ":""}
         ${op} (input:{${utils.firstToLower(type)}:{
           ${await this.formatPayload(type,payload)}
         }}){
@@ -484,7 +483,7 @@ const GraphileService = {
     };
   },
 
-  async _update(type,payload,idName,currentId,alias=null) {
+  async _update(type,payload,idName,currentId) {
     // turn id into array
     if (!Array.isArray(idName))
       idName=[idName];
@@ -495,7 +494,6 @@ const GraphileService = {
     let op=`update${type}${this.makeBy(idName)}`;
     return {
       query: `
-        ${alias?alias+": ":""}
         ${op} (input: {${await this.makeCondition(type,currentId,idName)} ${utils.firstToLower(type)}Patch:{
           ${await this.formatPayload(type,payload)}
         }}){
@@ -509,7 +507,7 @@ const GraphileService = {
     };
   },
 
-  async _delete(type,originalType,payload,idName,alias=null) {
+  async _delete(type,originalType,payload,idName) {
     // turn id into array
     if (!Array.isArray(idName))
       idName=[idName];
@@ -521,7 +519,6 @@ const GraphileService = {
     let op=`delete${type}${this.makeBy(idName)}`;
     return {
       query: `
-        ${alias?alias+": ":""}
         ${op} (input: {${await this.makeCondition(type,id,idName)}}) {
           deleted${originalType}Id
         }
@@ -533,7 +530,9 @@ const GraphileService = {
 
   async _mutation(a) {
     let s="mutation {";
-    a.forEach(o => {
+    a.forEach((o,i) => {
+      if (i>0)
+        s+="query"+i+": ";
       s+=o.query;
     });
     s+="}";
