@@ -145,7 +145,7 @@
       "causaleMov": "Causale movimentazione",
       "autorizzazione": "Autorizzazione del direttore",
 
-      "idordine": "Ordine associato",
+      "idordine": "Codice oracle",
       "dataordine": "Data ordine",
       "fornitore": "Azienda",
       "descrizione": "Categoria materiale",
