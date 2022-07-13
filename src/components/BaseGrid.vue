@@ -87,6 +87,7 @@
                 <span v-if="v.dataType == 'date'" :inner-html.prop="v.data | date" />
                 <span v-if="v.dataType == 'month'" :inner-html.prop="v.data | month" />
                 <span v-if="v.dataType == 'currency'" :inner-html.prop="v.data | currency" />
+                <span v-if="v.dataType == 'bool'" :inner-html.prop="v.data | yesNo" />
                 <a v-if="v.dataType == 'link'" :href="v.data" :inner-html.prop="v.data" />
               </td>
 

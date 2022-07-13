@@ -140,6 +140,10 @@
       "corriere": "Corriere",
       "trackingNum": "Tracking number",
       "idOrdine": "Ordine associato",
+      "richiAnagrafica": "Richiedente anagrafica",
+      "gruppoAppart": "Gruppo di appartenenza",
+      "causaleMov": "Causale movimentazione",
+      "autorizzazione": "Autorizzazione del direttore",
 
       "idordine": "Numero",
       "dataordine": "Data ordine",

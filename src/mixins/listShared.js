@@ -2,10 +2,12 @@ import enums from "@/enums";
 import helper from "@/mixins/helper";
 import _ from "lodash";
 import utils from "../utils";
+import { mapGetters } from "vuex";
 
 export default {
   mixins: [helper],
   computed: {
+    ...mapGetters("info", ["appMode"]),
     enums() {
       return enums;
     }
@@ -46,6 +48,7 @@ export default {
   async created() {
     this.paginationOpts = {...this.paginationOpts, ...this.mergeOpts };
     this.tableData.headers=this.mapHeaders();
+    this.hideHeaders();
     if (this.immutableFilter && this.immutableFilterField) {
       let i=this.getFieldIndex(this.immutableFilterField);
       if (i>=0) this.tableData.headers[i].hidden=true;
@@ -106,6 +109,13 @@ export default {
         }
       }
     },
+    hideHeaders() {
+      let appMode=parseInt(this.appMode);
+      this.tableData.headers.forEach(o => {
+        if (o.modes && !o.modes.includes(appMode))
+          o.hidden=true;
+      });
+    },
     getFieldIndex(name) {
       return _.findIndex(this.tableData.headers,{value:name});
     },
@@ -147,6 +157,6 @@ export default {
     },
     refresh() {
       this._fetch();
-    }
+    },
   }
 }

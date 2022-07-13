@@ -37,33 +37,29 @@ export default {
   },
 
   async created() {
-    try {
-      this.load();
+    this.load();
 
-      for (let i=0;i<this.headersCount;i++) {
-        if (!this.filterData[`columns${i}`]) {
-          this.filterData[`columns${i}`]=[];
-          this.filterInfo[`columns${i}`]=[];
-          for (let item of this.headers) {
-            let group='group' in item ? item.group : 0;
-            if (i==group)
-              this.filterData[`columns${i}`].push({
-                name: this.$i18n.t(`headers.${this.tableName}.${item.value}`),
-                value: item.value,
-                checked: item.show!=1,
-                default: item.show!=1,
-                hidden: item.hidden
-              });
-          }
-          this.filterInfo[`columns${i}`]={multiple: true};
-          await this.loadConf(i);
+    for (let i=0;i<this.headersCount;i++) {
+      if (!this.filterData[`columns${i}`]) {
+        this.filterData[`columns${i}`]=[];
+        this.filterInfo[`columns${i}`]=[];
+        for (let item of this.headers) {
+          let group='group' in item ? item.group : 0;
+          if (i==group)
+            this.filterData[`columns${i}`].push({
+              name: this.$i18n.t(`headers.${this.tableName}.${item.value}`),
+              value: item.value,
+              checked: item.show!=1,
+              default: item.show!=1,
+              hidden: item.hidden
+            });
         }
+        this.filterInfo[`columns${i}`]={multiple: true};
+        await this.loadConf(i);
       }
-
-      this.handleChange();
-    } catch (error) {
-      console.log(error);
     }
+
+    this.handleChange();
   },
 
   methods: {

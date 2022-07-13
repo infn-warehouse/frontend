@@ -134,7 +134,8 @@ export default {
       tableHeaders.push({
         value: "dataConsegna",
         sortable: true,
-        align: "start"
+        align: "start",
+        modes: [0,1]
       });
       tableHeaders.push({
         value: "nColli",
@@ -145,7 +146,8 @@ export default {
         value: "dataCollaudo",
         sortable: true,
         align: "start",
-        show: 1
+        show: 1,
+        modes: [0,1]
       });
       tableHeaders.push({
         value: "note",
@@ -157,13 +159,15 @@ export default {
         value: "tipoCollaudo",
         sortable: true,
         align: "start",
-        show: 1
+        show: 1,
+        modes: [0,1]
       });
       tableHeaders.push({
         value: "collaudatore",
         sortable: true,
         align: "start",
-        show: 1
+        show: 1,
+        modes: [0,1]
       });
       tableHeaders.push({
         value: "inUscita",
@@ -174,7 +178,8 @@ export default {
         value: "tipoMovimento",
         sortable: true,
         align: "start",
-        show: 1
+        show: 1,
+        modes: [0,1]
       });
       tableHeaders.push({
         value: "tipoUscita",
@@ -212,6 +217,32 @@ export default {
         align: "start",
         group: 1
       });
+      tableHeaders.push({
+        value: "richiAnagrafica",
+        sortable: true,
+        align: "start",
+        modes: [2]
+      });
+      tableHeaders.push({
+        value: "gruppoAppart",
+        sortable: true,
+        align: "start",
+        modes: [2]
+      });
+      tableHeaders.push({
+        value: "causaleMov",
+        sortable: true,
+        align: "start",
+        modes: [2]
+      });
+      tableHeaders.push({
+        value: "autorizzazione",
+        sortable: true,
+        align: "start",
+        modes: [2]
+      });
+
+
 
       tableHeaders.push({
         value: "dataordine",
@@ -232,14 +263,16 @@ export default {
         sortable: true,
         align: "start",
         group: 1,
-        show: 1
+        show: 1,
+        modes: [0,1]
       });
       tableHeaders.push({
         value: "servizioRichi",
         sortable: true,
         align: "start",
         group: 1,
-        show: 1
+        show: 1,
+        modes: [0,1]
       });
       tableHeaders.push({
         value: "importo",
@@ -253,13 +286,15 @@ export default {
         sortable: true,
         align: "start",
         group: 1,
+        modes: [0,1]
       });
       tableHeaders.push({
         value: "dataconsegna",
         sortable: true,
         align: "start",
         group: 1,
-        show: 1
+        show: 1,
+        modes: [0,1]
       });
       tableHeaders.push({
         value: "noteOrdine",
@@ -317,6 +352,10 @@ export default {
           corriere: { data: item.corriere, dataType: "text" },
           trackingNum: { data: item.trackingNum, dataType: "text" },
           idOrdine: { data: item.idOrdine, dataType: "text" },
+          richiAnagrafica: { data: item.richiAnagrafica, dataType: "text" },
+          gruppoAppart: { data: item.gruppoAppart, dataType: "text" },
+          causaleMov: { data: item.causale!=null ? item.causale : "?", dataType: "text" },
+          autorizzazione: { data: item.autorizzazione, dataType: "bool" },
 
           dataordine: { data: item.dataordine, dataType: "date" },
           fornitore: { data: item.fornitore, dataType: "text" },
