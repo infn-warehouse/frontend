@@ -117,12 +117,24 @@ export default {
         align: "start"
       });
       tableHeaders.push({
-        value: "datadocumento",
+        value: "inUscita",
         sortable: true,
         align: "start"
       });
       tableHeaders.push({
+        value: "statOrdine",
+        sortable: true,
+        align: "start",
+        group: 1,
+        modes: [0,1]
+      });
+      tableHeaders.push({
         value: "tipoDocAcc",
+        sortable: true,
+        align: "start"
+      });
+      tableHeaders.push({
+        value: "datadocumento",
         sortable: true,
         align: "start"
       });
@@ -138,78 +150,10 @@ export default {
         modes: [0,1]
       });
       tableHeaders.push({
-        value: "nColli",
-        sortable: true,
-        align: "start"
-      });
-      tableHeaders.push({
-        value: "dataCollaudo",
+        value: "nColliOrdine",
         sortable: true,
         align: "start",
-        show: 1,
-        modes: [0,1]
-      });
-      tableHeaders.push({
-        value: "note",
-        sortable: true,
-        align: "start",
-        show: 1
-      });
-      tableHeaders.push({
-        value: "tipoCollaudo",
-        sortable: true,
-        align: "start",
-        show: 1,
-        modes: [0,1]
-      });
-      tableHeaders.push({
-        value: "collaudatore",
-        sortable: true,
-        align: "start",
-        show: 1,
-        modes: [0,1]
-      });
-      tableHeaders.push({
-        value: "inUscita",
-        sortable: true,
-        align: "start"
-      });
-      tableHeaders.push({
-        value: "tipoMovimento",
-        sortable: true,
-        align: "start",
-        show: 1,
-        modes: [0,1]
-      });
-      tableHeaders.push({
-        value: "tipoUscita",
-        sortable: true,
-        align: "start",
-        show: 1
-      });
-      tableHeaders.push({
-        value: "tipoReso",
-        sortable: true,
-        align: "start",
-        show: 1
-      });
-      tableHeaders.push({
-        value: "dataRitiro",
-        sortable: true,
-        align: "start",
-        show: 1
-      });
-      tableHeaders.push({
-        value: "corriere",
-        sortable: true,
-        align: "start",
-        show: 1
-      });
-      tableHeaders.push({
-        value: "trackingNum",
-        sortable: true,
-        align: "start",
-        show: 1
+        group: 1,
       });
       tableHeaders.push({
         value: "idOrdine",
@@ -218,112 +162,230 @@ export default {
         group: 1
       });
       tableHeaders.push({
-        value: "richiAnagrafica",
-        sortable: true,
-        align: "start",
-        modes: [2]
-      });
-      tableHeaders.push({
-        value: "gruppoAppart",
-        sortable: true,
-        align: "start",
-        modes: [2]
-      });
-      tableHeaders.push({
-        value: "causaleMov",
-        sortable: true,
-        align: "start",
-        modes: [2]
-      });
-      tableHeaders.push({
-        value: "autorizzazione",
-        sortable: true,
-        align: "start",
-        modes: [2]
-      });
-
-
-
-      tableHeaders.push({
-        value: "dataordine",
-        sortable: true,
-        align: "start",
-        group: 1,
-        show: 1
-      });
-      tableHeaders.push({
-        value: "fornitore",
-        sortable: true,
-        align: "start",
-        group: 1,
-        show: 1
-      });
-      tableHeaders.push({
-        value: "descrizione",
-        sortable: true,
-        align: "start",
-        group: 1,
-        show: 1,
-        modes: [0,1]
-      });
-      tableHeaders.push({
-        value: "servizioRichi",
-        sortable: true,
-        align: "start",
-        group: 1,
-        show: 1,
-        modes: [0,1]
-      });
-      tableHeaders.push({
-        value: "importo",
-        sortable: true,
-        align: "start",
-        group: 1,
-        show: 1
-      });
-      tableHeaders.push({
-        value: "statOrdine",
-        sortable: true,
-        align: "start",
-        group: 1,
-        modes: [0,1]
-      });
-      tableHeaders.push({
-        value: "dataconsegna",
-        sortable: true,
-        align: "start",
-        group: 1,
-        show: 1,
-        modes: [0,1]
-      });
-      tableHeaders.push({
-        value: "noteOrdine",
-        sortable: true,
-        align: "start",
-        group: 1,
-        show: 1
-      });
-      tableHeaders.push({
         value: "cig",
         sortable: true,
         align: "start",
         group: 1,
-        show: 1
       });
-      tableHeaders.push({
-        value: "rup",
-        sortable: true,
-        align: "start",
-        group: 1,
-        show: 1
-      });
-      tableHeaders.push({
-        value: "nColliOrdine",
-        sortable: true,
-        align: "start",
-        group: 1,
-        show: 1
-      });
+
+      // tableHeaders.push({
+      //   value: "nMovimento",
+      //   sortable: true,
+      //   align: "start"
+      // });
+      // tableHeaders.push({
+      //   value: "dataMovimento",
+      //   sortable: true,
+      //   align: "start"
+      // });
+      // tableHeaders.push({
+      //   value: "datadocumento",
+      //   sortable: true,
+      //   align: "start"
+      // });
+      // tableHeaders.push({
+      //   value: "tipoDocAcc",
+      //   sortable: true,
+      //   align: "start"
+      // });
+      // tableHeaders.push({
+      //   value: "nDocAcc",
+      //   sortable: true,
+      //   align: "start"
+      // });
+      // tableHeaders.push({
+      //   value: "dataConsegna",
+      //   sortable: true,
+      //   align: "start",
+      //   modes: [0,1]
+      // });
+      // tableHeaders.push({
+      //   value: "nColli",
+      //   sortable: true,
+      //   align: "start"
+      // });
+      // tableHeaders.push({
+      //   value: "dataCollaudo",
+      //   sortable: true,
+      //   align: "start",
+      //   show: 1,
+      //   modes: [0,1]
+      // });
+      // tableHeaders.push({
+      //   value: "note",
+      //   sortable: true,
+      //   align: "start",
+      //   show: 1
+      // });
+      // tableHeaders.push({
+      //   value: "tipoCollaudo",
+      //   sortable: true,
+      //   align: "start",
+      //   show: 1,
+      //   modes: [0,1]
+      // });
+      // tableHeaders.push({
+      //   value: "collaudatore",
+      //   sortable: true,
+      //   align: "start",
+      //   show: 1,
+      //   modes: [0,1]
+      // });
+      // tableHeaders.push({
+      //   value: "inUscita",
+      //   sortable: true,
+      //   align: "start"
+      // });
+      // tableHeaders.push({
+      //   value: "tipoMovimento",
+      //   sortable: true,
+      //   align: "start",
+      //   show: 1,
+      //   modes: [0,1]
+      // });
+      // tableHeaders.push({
+      //   value: "tipoUscita",
+      //   sortable: true,
+      //   align: "start",
+      //   show: 1
+      // });
+      // tableHeaders.push({
+      //   value: "tipoReso",
+      //   sortable: true,
+      //   align: "start",
+      //   show: 1
+      // });
+      // tableHeaders.push({
+      //   value: "dataRitiro",
+      //   sortable: true,
+      //   align: "start",
+      //   show: 1
+      // });
+      // tableHeaders.push({
+      //   value: "corriere",
+      //   sortable: true,
+      //   align: "start",
+      //   show: 1
+      // });
+      // tableHeaders.push({
+      //   value: "trackingNum",
+      //   sortable: true,
+      //   align: "start",
+      //   show: 1
+      // });
+      // tableHeaders.push({
+      //   value: "idOrdine",
+      //   sortable: true,
+      //   align: "start",
+      //   group: 1
+      // });
+      // tableHeaders.push({
+      //   value: "richiAnagrafica",
+      //   sortable: true,
+      //   align: "start",
+      //   modes: [2]
+      // });
+      // tableHeaders.push({
+      //   value: "gruppoAppart",
+      //   sortable: true,
+      //   align: "start",
+      //   modes: [2]
+      // });
+      // tableHeaders.push({
+      //   value: "causaleMov",
+      //   sortable: true,
+      //   align: "start",
+      //   modes: [2]
+      // });
+      // tableHeaders.push({
+      //   value: "autorizzazione",
+      //   sortable: true,
+      //   align: "start",
+      //   modes: [2]
+      // });
+
+
+
+      // tableHeaders.push({
+      //   value: "dataordine",
+      //   sortable: true,
+      //   align: "start",
+      //   group: 1,
+      //   show: 1
+      // });
+      // tableHeaders.push({
+      //   value: "fornitore",
+      //   sortable: true,
+      //   align: "start",
+      //   group: 1,
+      //   show: 1
+      // });
+      // tableHeaders.push({
+      //   value: "descrizione",
+      //   sortable: true,
+      //   align: "start",
+      //   group: 1,
+      //   show: 1,
+      //   modes: [0,1]
+      // });
+      // tableHeaders.push({
+      //   value: "servizioRichi",
+      //   sortable: true,
+      //   align: "start",
+      //   group: 1,
+      //   show: 1,
+      //   modes: [0,1]
+      // });
+      // tableHeaders.push({
+      //   value: "importo",
+      //   sortable: true,
+      //   align: "start",
+      //   group: 1,
+      //   show: 1
+      // });
+      // tableHeaders.push({
+      //   value: "statOrdine",
+      //   sortable: true,
+      //   align: "start",
+      //   group: 1,
+      //   modes: [0,1]
+      // });
+      // tableHeaders.push({
+      //   value: "dataconsegna",
+      //   sortable: true,
+      //   align: "start",
+      //   group: 1,
+      //   show: 1,
+      //   modes: [0,1]
+      // });
+      // tableHeaders.push({
+      //   value: "noteOrdine",
+      //   sortable: true,
+      //   align: "start",
+      //   group: 1,
+      //   show: 1
+      // });
+      // tableHeaders.push({
+      //   value: "cig",
+      //   sortable: true,
+      //   align: "start",
+      //   group: 1,
+      //   show: 1
+      // });
+      // tableHeaders.push({
+      //   value: "rup",
+      //   sortable: true,
+      //   align: "start",
+      //   group: 1,
+      //   show: 1
+      // });
+      // tableHeaders.push({
+      //   value: "nColliOrdine",
+      //   sortable: true,
+      //   align: "start",
+      //   group: 1,
+      //   show: 1
+      // });
 
       return tableHeaders;
     },
