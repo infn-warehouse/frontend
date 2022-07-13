@@ -139,7 +139,7 @@
       "dataRitiro": "Date e ora ritiro",
       "corriere": "Corriere",
       "trackingNum": "Tracking number",
-      "idOrdine": "Codice oracle",
+      "idOrdine": "Ordine associato",
       "richiAnagrafica": "Richiedente anagrafica",
       "gruppoAppart": "Gruppo di appartenenza",
       "causaleMov": "Causale movimentazione",
